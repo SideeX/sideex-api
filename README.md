@@ -1,2 +1,2 @@
-# SideeX Mini
+# SideeX Widget
 
