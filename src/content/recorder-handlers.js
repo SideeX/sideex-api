@@ -37,4 +37,18 @@ export function recorderHandlersInit() {
             setTimeout(function() { this.preventClickTwice = false; }, 30);
         }
     }, true);
+    
+    //double click
+    Recorder.addEventHandler('doubleClickAt', 'dblclick', function(event) {
+        var top = event.pageY,
+            left = event.pageX;
+        var element = event.target;
+        do {
+            top -= element.offsetTop;
+            left -= element.offsetLeft;
+            element = element.offsetParent;
+        } while (element);
+        this.record("doubleClickAt", this.locatorBuilders.buildAll(event.target), left + ',' + top);
+    }, true);
 }
+
