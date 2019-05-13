@@ -21,6 +21,7 @@ export function recorderHandlersInit() {
     Recorder.addEventHandlerVar("preventClick", false);
     Recorder.addEventHandlerVar("preventClickTwice", false);
     Recorder.addEventHandler('clickAt', 'click', function(event) {
+        var self = this;
         if (event.button == 0 && !this.preventClick && event.isTrusted) {
             if (!this.preventClickTwice) {
                 var top = event.pageY,
@@ -34,7 +35,7 @@ export function recorderHandlersInit() {
                 this.record("clickAt", this.locatorBuilders.buildAll(event.target), left + ',' + top);
                 this.preventClickTwice = true;
             }
-            setTimeout(function() { this.preventClickTwice = false; }, 30);
+            setTimeout(function() { self.preventClickTwice = false; }, 30);
         }
     }, true);
     
