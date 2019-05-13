@@ -20,6 +20,8 @@ import { Utils } from "../common/utils";
 export function recorderHandlersInit() {
     Recorder.addEventHandlerVar("preventClick", false);
     Recorder.addEventHandlerVar("preventClickTwice", false);
+
+    //click
     Recorder.addEventHandler('clickAt', 'click', function(event) {
         var self = this;
         if (event.button == 0 && !this.preventClick && event.isTrusted) {
@@ -51,6 +53,8 @@ export function recorderHandlersInit() {
         } while (element);
         this.record("doubleClickAt", this.locatorBuilders.buildAll(event.target), left + ',' + top);
     }, true);
+
+    //mouse over
     Recorder.addEventHandlerVar("nowNode", 0);
     Recorder.addEventHandlerVar("pageLoaded", true);
     Recorder.addEventHandler('mouseOver', 'mouseover', function(event) {

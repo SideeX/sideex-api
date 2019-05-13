@@ -282,6 +282,30 @@ Sideex.commands = {
         this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
         // END
     },
+     /**
+         * Double clicks on a link, button, checkbox or radio button. If the double click action
+         * causes a new page to load (like a link usually does), call
+         * waitForPageToLoad.
+         *
+         * @param locator an element locator
+         *
+         */
+    async doubleClickAt(locator,coordString) {
+       
+        var element = this.browserBot.findElement(locator);
+        var clientXY = this.getClientXY(element, coordString);
+        this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
+        this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1]);
+        this.browserBot.triggerFocusEvent(element);
+        this.browserBot.fireMouseEvent(element, 'mouseup', true, clientXY[0], clientXY[1]);
+        this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
+        this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1]);
+        this.browserBot.fireMouseEvent(element, 'mouseup', true, clientXY[0], clientXY[1]);
+        this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
+        this.browserBot.fireMouseEvent(element, 'dblclick', true, clientXY[0], clientXY[1]);
+        // END
+    
+    },
     async mouseOver(locator, coordString) {
         /**
          * Simulates a user hovering a mouse over the specified element.
