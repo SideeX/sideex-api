@@ -78,6 +78,21 @@ export class Sideex {
         }
     }
 
+    async doVerifyLocator(commandInfo) {
+        let excludedCommand = ["open", "selectWindow", "selectFrame", "close", "assertAlert", "assertConfirmation", "chooseOkOnNextConfirmation",
+            "chooseCancelOnNextConfirmation", "assertPrompt", "answerOnNextPrompt", "chooseCancelOnNextPrompt", "echo", "runScript",
+            "pause", "store", "storeEval", "storeTitle", "verifyTitle", "assertTitle"];
+        if (excludedCommand.includes(commandInfo.command)) {
+            return commandInfo.target;
+        }
+        try {
+            let element = this.browserBot.findElement(commandInfo.target);
+            return Utils.xpathGenerator(element);
+        } catch (e) {
+            return commandInfo.target;
+        }
+    }
+
     getClientXY(element, coordString) {
         // Parse coordString
         let x = 0;
@@ -244,6 +259,54 @@ export class Sideex {
         var element = this.browserBot.findElement(locator);
         return element.offsetHeight;
     }
-    
-    
 }
+
+Sideex.commands = {
+    /**
+     * Clicks on a link, button, checkbox or radio button. If the click action
+     * causes a new page to load (like a link usually does), call
+     * waitForPageToLoad.
+     *
+     * @param locator an element locator
+     * @param coordString specifies the x,y position (i.e. - 10,20) of the mouse
+     *      event relative to the element returned by the locator.
+     *
+     */
+    async clickAt(locator, coordString) {
+        var element = this.browserBot.findElement(locator);
+        var clientXY = this.getClientXY(element, coordString);
+        this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
+        this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1]);
+        this.browserBot.triggerFocusEvent(element);
+        this.browserBot.fireMouseEvent(element, 'mouseup', true, clientXY[0], clientXY[1]);
+        this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
+        // END
+    },
+    /**
+     * Opens an URL in the test frame. This accepts both relative and absolute
+     * URLs.
+     *
+     * The &quot;open&quot; command waits for the page to load before proceeding,
+     * ie. the &quot;AndWait&quot; suffix is implicit.
+     *
+     * <em>Note</em>: The URL must be on the same domain as the runner HTML
+     * due to security restrictions in the browser (Same Origin Policy). If you
+     * need to open an URL on another domain, use the Selenium Server to start a
+     * new browser session on that domain.
+     *
+     * @param url the URL to open; may be relative or absolute
+     * @param ignoreResponseCode (optional) turn off ajax head request functionality
+     *
+     */
+    async open(url, ignoreResponseCode) {
+        if (ignoreResponseCode == null || ignoreResponseCode.length == 0) {
+            this.browserBot.ignoreResponseCode = true;
+        } else if (ignoreResponseCode.toLowerCase() == "true") {
+            this.browserBot.ignoreResponseCode = true;
+        } else {
+            this.browserBot.ignoreResponseCode = false;
+        }
+        this.browserBot.openLocation(url);
+        window.scrollTo(0, 0);
+    }
+};
