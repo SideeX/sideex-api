@@ -1,3 +1,4 @@
+/* eslint-disable no-redeclare */
 /**
  * Copyright 2017 SideeX committers
  *
@@ -127,5 +128,129 @@ export function recorderHandlersInit() {
             }
         }
     };
+
+    Recorder.addEventHandlerVar("enterTarget", null);
+    Recorder.addEventHandlerVar("enterValue", null);
+    Recorder.addEventHandlerVar("tabCheck", null);
+    Recorder.addEventHandlerVar("preventType", false);
+    Recorder.addEventHandlerVar("typelock", 0);
+    Recorder.addEventHandlerVar("focusValue", null);
+    Recorder.addEventHandlerVar("tempValue", null);
+    Recorder.addEventHandlerVar("typeTarget", null);
+    Recorder.inputTypes = ["text", "password", "file", "datetime", "datetime-local", "date", "month", "time", "week", "number", "range", "email", "url", "search", "tel", "color"];
+    Recorder.addEventHandler('sendKeys', 'keydown', function (event) {
+        if (event.target.tagName) {
+            var key = event.keyCode;
+            var tagName = event.target.tagName.toLowerCase();
+            var type = event.target.type;
+            if (tagName == 'input' && Recorder.inputTypes.indexOf(type) >= 0) {
+                if (key == 13) {
+                    this.enterTarget = event.target;
+                    this.enterValue = this.enterTarget.value;
+                    var tempTarget = event.target.parentElement;
+                    var formChk = tempTarget.tagName.toLowerCase();
+                    //console.log(tempValue + " " + enterTarget.value + " " + tabCheck + " " + enterTarget + " " + focusValue);
+                    console.log(this.focusValue);
+                    console.log(this.enterTarget.value);
+                    if (this.tempValue == this.enterTarget.value && this.tabCheck == this.enterTarget) {
+                        this.record("sendKeys", this.locatorBuilders.buildAll(enterTarget), "${KEY_ENTER}");
+                        this.enterTarget = null;
+                        this.preventType = true;
+                    } else if (this.focusValue == this.enterTarget.value) {
+                        while (formChk != 'form' && formChk != 'body') {
+                            tempTarget = tempTarget.parentElement;
+                            formChk = tempTarget.tagName.toLowerCase();
+                        }
+                        if (formChk == 'form' && (tempTarget.hasAttribute("id") || tempTarget.hasAttribute("name")) && (!tempTarget.hasAttribute("onsubmit"))) {
+                            if (tempTarget.hasAttribute("id"))
+                                this.record("submit", [["id=" + tempTarget.id]], "");
+                            else if (tempTarget.hasAttribute("name"))
+                                this.record("submit", [["name=" + tempTarget.name]], "");
+                        } else
+                            this.record("sendKeys", this.locatorBuilders.buildAll(this.enterTarget), "${KEY_ENTER}");
+                        this.enterTarget = null;
+                    }
+                    if (this.typeTarget.tagName && !this.preventType && (this.typeLock = 1)) {
+                        // END
+                        var tagName = this.typeTarget.tagName.toLowerCase();
+                        var type = this.typeTarget.type;
+                        if ('input' == tagName && Recorder.inputTypes.indexOf(type) >= 0) {
+                            if (this.typeTarget.value.length > 0) {
+                                this.record("type", this.locatorBuilders.buildAll(this.typeTarget), this.typeTarget.value);
+
+                                // © Chen-Chieh Ping, SideeX Team
+                                if (this.enterTarget != null) {
+                                    var tempTarget = this.typeTarget.parentElement;
+                                    var formChk = tempTarget.tagName.toLowerCase();
+                                    while (formChk != 'form' && formChk != 'body') {
+                                        tempTarget = tempTarget.parentElement;
+                                        formChk = tempTarget.tagName.toLowerCase();
+                                    }
+                                    if (formChk == 'form' && (tempTarget.hasAttribute("id") || tempTarget.hasAttribute("name")) && (!tempTarget.hasAttribute("onsubmit"))) {
+                                        if (tempTarget.hasAttribute("id"))
+                                            this.record("submit", [
+                                                ["id=" + tempTarget.id, "id"]
+                                            ], "");
+                                        else if (tempTarget.hasAttribute("name"))
+                                            this.record("submit", [
+                                                ["name=" + tempTarget.name, "name"]
+                                            ], "");
+                                    } else
+                                        this.record("sendKeys", this.locatorBuilders.buildAll(this.enterTarget), "${KEY_ENTER}");
+                                    this.enterTarget = null;
+                                }
+                                // END
+                            } else {
+                                this.record("type", this.locatorBuilders.buildAll(this.typeTarget), this.typeTarget.value);
+                            }
+                        } else if ('textarea' == tagName) {
+                            this.record("type", this.locatorBuilders.buildAll(this.typeTarget), this.typeTarget.value);
+                        }
+                    }
+                    this.preventClick = true;
+                    setTimeout(function () {
+                        this.preventClick = false;
+                    }, 500);
+                    setTimeout(function () {
+                        if (this.enterValue != event.target.value) this.enterTarget = null;
+                    }, 50);
+                }
+
+                var tempbool = false;
+                if ((key == 38 || key == 40) && event.target.value != '') {
+                    if (focusTarget != null && focusTarget.value != this.tempValue) {
+                        tempbool = true;
+                        this.tempValue = focusTarget.value;
+                    }
+                    if (tempbool) {
+                        this.record("type", this.locatorBuilders.buildAll(event.target), this.tempValue);
+                    }
+
+                    setTimeout(function () {
+                        this.tempValue = focusTarget.value;
+                    }, 250);
+
+                    if (key == 38) this.record("sendKeys", this.locatorBuilders.buildAll(event.target), "${KEY_UP}");
+                    else this.record("sendKeys", this.locatorBuilders.buildAll(event.target), "${KEY_DOWN}");
+                    this.tabCheck = event.target;
+                }
+                if (key == 9) {
+                    if (this.tabCheck == event.target) {
+                        this.record("sendKeys", this.locatorBuilders.buildAll(event.target), "${KEY_TAB}");
+                        this.preventType = true;
+                    }
+                }
+            }
+        }
+    }, true);
+
+    Recorder.addEventHandler('type', 'input', function(event) {
+        //console.log(event.target);
+        this.typeTarget = event.target;
+    });
+
+
+
+
 }
 
