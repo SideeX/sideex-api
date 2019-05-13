@@ -282,6 +282,16 @@ Sideex.commands = {
         this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
         // END
     },
+    async mouseOver(locator, coordString) {
+        /**
+         * Simulates a user hovering a mouse over the specified element.
+         *
+         * @param locator an <a href="#locators">element locator</a>
+         */
+        var element = this.browserBot.findElement(locator);
+        var clientXY = this.getClientXY(element, coordString);
+        this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
+    },
     /**
      * Opens an URL in the test frame. This accepts both relative and absolute
      * URLs.
