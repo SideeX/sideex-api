@@ -262,6 +262,24 @@ export function recorderHandlersInit() {
         }
     }, true);
 
+    Recorder.addEventHandler('contextMenu', 'contextmenu', function(event) {
+        var myPort = browser.runtime.connect();
+        var tmpText = this.locatorBuilders.buildAll(event.target);
+        var tmpVal = Utils.getText(event.target);
+        var tmpTitle = Utils.normalizeSpaces(event.target.ownerDocument.title);
+        var self = this;
+        myPort.onMessage.addListener(function portListener(m) {
+            if (m.cmd.includes("Text")) {
+                self.record(m.cmd, tmpText, tmpVal);
+            } else if (m.cmd.includes("Title")) {
+                self.record(m.cmd, [[tmpTitle]], '');
+            } else if (m.cmd.includes("Value")) {
+                self.record(m.cmd, tmpText, getInputValue(event.target));
+            }
+            myPort.onMessage.removeListener(portListener);
+        });
+    }, true);
+
     Recorder.addEventHandler('type', 'input', function(event) {
         //console.log(event.target);
         this.typeTarget = event.target;
