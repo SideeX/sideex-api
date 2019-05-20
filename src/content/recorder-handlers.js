@@ -112,6 +112,24 @@ export function recorderHandlersInit() {
             }
         }
     }, true);
+    
+    //drop
+    Recorder.addEventHandler('dragAndDropToObject', 'dragstart', function(event) {
+        var self = this;
+        this.dropLocator = setTimeout(function() {
+            self.dragstartLocator = event;
+        }.bind(this), 200);
+    }, true);
+
+    Recorder.addEventHandler('dragAndDropToObject', 'drop', function(event) {
+        clearTimeout(this.dropLocator);
+        if (this.dragstartLocator && event.button == 0 && this.dragstartLocator.target !== event.target) {
+            //value no option
+            this.record("dragAndDropToObject", this.locatorBuilders.buildAll(this.dragstartLocator.target), this.locatorBuilders.build(event.target));
+        }
+        delete this.dragstartLocator;
+        delete this.selectMousedown;
+    }, true);
     Recorder.prototype.findClickableElement = function(e) {
         if (!e.tagName) return null;
         var tagName = e.tagName.toLowerCase();
@@ -253,4 +271,3 @@ export function recorderHandlersInit() {
 
 
 }
-
