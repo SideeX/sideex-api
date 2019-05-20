@@ -6,7 +6,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 var cache = {};
 module.exports = [
     merge(common, {
-        mode: 'development',
         entry: {
             "options": ["./src/option/js/options.js"],
             "background_script": ["./src/background/storage-initialization.js", "./src/background/background.js"],
