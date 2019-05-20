@@ -147,6 +147,29 @@ export function recorderHandlersInit() {
         }
     };
 
+    //mouseout
+    Recorder.addEventHandler('mouseOut', 'mouseout', function(event) {
+        if (this.mouseoutLocator !== null && event.target === this.mouseoutLocator) {
+            this.record("mouseOut", this.locatorBuilders.buildAll(event.target), '');
+        }
+        delete this.mouseoutLocator;
+    }, true);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     Recorder.addEventHandlerVar("enterTarget", null);
     Recorder.addEventHandlerVar("enterValue", null);
     Recorder.addEventHandlerVar("tabCheck", null);
