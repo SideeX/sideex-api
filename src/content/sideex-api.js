@@ -306,6 +306,11 @@ Sideex.commands = {
         // END
     
     },
+    /**
+     * Simulates a user hovering a mouse over the specified element.
+     *
+     * @param locator an <a href="#locators">element locator</a>
+     */
     async mouseOver(locator, coordString) {
         /**
          * Simulates a user hovering a mouse over the specified element.
@@ -315,6 +320,11 @@ Sideex.commands = {
         var element = this.browserBot.findElement(locator);
         var clientXY = this.getClientXY(element, coordString);
         this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
+    },
+
+    async mouseOut(locator,coordString){
+        var element = this.browserbot.findElement(locator);
+        this.browserBot.fireMouseEvent(element, 'mouseout', true);
     },
     async dragAndDrop(locator, movementsString, coordString) {
         /** Drags an element a certain distance and then drops it
