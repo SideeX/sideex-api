@@ -15,18 +15,18 @@
  *
  */
 import { browser } from "webextension-polyfill-ts";
-import { selenium } from "./content-initialization";
+import { sideex } from "./content-initialization";
 
 const script = document.createElement("script");
 script.onload = script.remove;
-script.src = browser.runtime.getURL("page/pageScript.js");
+script.src = browser.runtime.getURL("build/pageScript.js");
 (document.head || document.documentElement).appendChild(script);
 
 window.addEventListener("message", function (event) {
     if (event.source.top == window && event.data) {
         if (event.data.direction == "from-page-runscript") {
-            selenium.browserbot.runScriptResponse = true;
-            selenium.browserbot.runScriptMessage = event.data.result;
+            sideex.browserbot.runScriptResponse = true;
+            sideex.browserbot.runScriptMessage = event.data.result;
         }
     }
 });

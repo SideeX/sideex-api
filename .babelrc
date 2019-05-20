@@ -1,15 +1,47 @@
 {
     "presets": [
-        "env",
-        "react",
-        "stage-2"
+        [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "usage",
+                "modules": "commonjs"
+            }
+        ],
+        "@babel/preset-react",
+        "@babel/preset-typescript"
+    ],
+    "plugins": [
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-syntax-import-meta",
+        [
+            "@babel/plugin-proposal-decorators",
+            {
+                "legacy": true
+            }
+        ],
+        [
+            "@babel/plugin-proposal-class-properties",
+            {
+                "loose": true
+            }
+        ],
+        "@babel/plugin-proposal-json-strings",
+        "@babel/plugin-proposal-function-sent",
+        "@babel/plugin-proposal-export-namespace-from",
+        "@babel/plugin-proposal-numeric-separator",
+        "@babel/plugin-proposal-throw-expressions",
+        "@babel/plugin-proposal-object-rest-spread"
     ],
     "env": {
-        "test": {
-          "presets": [["env"], "react"]
+        "development": {
+            "plugins": [
+                "react-hot-loader/babel"
+            ]
+        },
+        "production": {
+            "plugins": [
+                "transform-remove-console"
+            ]
         }
     },
-    "plugins": [
-        "react-hot-loader/babel"
-    ]
 }

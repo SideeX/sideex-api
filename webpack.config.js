@@ -2,22 +2,21 @@ var path = require('path');
 var HtmlWebPackPlugin = require('html-webpack-plugin');
 var merge = require('webpack-merge');
 var common = require('./webpack.common.js');
-var common1 = require('./webpack.common.1.js');
 const TerserPlugin = require('terser-webpack-plugin');
 var cache = {};
 module.exports = [
-    merge(common1, {
+    merge(common, {
         mode: 'development',
         entry: {
-            "option/js/option": ["./src/option/js/options.js"],
-            "background/background_script": ["./src/background/storage-initialization.js", "./src/background/background.js"],
-            "content/document_start": ["./src/content/pageScript-injecter.js"],
-            "content/document_end": ["./src/content/command-receiver.js", "./src/content/prompt-injecter.js", "./src/content/content-initialization.js"],
-            "page/pageScript":["./src/page/keys.js", "./src/page/autoWait.js", "./src/page/getListener.js", "./src/page/runScript.js", "./src/page/onsubmit.js"]
+            "options": ["./src/option/js/options.js"],
+            "background_script": ["./src/background/storage-initialization.js", "./src/background/background.js"],
+            "document_start": ["./src/content/pageScript-injecter.js"],
+            "document_end": ["./src/content/command-receiver.js", "./src/content/prompt-injecter.js", "./src/content/content-initialization.js"],
+            "pageScript":["./src/page/keys.js", "./src/page/autoWait.js", "./src/page/getListener.js", "./src/page/runScript.js", "./src/page/onsubmit.js"]
         },
         output: {
             filename: '[name].js',
-            path: path.resolve(__dirname, './src'),
+            path: path.resolve(__dirname, './src/build'),
             libraryTarget: 'umd'
         },
         optimization: {
@@ -43,7 +42,6 @@ module.exports = [
         entry: {
             react: ['./src/panel/js/UI/index.js'],
             initial: [
-                'babel-polyfill',
                 './src/panel/js/background/initial.js'
             ]
         },
@@ -55,25 +53,6 @@ module.exports = [
         },
         devServer: {
             contentBase: path.join(__dirname, 'src/panel/js/UI/build')
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.(js|jsx)$/,
-                    exclude: /node_modules/,
-                    use: {
-                        loader: "babel-loader",
-                        options: {
-                            presets: [['env', {
-                                "targets": {
-                                    "browsers": ["last 2 Chrome versions"]
-                                },
-                                "modules": "commonjs"
-                            }]]
-                        }
-                    }
-                }
-            ]
         },
         plugins: [
             new HtmlWebPackPlugin({

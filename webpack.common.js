@@ -1,19 +1,36 @@
-const path = require('path');
-
+const fs = require('fs');
+if (!fs.existsSync("./.env")) {
+    fs.copyFileSync("./.env.template", "./.env");
+}
+const env = require('dotenv').config().parsed;
 module.exports = {
+    mode: env.NODE_ENV,
+    performance: {
+        hints: false
+    },
     target: 'web',
     watch: true,
     watchOptions: {
         ignored: /node_modules/
     },
     devtool: 'inline-source-map',
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
+    },
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
+                test: /\.[jt]sx?$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "babel-loader"
+                    loader: "babel-loader",
+                    options: {
+                        presets: [['@babel/env', {
+                            targets: {
+                                browsers: ["last 2 Chrome versions"]
+                            }
+                        }]]
+                    }
                 }
             },
             {

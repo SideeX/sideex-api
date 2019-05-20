@@ -115,27 +115,27 @@ export class Rectangle {
     }
 }
 
-export namespace Utils {
+export class Utils {
     //self
     /** @summary Returns the text in this element */
-    export function getText(element: Element): string {
+    static getText(element: Element): string {
         let text = element.textContent
 
-        text = normalizeNewlines(text)
-        text = normalizeSpaces(text, element)
+        text = Utils.normalizeNewlines(text)
+        text = Utils.normalizeSpaces(text, element)
 
         return text.trim()
     }
 
     //self
     /** @summary Convert all newlines to \n */
-    export function normalizeNewlines(text: string): string {
+    static normalizeNewlines(text: string): string {
         return text.replace(/\r\n|\r/g, "\n")
     }
 
     //self
     /** @summary Replace multiple sequential spaces with a single space, and then convert &nbsp; to space. */
-    export function normalizeSpaces(text: string, element?: Element): string {
+    static normalizeSpaces(text: string, element?: Element): string {
         // Replace multiple spaces with a single space
         if (!element || !getComputedStyle(element).whiteSpace.match("^(pre|pre\-line)$")) {
             text = text.replace(/\ +/g, " ")
@@ -146,7 +146,7 @@ export namespace Utils {
 
     //api, recorder-handler
     /** @summary Get the value of an <input> element */
-    export function getInputValue(inputElement: HTMLInputElement): string {
+    static getInputValue(inputElement: HTMLInputElement): string {
         try {
             if (inputElement.type.match("^(checkbox|radio)$")) {
                 return (inputElement.checked ? 'on' : 'off')
@@ -158,7 +158,7 @@ export namespace Utils {
     }
 
     //browserbot
-    export function getTagName(element: Element) {
+    static getTagName(element: Element) {
         try {
             return element.tagName.toLowerCase()
         } catch (error) {
@@ -167,7 +167,7 @@ export namespace Utils {
     }
 
     //api
-    export function extractExceptionMessage(ex: any): string {
+    static extractExceptionMessage(ex: any): string {
         if (ex == null) return "null exception"
         if (ex instanceof Error) return ex.message
         try {
@@ -186,7 +186,7 @@ export namespace Utils {
      *
      * @param {string}locator the locator to parse
      */
-    export function parse_locator(locator: string): { type: string, string: string } {
+    static parse_locator(locator: string): { type: string, string: string } {
         if (locator.includes("TAC_LOCATOR")) {
             return { type: 'tac', string: locator }
         } else {
@@ -200,13 +200,13 @@ export namespace Utils {
         }
     }
     /** @summary Returns the full resultset of a CSS selector evaluation. */
-    export function eval_css(locator: string, inDocument: Document) {
+    static eval_css(locator: string, inDocument: Document) {
         return Sizzle(locator, inDocument)
     }
 
     //tools
     /** @summary Used by locatorbuilder */
-    export function exactMatchPattern(string: string = null): string {
+    static exactMatchPattern(string: string = null): string {
         if (string && (string.match(/^\w*:/) || string.match(/\?\*/))) {
             return "exact:" + string
         } else {
@@ -215,7 +215,7 @@ export namespace Utils {
     }
     /** @summary Generate full xpath of element */
     //Used by selenium-api
-    export function xpathGenerator(element: Element): string {
+    static xpathGenerator(element: Element): string {
         let path = ""
         for (let current = element; current != null; current = current.parentElement) {
             if (current.parentElement == null) {
@@ -250,11 +250,11 @@ export namespace Utils {
         return path
     }
 
-    export async function delay(time: number): Promise<void> {
+    static async delay(time: number): Promise<void> {
         await new Promise((resolve) => { setTimeout(resolve, time) })
     }
 
-    export async function readTextFile(path: string): Promise<string> {
+    static async readTextFile(path: string): Promise<string> {
         const response = await fetch(path, { method: "GET" })
         if (response.ok) {
             return response.text()
@@ -265,14 +265,14 @@ export namespace Utils {
 
     // Panel
     /** @summary Used by command_grid, log */
-    export function safeScrollIntoView(element: Element): void {
+    static safeScrollIntoView(element: Element): void {
         try {
             element.scrollIntoView(false)
         } catch (error) {
 
         }
     }
-    export class SeleniumError extends Error {
+    static SeleniumError = class extends Error {
         isSeleniumError: boolean = true
         constructor(message: string) {
             super(message)
@@ -280,11 +280,24 @@ export namespace Utils {
     }
 }
 
+export class RegexMatcher {
+    private regexp: RegExp
+    constructor(regexp: RegExp) {
+        this.regexp = regexp;
+    }
+    matches(actual: string) {
+        return this.regexp.test(actual);
+    }
+}
+export interface RegexMatcherConstructor {
+    new(string: string): RegexMatcher
+}
 //api, browserbot
 export class PatternMatcher {
-    private matcher: PatternMatcher.RegexMatcher
+    private matcher: RegexMatcher
+    static strategies: { [key: string]: RegexMatcherConstructor }
     constructor(pattern: string) {
-        this.selectStrategy(pattern)
+        this.selectStrategy(pattern);
     }
     selectStrategy(pattern: string): void {
         let strategyName = 'glob';
@@ -301,11 +314,11 @@ export class PatternMatcher {
         if (!matchStrategy) {
             throw new Utils.SeleniumError("cannot find PatternMatcher.strategies." + strategyName);
         }
-        this.matcher = new matchStrategy(pattern)
+        this.matcher = new matchStrategy(pattern);
     }
     matches(actual: string) {
         // Note: appending an empty string avoids a Konqueror bug
-        return this.matcher.matches(actual + '')
+        return this.matcher.matches(actual + '');
     }
     /** @summary A "static" convenience method for easy matching */
     static matches(pattern: string, actual: string) {
@@ -313,84 +326,70 @@ export class PatternMatcher {
     }
 
     static convertGlobMetaCharsToRegexpMetaChars(glob: string) {
-        return glob.replace(/([.^$+(){}\[\]\\|])/g, "\\$1")
+        return glob.replace(/([.^$+(){}[\]\\|])/g, "\\$1")
             .replace(/\?/g, "(.|[\r\n])")
-            .replace(/\*/g, "(.|[\r\n])*")
+            .replace(/\*/g, "(.|[\r\n])*");
     }
     static regexpFromGlobContains(globContains: string) {
-        return PatternMatcher.convertGlobMetaCharsToRegexpMetaChars(globContains)
+        return PatternMatcher.convertGlobMetaCharsToRegexpMetaChars(globContains);
     }
     static regexpFromGlob = function (glob: string) {
-        return "^" + PatternMatcher.convertGlobMetaCharsToRegexpMetaChars(glob) + "$"
+        return "^" + PatternMatcher.convertGlobMetaCharsToRegexpMetaChars(glob) + "$";
     }
 }
-export namespace PatternMatcher {
-    export class RegexMatcher {
-        private regexp: RegExp
-        constructor(regexp: RegExp) {
-            this.regexp = regexp
+PatternMatcher.strategies = {
+    /** @summary Exact matching, e.g. "exact:***" */
+    exact: class extends RegexMatcher {
+        constructor(expected: string) {
+            //overwrite default match strategy
+            super(null);
+            this.matches = function (actual: string) {
+                return expected == actual;
+            };
         }
-        matches(actual: string) {
-            return this.regexp.test(actual)
+    },
+    /** @summary Match by regular expression, e.g. "regexp:^[0-9]+$" */
+    regexp: class extends RegexMatcher {
+        constructor(regexpString: string) {
+            super(new RegExp(regexpString));
         }
-    }
-    export interface RegexMatcherConstructor {
-        new(string: string): RegexMatcher
-    }
-    export const strategies: { [key: string]: RegexMatcherConstructor } = {
-        /** @summary Exact matching, e.g. "exact:***" */
-        exact: class extends RegexMatcher {
-            constructor(expected: string) {
-                //overwrite default match strategy
-                super(null)
-                this.matches = function (actual: string) {
-                    return expected == actual;
-                }
-            }
-        },
-        /** @summary Match by regular expression, e.g. "regexp:^[0-9]+$" */
-        regexp: class extends RegexMatcher {
-            constructor(regexpString: string) {
-                super(new RegExp(regexpString))
-            }
-        },
-        regex: class extends RegexMatcher {
-            constructor(regexpString: string) {
-                super(new RegExp(regexpString))
-            }
-        },
-        regexpi: class extends RegexMatcher {
-            constructor(regexpString: string) {
-                super(new RegExp(regexpString, "i"))
-            }
-        },
-        regexi: class extends RegexMatcher {
-            constructor(regexpString: string) {
-                super(new RegExp(regexpString, "i"))
-            }
-        },
+    },
+    regex: class extends RegexMatcher {
+        constructor(regexpString: string) {
+            super(new RegExp(regexpString));
+        }
+    },
+    regexpi: class extends RegexMatcher {
+        constructor(regexpString: string) {
+            super(new RegExp(regexpString, "i"));
+        }
+    },
+    regexi: class extends RegexMatcher {
+        constructor(regexpString: string) {
+            super(new RegExp(regexpString, "i"));
+        }
+    },
 
-        /**
-         * @summary "globContains" (aka "wildmat") patterns, e.g. "glob:one,two,\*",
-         * but don't require a perfect match; instead succeed if actual
-         * contains something that matches globString.
-         * @description Making this distinction is motivated by a bug in IE6 which
-         * leads to the browser hanging if we implement \*TextPresent tests
-         * by just matching against a regular expression beginning and
-         * ending with ".\*".  The globcontains strategy allows us to satisfy
-         * the functional needs of the \*TextPresent ops more efficiently
-         * and so avoid running into this IE6 freeze.
-         */
-        globContains: class extends RegexMatcher {
-            constructor(globString: string) {
-                super(new RegExp(PatternMatcher.regexpFromGlobContains(globString)))
-            }
-        },
-        /** @summary "glob" (aka "wildmat") patterns, e.g. "glob:one,two,*" */
-        glob: class extends RegexMatcher {
-            constructor(globString: string) {
-                super(new RegExp(PatternMatcher.regexpFromGlob(globString)))
-            }
+    /**
+     * @summary "globContains" (aka "wildmat") patterns, e.g. "glob:one,two,*",
+     * but don't require a perfect match; instead succeed if actual
+     * contains something that matches globString.
+     * @description Making this distinction is motivated by a bug in IE6 which
+     * leads to the browser hanging if we implement *TextPresent tests
+     * by just matching against a regular expression beginning and
+     * ending with ".*".  The globcontains strategy allows us to satisfy
+     * the functional needs of the *TextPresent ops more efficiently
+     * and so avoid running into this IE6 freeze.
+     */
+    globContains: class extends RegexMatcher {
+        constructor(globString: string) {
+            super(new RegExp(PatternMatcher.regexpFromGlobContains(globString)));
+        }
+    },
+    /** @summary "glob" (aka "wildmat") patterns, e.g. "glob:one,two,*" */
+    glob: class extends RegexMatcher {
+        constructor(globString: string) {
+            super(new RegExp(PatternMatcher.regexpFromGlob(globString)));
         }
     }
-}
+};

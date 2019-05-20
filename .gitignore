@@ -74,17 +74,3 @@ builds/
 #source map
 *.js.map
 
-
-# workaround for the outputs of typescript
-/src/common/utils.js
-/src/content/locatorBuilders.js
-/src/content/sendkeysMap.js
-/src/content/targetSelecter.js
-
-
-# workaround for the outputs of webpack
-/src/content/document_end.js
-/src/content/document_start.js
-/src/background/background_script.js
-/src/option/js/option.js
-/src/page/pageScript.js

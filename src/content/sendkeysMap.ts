@@ -14,8 +14,8 @@
  *  limitations under the License.
  *
  */
-namespace sendkeysMap {
-    export const ControlKeysMap: { [key: string]: ControlKeyMap } = {
+export default {
+    ControlKeysMap: {
         '${KEY_BACKSPACE}': { keyCode: 8, which: 8, charCode: 0, code: "Backspace", key: "Backspace" },
         '${KEY_TAB}': { keyCode: 9, which: 9, charCode: 0, code: "Tab", key: "Tab" },
         '${KEY_ENTER}': { keyCode: 13, which: 13, charCode: 13, code: "Enter", key: "Enter", press: true },
@@ -39,8 +39,8 @@ namespace sendkeysMap {
         '${KEY_INSERT}': { keyCode: 45, which: 45, charCode: 0, code: "Insert", key: "Insert" },
         '${KEY_DELETE}': { keyCode: 46, which: 46, charCode: 0, code: "Delete", key: "Delete" },
         '${KEY_NUMLOCK}': { keyCode: 144, which: 144, charCode: 0, code: "NumLock", key: "NumLock" },
-    }
-    export const NormalKeyMap: { [key: string]: DataKeyMap } = {
+    } as { [key: string]: ControlKeyMap },
+    NormalKeyMap: {
         'A': { keyCode: 65, which: 65, charCode: 65, code: "KeyA", key: "A", data: "A" },
         'B': { keyCode: 66, which: 66, charCode: 66, code: "KeyB", key: "B", data: "B" },
         'C': { keyCode: 67, which: 67, charCode: 67, code: "KeyC", key: "C", data: "C" },
@@ -136,9 +136,8 @@ namespace sendkeysMap {
         "'": { keyCode: 222, which: 222, charCode: 39, code: "Quote", key: "'", data: "'" },
         '"': { keyCode: 222, which: 222, charCode: 34, code: "Quote", key: '"', data: '"' },
         ' ': { keyCode: 32, which: 32, charCode: 32, code: "Space", key: "Process", data: " " }
-
-    }
-    export const NumpadKeyMap: { [key: string]: DataKeyMap } = {
+    } as { [key: string]: DataKeyMap },
+    NumpadKeyMap: {
         '0': { keyCode: 96, which: 96, charCode: 48, code: "Numpad0", key: "0", data: "0" },
         '1': { keyCode: 97, which: 97, charCode: 49, code: "Numpad1", key: "1", data: "1" },
         '2': { keyCode: 98, which: 98, charCode: 50, code: "Numpad2", key: "2", data: "2" },
@@ -155,8 +154,8 @@ namespace sendkeysMap {
         '.': { keyCode: 110, which: 110, charCode: 46, code: "NumpadDecimal", key: ".", data: "." },
         '/': { keyCode: 111, which: 111, charCode: 47, code: "NumpadDivide", key: "/", data: "/" },
         '${KEY_NUMENTER}': { keyCode: 13, which: 13, charCode: 13, code: "NumpadEnter", key: "Enter" }
-    }
-    export const FunctionalKeyMap: { [key: string]: KeyMap } = {
+    } as { [key: string]: DataKeyMap },
+    FunctionalKeyMap: {
         '${KEY_F1}': { keyCode: 112, which: 112, charCode: 0, code: "F1", key: "F1" },
         '${KEY_F2}': { keyCode: 113, which: 113, charCode: 0, code: "F2", key: "F2" },
         '${KEY_F3}': { keyCode: 114, which: 114, charCode: 0, code: "F3", key: "F3" },
@@ -169,9 +168,8 @@ namespace sendkeysMap {
         '${KEY_F10}': { keyCode: 121, which: 121, charCode: 0, code: "F10", key: "F10" },
         '${KEY_F11}': { keyCode: 122, which: 122, charCode: 0, code: "F11", key: "F11" },
         '${KEY_F12}': { keyCode: 123, which: 123, charCode: 0, code: "F12", key: "F12" }
-    }
+    } as { [key: string]: KeyMap }
 }
-export default sendkeysMap;
 interface KeyMap {
     keyCode: number
     which: number
