@@ -41,7 +41,7 @@ export function recorderHandlersInit() {
             setTimeout(function() { self.preventClickTwice = false; }, 30);
         }
     }, true);
-    
+
     //double click
     Recorder.addEventHandler('doubleClickAt', 'dblclick', function(event) {
         var top = event.pageY,
@@ -59,20 +59,20 @@ export function recorderHandlersInit() {
     Recorder.addEventHandlerVar("nowNode", 0);
     Recorder.addEventHandlerVar("pageLoaded", true);
     Recorder.addEventHandler('mouseOver', 'mouseover', function(event) {
-        if (window.document.documentElement)
-            {this.nowNode = window.document.documentElement.getElementsByTagName('*').length;
+        if (window.document.documentElement) {
+            this.nowNode = window.document.documentElement.getElementsByTagName('*').length;
             console.log("pass");
         }
         var self = this;
         if (this.pageLoaded === true) {
             var clickable = this.findClickableElement(event.target);
-        if (clickable) {
-            this.nodeInsertedLocator = event.target;
+            if (clickable) {
+                this.nodeInsertedLocator = event.target;
                 this.nodeInsertedLocator = event.target;
                 setTimeout(function() {
                     delete self.nodeInsertedLocator;
                 }.bind(self), 500);
-            
+
                 this.nodeAttrChange = this.locatorBuilders.buildAll(event.target);
                 this.nodeAttrChangeTimeout = setTimeout(function() {
                     delete self.nodeAttrChange;
@@ -112,7 +112,7 @@ export function recorderHandlersInit() {
             }
         }
     }, true);
-    
+
     //drop
     Recorder.addEventHandler('dragAndDropToObject', 'dragstart', function(event) {
         var self = this;

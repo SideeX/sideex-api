@@ -282,7 +282,7 @@ Sideex.commands = {
         this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
         // END
     },
-     /**
+    /**
          * Double clicks on a link, button, checkbox or radio button. If the double click action
          * causes a new page to load (like a link usually does), call
          * waitForPageToLoad.
@@ -290,8 +290,8 @@ Sideex.commands = {
          * @param locator an element locator
          *
          */
-    async doubleClickAt(locator,coordString) {
-       
+    async doubleClickAt(locator, coordString) {
+
         var element = this.browserBot.findElement(locator);
         var clientXY = this.getClientXY(element, coordString);
         this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
@@ -304,7 +304,7 @@ Sideex.commands = {
         this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
         this.browserBot.fireMouseEvent(element, 'dblclick', true, clientXY[0], clientXY[1]);
         // END
-    
+
     },
     /**
      * Simulates a user hovering a mouse over the specified element.
@@ -322,7 +322,7 @@ Sideex.commands = {
         this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
     },
 
-    async mouseOut(locator,coordString){
+    async mouseOut(locator, coordString) {
         var element = this.browserbot.findElement(locator);
         this.browserBot.fireMouseEvent(element, 'mouseout', true);
     },
@@ -332,39 +332,39 @@ Sideex.commands = {
          * @param movementsString offset in pixels from the current location to which the element should be moved, e.g., "+70,-300"
          */
         var element = this.browserBot.findElement(locator, coordString);
-        var clientStartXY = getClientXY(element)
+        var clientStartXY = getClientXY(element);
         var clientStartX = clientStartXY[0];
         var clientStartY = clientStartXY[1];
-    
+
         var movements = movementsString.split(/,/);
         var movementX = Number(movements[0]);
         var movementY = Number(movements[1]);
-    
+
         var clientFinishX = ((clientStartX + movementX) < 0) ? 0 : (clientStartX + movementX);
         var clientFinishY = ((clientStartY + movementY) < 0) ? 0 : (clientStartY + movementY);
-    
+
         var mouseSpeed = this.mouseSpeed;
         var move = function(current, dest) {
             if (current == dest) return current;
             if (Math.abs(current - dest) < mouseSpeed) return dest;
             return (current < dest) ? current + mouseSpeed : current - mouseSpeed;
-        }
-    
+        };
+
         this.browserBot.triggerMouseEvent(element, 'mousedown', true, clientStartX, clientStartY);
         this.browserBot.triggerMouseEvent(element, 'mousemove', true, clientStartX, clientStartY);
         var clientX = clientStartX;
         var clientY = clientStartY;
-    
+
         while ((clientX != clientFinishX) || (clientY != clientFinishY)) {
             clientX = move(clientX, clientFinishX);
             clientY = move(clientY, clientFinishY);
             this.browserbot.triggerMouseEvent(element, 'mousemove', true, clientX, clientY);
         }
-    
+
         this.browserBot.triggerMouseEvent(element, 'mousemove', true, clientFinishX, clientFinishY);
         this.browserBot.triggerMouseEvent(element, 'mouseup', true, clientFinishX, clientFinishY);
     },
-    
+
     async dragAndDropToObject(locatorOfObjectToBeDragged, locatorOfDragDestinationObject) {
         /** Drags an element and drops it on another element
          *
@@ -375,18 +375,18 @@ Sideex.commands = {
             //origin code
             var startX = this.getElementPositionLeft(locatorOfObjectToBeDragged);
             var startY = this.getElementPositionTop(locatorOfObjectToBeDragged);
-    
+
             var destinationLeftX = this.getElementPositionLeft(locatorOfDragDestinationObject);
             var destinationTopY = this.getElementPositionTop(locatorOfDragDestinationObject);
             var destinationWidth = this.getElementWidth(locatorOfDragDestinationObject);
             var destinationHeight = this.getElementHeight(locatorOfDragDestinationObject);
-    
+
             var endX = Math.round(destinationLeftX + (destinationWidth / 2));
             var endY = Math.round(destinationTopY + (destinationHeight / 2));
-    
+
             var deltaX = endX - startX;
             var deltaY = endY - startY;
-    
+
             var movementsString = "" + deltaX + "," + deltaY;
             this.doDragAndDrop(locatorOfObjectToBeDragged, movementsString);
         } else {
@@ -395,6 +395,108 @@ Sideex.commands = {
             var target = this.browserBot.findElement(locatorOfDragDestinationObject);
             this.browserBot.triggerDragEvent(element, target);
             // END
+        }
+    },
+
+    /**
+     * Sets the value of an input field, as though you typed it in.
+     *
+     * <p>Can also be used to set the value of combo boxes, check boxes, etc. In these cases,
+     * value should be the value of the option selected, not the visible text.</p>
+     *
+     * @param locator an <a href="#locators">element locator</a>
+     * @param value the value to type
+     */
+    async type(locator, value) {
+        if (this.browserBot.controlKeyDown || this.browserBot.altKeyDown || this.browserBot.metaKeyDown) {
+            throw new Utils.SeleniumError("type not supported immediately after call to controlKeyDown() or altKeyDown() or metaKeyDown()");
+        }
+        var element = this.browserBot.findElement(locator);
+        element.value = value;
+    },
+    async sendKeys(locator, value) {
+        var element = Utils.parse_locator(locator);
+        var win = this.browserBot.getCurrentWindow();
+        var dom = win.document;
+        var testElement = this.browserBot.findElementBy(element.type, element.string, dom, win);
+        this.browserBot.checkElementExist(testElement, locator);
+        
+        if (sendkeysMap.ControlKeysMap[value]) {
+            window.postMessage({
+                direction: "from-sendkeys",
+                keys: sendkeysMap.ControlKeysMap[value],
+                element: element
+            }, "*");
+        } else if (sendkeysMap.FunctionalKeyMap[value]) {
+            window.postMessage({
+                direction: "from-sendkeys",
+                keys: sendkeysMap.FunctionalKeyMap[value],
+                element: element
+            }, "*");
+        } else {
+            var elem = this.browserBot.findElement(locator);
+            elem.value = "";
+            elem.focus();
+            window.postMessage({
+                direction: "from-sendkeys",
+                keys: "",
+                element: element
+            }, "*");
+            for (const str of value.split("")) {
+                elem.value += str;
+                if (sendkeysMap.NumpadKeyMap[str]) {
+                    window.postMessage({
+                        direction: "from-sendkeys",
+                        keys: sendkeysMap.NumpadKeyMap[str],
+                        element: element
+                    }, "*");
+                    window.postMessage({
+                        direction: "from-sendkeys",
+                        keys: sendkeysMap.NormalKeyMap[str],
+                        repeat: true,
+                        element: element
+                    }, "*");
+                } else if (sendkeysMap.NormalKeyMap[str]) {
+                    window.postMessage({
+                        direction: "from-sendkeys",
+                        keys: sendkeysMap.NormalKeyMap[str],
+                        element: element
+                    }, "*");
+                } else {
+                    window.postMessage({
+                        direction: "from-sendkeys",
+                        keys: str,
+                        element: element
+                    }, "*");
+                }
+            }
+            window.postMessage({
+                direction: "from-sendkeys",
+                keys: "sendkeyEnd",
+                element: element
+            }, "*");
+        }
+    },
+
+    /** @author © Ming-Hung Hsu, SideeX Team */
+    async onsubmit(formLocator) {
+        var form = this.browserBot.findElement(formLocator);
+        var event = new Event('submit', {
+            'bubbles': true,
+            'cancelable': true // Whether the event may be canceled or not
+        });
+        form.dispatchEvent(event);
+    },
+    /** @author © Ming-Hung Hsu, SideeX Team */
+    async submit(formLocator, defaultPrevented) {
+        var form = this.browserBot.findElement(formLocator);
+        if (defaultPrevented == "false") {
+            form.submit();
+        } else {
+            var event;
+            event = document.createEvent('Event');
+            event.initEvent("submit", true, true);
+            form.dispatchEvent(event);
         }
     },
     /**
