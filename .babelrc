@@ -33,15 +33,24 @@
         "@babel/plugin-proposal-object-rest-spread"
     ],
     "env": {
-        "development": {
-            "plugins": [
-                "react-hot-loader/babel"
-            ]
-        },
         "production": {
             "plugins": [
                 "transform-remove-console"
             ]
         }
     },
+    "overrides": [
+        {
+            "test": [
+                "app.js"
+            ],
+            "env": {
+                "development": {
+                    "plugins": [
+                        "react-hot-loader/babel"
+                    ]
+                }
+            }
+        }
+    ]
 }

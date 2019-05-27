@@ -55,7 +55,7 @@
     },
     "web_accessible_resources": [
         "page/prompt.js",
-        "build/pageScript.js",
+        "build/page_script.js",
         "panel/js/UI/build/assets/*"
     ],
     "options_ui": {

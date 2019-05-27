@@ -11,7 +11,7 @@ module.exports = [
             "background_script": ["./src/background/storage-initialization.js", "./src/background/background.js"],
             "document_start": ["./src/content/pageScript-injecter.js"],
             "document_end": ["./src/content/command-receiver.js", "./src/content/prompt-injecter.js", "./src/content/content-initialization.js"],
-            "pageScript":["./src/page/keys.js", "./src/page/autoWait.js", "./src/page/getListener.js", "./src/page/runScript.js", "./src/page/onsubmit.js"]
+            "page_script":["./src/page/keys.js", "./src/page/autoWait.js", "./src/page/getListener.js", "./src/page/runScript.js", "./src/page/onsubmit.js"]
         },
         output: {
             filename: '[name].js',

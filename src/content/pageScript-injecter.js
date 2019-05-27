@@ -19,7 +19,7 @@ import { sideex } from "./content-initialization";
 
 const script = document.createElement("script");
 script.onload = script.remove;
-script.src = browser.runtime.getURL("build/pageScript.js");
+script.src = browser.runtime.getURL("build/page_script.js");
 (document.head || document.documentElement).appendChild(script);
 
 window.addEventListener("message", function (event) {
