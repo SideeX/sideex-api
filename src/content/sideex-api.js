@@ -332,7 +332,7 @@ Sideex.commands = {
          * @param movementsString offset in pixels from the current location to which the element should be moved, e.g., "+70,-300"
          */
         var element = this.browserBot.findElement(locator, coordString);
-        var clientStartXY = getClientXY(element);
+        var clientStartXY = getClientXY(element)
         var clientStartX = clientStartXY[0];
         var clientStartY = clientStartXY[1];
 
@@ -348,8 +348,8 @@ Sideex.commands = {
             if (current == dest) return current;
             if (Math.abs(current - dest) < mouseSpeed) return dest;
             return (current < dest) ? current + mouseSpeed : current - mouseSpeed;
-        };
-
+        }
+    
         this.browserBot.triggerMouseEvent(element, 'mousedown', true, clientStartX, clientStartY);
         this.browserBot.triggerMouseEvent(element, 'mousemove', true, clientStartX, clientStartY);
         var clientX = clientStartX;
@@ -360,7 +360,7 @@ Sideex.commands = {
             clientY = move(clientY, clientFinishY);
             this.browserbot.triggerMouseEvent(element, 'mousemove', true, clientX, clientY);
         }
-
+    
         this.browserBot.triggerMouseEvent(element, 'mousemove', true, clientFinishX, clientFinishY);
         this.browserBot.triggerMouseEvent(element, 'mouseup', true, clientFinishX, clientFinishY);
     },
