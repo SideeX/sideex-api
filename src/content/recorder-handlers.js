@@ -23,7 +23,7 @@ export function recorderHandlersInit() {
     Recorder.addEventHandlerVar("preventClickTwice", false);
 
     //click
-    Recorder.addEventHandler('clickAt', 'click', function(event) {
+    Recorder.addEventHandler('clickAt', 'click', function (event) {
         var self = this;
         if (event.button == 0 && !this.preventClick && event.isTrusted) {
             if (!this.preventClickTwice) {
@@ -38,12 +38,12 @@ export function recorderHandlersInit() {
                 this.record("clickAt", this.locatorBuilders.buildAll(event.target), left + ',' + top);
                 this.preventClickTwice = true;
             }
-            setTimeout(function() { self.preventClickTwice = false; }, 30);
+            setTimeout(function () { self.preventClickTwice = false; }, 30);
         }
     }, true);
 
     //double click
-    Recorder.addEventHandler('doubleClickAt', 'dblclick', function(event) {
+    Recorder.addEventHandler('doubleClickAt', 'dblclick', function (event) {
         var top = event.pageY,
             left = event.pageX;
         var element = event.target;
@@ -58,7 +58,7 @@ export function recorderHandlersInit() {
     //mouse over
     Recorder.addEventHandlerVar("nowNode", 0);
     Recorder.addEventHandlerVar("pageLoaded", true);
-    Recorder.addEventHandler('mouseOver', 'mouseover', function(event) {
+    Recorder.addEventHandler('mouseOver', 'mouseover', function (event) {
         if (window.document.documentElement) {
             this.nowNode = window.document.documentElement.getElementsByTagName('*').length;
             console.log("pass");
@@ -69,36 +69,35 @@ export function recorderHandlersInit() {
             if (clickable) {
                 this.nodeInsertedLocator = event.target;
                 this.nodeInsertedLocator = event.target;
-                setTimeout(function() {
+                setTimeout(function () {
                     delete self.nodeInsertedLocator;
                 }.bind(self), 500);
 
                 this.nodeAttrChange = this.locatorBuilders.buildAll(event.target);
-                this.nodeAttrChangeTimeout = setTimeout(function() {
+                this.nodeAttrChangeTimeout = setTimeout(function () {
                     delete self.nodeAttrChange;
                 }.bind(self), 10);
             }
             //drop target overlapping
-            if (this.mouseoverQ) //mouse keep down
-            {
+            if (this.mouseoverQ) { //mouse keep down
                 if (this.mouseoverQ.length >= 3)
                     this.mouseoverQ.shift();
                 this.mouseoverQ.push(event);
             }
         }
     }, true);
-    Recorder.addEventHandler('mouseOver', 'DOMNodeInserted', function(event) {
+    Recorder.addEventHandler('mouseOver', 'DOMNodeInserted', function (event) {
         if (this.pageLoaded === true && window.document.documentElement.getElementsByTagName('*').length > this.nowNode) {
             var self = this;
             if (this.scrollDetector) {
                 //TODO: fix target
                 this.record("runScript", [
                     [
-                        ["window.scrollTo(0," + window.scrollY + ")", ]
+                        ["window.scrollTo(0," + window.scrollY + ")"]
                     ]
                 ], '');
                 this.pageLoaded = false;
-                setTimeout(function() {
+                setTimeout(function () {
                     this.pageLoaded = true;
                 }.bind(self), 550);
                 delete this.scrollDetector;
@@ -114,14 +113,14 @@ export function recorderHandlersInit() {
     }, true);
 
     //drop
-    Recorder.addEventHandler('dragAndDropToObject', 'dragstart', function(event) {
+    Recorder.addEventHandler('dragAndDropToObject', 'dragstart', function (event) {
         var self = this;
-        this.dropLocator = setTimeout(function() {
+        this.dropLocator = setTimeout(function () {
             self.dragstartLocator = event;
         }.bind(this), 200);
     }, true);
 
-    Recorder.addEventHandler('dragAndDropToObject', 'drop', function(event) {
+    Recorder.addEventHandler('dragAndDropToObject', 'drop', function (event) {
         clearTimeout(this.dropLocator);
         if (this.dragstartLocator && event.button == 0 && this.dragstartLocator.target !== event.target) {
             //value no option
@@ -130,7 +129,7 @@ export function recorderHandlersInit() {
         delete this.dragstartLocator;
         delete this.selectMousedown;
     }, true);
-    Recorder.prototype.findClickableElement = function(e) {
+    Recorder.prototype.findClickableElement = function (e) {
         if (!e.tagName) return null;
         var tagName = e.tagName.toLowerCase();
         var type = e.type;
@@ -148,7 +147,7 @@ export function recorderHandlersInit() {
     };
 
     //mouseout
-    Recorder.addEventHandler('mouseOut', 'mouseout', function(event) {
+    Recorder.addEventHandler('mouseOut', 'mouseout', function (event) {
         if (this.mouseoutLocator !== null && event.target === this.mouseoutLocator) {
             this.record("mouseOut", this.locatorBuilders.buildAll(event.target), '');
         }
@@ -285,7 +284,7 @@ export function recorderHandlersInit() {
         }
     }, true);
 
-    Recorder.addEventHandler('contextMenu', 'contextmenu', function(event) {
+    Recorder.addEventHandler('contextMenu', 'contextmenu', function (event) {
         var myPort = browser.runtime.connect();
         var tmpText = this.locatorBuilders.buildAll(event.target);
         var tmpVal = Utils.getText(event.target);
@@ -303,12 +302,72 @@ export function recorderHandlersInit() {
         });
     }, true);
 
-    Recorder.addEventHandler('type', 'input', function(event) {
+    Recorder.addEventHandler('type', 'input', function (event) {
         //console.log(event.target);
         this.typeTarget = event.target;
     });
 
+    Recorder.prototype.getOptionLocator = function (option) {
+        var label = option.text.replace(/^ *(.*?) *$/, "$1");
+        if (label.match(/\xA0/)) { // if the text contains &nbsp;
+            return "label=regexp:" + label.replace(/[\(\)\[\]\\\^\$\*\+\?\.\|\{\}]/g, function (str) {
+                return '\\' + str;
+            })
+                .replace(/\s+/g, function (str) {
+                    if (str.match(/\xA0/)) {
+                        if (str.length > 1) {
+                            return "\\s+";
+                        } else {
+                            return "\\s";
+                        }
+                    } else {
+                        return str;
+                    }
+                });
+        } else {
+            return "label=" + label;
+        }
+    };
 
+    //select / addSelect / removeSelect
+    Recorder.addEventHandler('select', 'focus', function (event) {
+        if (event.target.nodeName) {
+            var tagName = event.target.nodeName.toLowerCase();
+            if ('select' == tagName && event.target.multiple) {
+                var options = event.target.options;
+                for (var i = 0; i < options.length; i++) {
+                    if (options[i]._wasSelected == null) {
+                        // is the focus was gained by mousedown event, _wasSelected would be already set
+                        options[i]._wasSelected = options[i].selected;
+                    }
+                }
+            }
+        }
+    }, true);
 
-
+    Recorder.addEventHandler('select', 'change', function (event) {
+        if (event.target.tagName) {
+            var tagName = event.target.tagName.toLowerCase();
+            if ('select' == tagName) {
+                if (!event.target.multiple) {
+                    var option = event.target.options[event.target.selectedIndex];
+                    this.record("select", this.locatorBuilders.buildAll(event.target), this.getOptionLocator(option));
+                } else {
+                    var options = event.target.options;
+                    for (var i = 0; i < options.length; i++) {
+                        if (options[i]._wasSelected == null) { }
+                        if (options[i]._wasSelected != options[i].selected) {
+                            var value = this.getOptionLocator(options[i]);
+                            if (options[i].selected) {
+                                this.record("addSelection", this.locatorBuilders.buildAll(event.target), value);
+                            } else {
+                                this.record("removeSelection", this.locatorBuilders.buildAll(event.target), value);
+                            }
+                            options[i]._wasSelected = options[i].selected;
+                        }
+                    }
+                }
+            }
+        }
+    });
 }
