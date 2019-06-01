@@ -1,4 +1,3 @@
-/* eslint-disable no-redeclare */
 /**
  * Copyright 2017 SideeX committers
  *
@@ -156,19 +155,6 @@ export function recorderHandlersInit() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     Recorder.addEventHandlerVar("enterTarget", null);
     Recorder.addEventHandlerVar("enterValue", null);
     Recorder.addEventHandlerVar("tabCheck", null);
@@ -307,6 +293,7 @@ export function recorderHandlersInit() {
         this.typeTarget = event.target;
     });
 
+    //Select Tag
     Recorder.prototype.getOptionLocator = function (option) {
         var label = option.text.replace(/^ *(.*?) *$/, "$1");
         if (label.match(/\xA0/)) { // if the text contains &nbsp;

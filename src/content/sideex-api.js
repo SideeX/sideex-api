@@ -1,3 +1,4 @@
+/* eslint-disable no-redeclare */
 /*
  * Copyright 2011 Software Freedom Conservancy
  *
@@ -16,6 +17,7 @@
  */
 import sendkeysMap from "./sendkeysMap";
 import { Utils } from "../common/utils";
+import { PatternMatcher } from "../common/patternMatcher";
 import storage from "../common/storage";
 import { browser } from "webextension-polyfill-ts";
 
@@ -332,7 +334,7 @@ Sideex.commands = {
          * @param movementsString offset in pixels from the current location to which the element should be moved, e.g., "+70,-300"
          */
         var element = this.browserBot.findElement(locator, coordString);
-        var clientStartXY = getClientXY(element)
+        var clientStartXY = getClientXY(element);
         var clientStartX = clientStartXY[0];
         var clientStartY = clientStartXY[1];
 
@@ -348,8 +350,8 @@ Sideex.commands = {
             if (current == dest) return current;
             if (Math.abs(current - dest) < mouseSpeed) return dest;
             return (current < dest) ? current + mouseSpeed : current - mouseSpeed;
-        }
-    
+        };
+
         this.browserBot.triggerMouseEvent(element, 'mousedown', true, clientStartX, clientStartY);
         this.browserBot.triggerMouseEvent(element, 'mousemove', true, clientStartX, clientStartY);
         var clientX = clientStartX;
@@ -360,7 +362,7 @@ Sideex.commands = {
             clientY = move(clientY, clientFinishY);
             this.browserbot.triggerMouseEvent(element, 'mousemove', true, clientX, clientY);
         }
-    
+
         this.browserBot.triggerMouseEvent(element, 'mousemove', true, clientFinishX, clientFinishY);
         this.browserBot.triggerMouseEvent(element, 'mouseup', true, clientFinishX, clientFinishY);
     },
@@ -420,7 +422,6 @@ Sideex.commands = {
         var dom = win.document;
         var testElement = this.browserBot.findElementBy(element.type, element.string, dom, win);
         this.browserBot.checkElementExist(testElement, locator);
-        
         if (sendkeysMap.ControlKeysMap[value]) {
             window.postMessage({
                 direction: "from-sendkeys",
@@ -477,6 +478,68 @@ Sideex.commands = {
             }, "*");
         }
     },
+    /**
+     * Select an option from a drop-down using an option locator.
+     * @param selectLocator an <a href="#locators">element locator</a> identifying a drop-down menu
+     * @param optionLocator an option locator (a label by default)
+     */
+    async select(selectLocator, optionLocator) {
+        var element = this.browserBot.findElement(selectLocator);
+        if (!("options" in element)) {
+            throw new SeleniumError("Specified element is not a Select (has no options)");
+        }
+        var locator = OptionLocatorFactory.fromLocatorString(optionLocator);
+        var option = locator.findOption(element);
+        this.browserBot.selectOption(element, option);
+    },
+    /**
+     * Add a selection to the set of selected options in a multi-select element using an option locator.
+     *
+     * @see #doSelect for details of option locators
+     *
+     * @param locator an <a href="#locators">element locator</a> identifying a multi-select box
+     * @param optionLocator an option locator (a label by default)
+     */
+    async addSelection(locator, optionLocator) {
+        var element = this.browserBot.findElement(locator);
+        if (!("options" in element)) {
+            throw new SeleniumError("Specified element is not a Select (has no options)");
+        }
+        var locator = OptionLocatorFactory.fromLocatorString(optionLocator);
+        var option = locator.findOption(element);
+        this.browserBot.addSelection(element, option);
+    },
+    /**
+     * Remove a selection from the set of selected options in a multi-select element using an option locator.
+     *
+     * @see #doSelect for details of option locators
+     *
+     * @param locator an <a href="#locators">element locator</a> identifying a multi-select box
+     * @param optionLocator an option locator (a label by default)
+     */
+    async removeSelection(locator, optionLocator) {
+        var element = this.browserBot.findElement(locator);
+        if (!("options" in element)) {
+            throw new SeleniumError("Specified element is not a Select (has no options)");
+        }
+        var locator = OptionLocatorFactory.fromLocatorString(optionLocator);
+        var option = locator.findOption(element);
+        this.browserBot.removeSelection(element, option);
+    },
+    /**
+     * Unselects all of the selected options in a multi-select element.
+     *
+     * @param locator an <a href="#locators">element locator</a> identifying a multi-select box
+     */
+    async removeAllSelections(locator) {
+        var element = this.browserBot.findElement(locator);
+        if (!("options" in element)) {
+            throw new SeleniumError("Specified element is not a Select (has no options)");
+        }
+        for (var i = 0; i < element.options.length; i++) {
+            this.browserBot.removeSelection(element, element.options[i]);
+        }
+    },
 
     /** @author © Ming-Hung Hsu, SideeX Team */
     async onsubmit(formLocator) {
@@ -525,5 +588,128 @@ Sideex.commands = {
         }
         this.browserBot.openLocation(url);
         window.scrollTo(0, 0);
+    }
+};
+
+/**
+ * abstract class OptionLocator
+ */
+class OptionLocator {
+    constructor(value) {
+        this.value = value;
+        try {
+            this.Matcher = new PatternMatcher(this.value);
+        } catch (error) {
+            // "index" don't have matcher
+        }
+    }
+    findOption() {
+        throw new Error("not implemented");
+    }
+    assertSelected() {
+        throw new Error("not implemented");
+    }
+}
+/**
+ *  Factory for creating "Option Locators".
+ *  An OptionLocator is an object for dealing with Select options (e.g. for
+ *  finding a specified option, or asserting that the selected option of
+ *  Select element matches some condition.
+ *  The type of locator returned by the factory depends on the locator string:
+ *     label=<exp>  (OptionLocatorByLabel)
+ *     value=<exp>  (OptionLocatorByValue)
+ *     index=<exp>  (OptionLocatorByIndex)
+ *     id=<exp>     (OptionLocatorById)
+ *     <exp> (default is OptionLocatorByLabel).
+ */
+class OptionLocatorFactory {
+    static fromLocatorString(locatorString) {
+        var locatorType = 'label';
+        var locatorValue = locatorString;
+        // If there is a locator prefix, use the specified strategy
+        var result = locatorString.match(/^([a-zA-Z]+)=(.*)/);
+        if (result) {
+            locatorType = result[1];
+            locatorValue = result[2];
+        }
+        const optionLocator = OptionLocatorFactory.optionLocators[locatorType];
+        if (optionLocator) {
+            return new optionLocator(locatorValue);
+        }
+        throw new SeleniumError("Unknown option locator type: " + locatorType);
+    }
+}
+OptionLocatorFactory.optionLocators = {
+    /**
+     *  OptionLocator for options identified by their labels.
+     */
+    label: class extends OptionLocator {
+        findOption(element) {
+            for (var i = 0; i < element.options.length; i++) {
+                if (this.Matcher.matches(element.options[i].text)) {
+                    return element.options[i];
+                }
+            }
+            throw new SeleniumError("Option with label '" + this.value + "' not found");
+        }
+        assertSelected(element) {
+            var selectedLabel = element.options[element.selectedIndex].text;
+            Assert.matches(this.value, selectedLabel);
+        }
+    },
+    /**
+     *  OptionLocator for options identified by their values.
+     */
+    value: class extends OptionLocator {
+        findOption(element) {
+            for (var i = 0; i < element.options.length; i++) {
+                if (this.Matcher.matches(element.options[i].value)) {
+                    return element.options[i];
+                }
+            }
+            throw new SeleniumError("Option with value '" + this.value + "' not found");
+        }
+        assertSelected(element) {
+            var selectedValue = element.options[element.selectedIndex].value;
+            Assert.matches(this.value, selectedValue);
+        }
+    },
+    /**
+    *  OptionLocator for options identified by their index.
+    */
+    index: class extends OptionLocator {
+        constructor(index) {
+            const i = Number(index);
+            if (isNaN(i) || i < 0) {
+                throw new SeleniumError("Illegal Index: " + index);
+            }
+            super(index);
+        }
+        findOption(element) {
+            if (element.options.length <= this.value) {
+                throw new SeleniumError("Index out of range.  Only " + element.options.length + " options available");
+            }
+            return element.options[this.value];
+        }
+        assertSelected(element) {
+            Assert.equals(this.value, element.selectedIndex);
+        }
+    },
+    /**
+     *  OptionLocator for options identified by their id.
+     */
+    id: class extends OptionLocator {
+        findOption(element) {
+            for (var i = 0; i < element.options.length; i++) {
+                if (this.Matcher.matches(element.options[i].id)) {
+                    return element.options[i];
+                }
+            }
+            throw new SeleniumError("Option with id '" + this.value + "' not found");
+        }
+        assertSelected(element) {
+            var selectedId = element.options[element.selectedIndex].id;
+            Assert.matches(this.value, selectedId);
+        }
     }
 };
