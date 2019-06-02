@@ -41,8 +41,7 @@ function PlayButton({ mode, setPlay, toggleSetPlayMode, setPlayMode }) {
         <div className={buttonStyle}>
             <ButtonDropdown isOpen={setPlay.isOpen} toggle={toggleSetPlayMode}>
                 <Button className={cls.IconContainer} id="play-button"
-                    onClick={() => { events.toolBar.clickPlayButton(setPlay.mode); }} 
-                    style={{ backgroundColor: "red" }}>
+                    onClick={() => { events.toolBar.clickPlayButton(setPlay.mode); }}>
                     {setPlayIcon(setPlay.mode)}
                     <br />
                     <span className={cls.textStyle}>{setPlay.mode}</span>

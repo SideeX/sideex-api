@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32.00294 23.35313"><defs><style>.cls-1{fill:#f2f2f2;}</style></defs><title>Play_this_Suite</title><g id="圖層_2" data-name="圖層 2"><g id="圖層_1-2" data-name="圖層 1"><path class="cls-1" d="M31.84112,18.4267l-7.46177-4.32088a.32436.32436,0,0,0-.4869.2807v8.64177a.32436.32436,0,0,0,.4869.2807l7.46177-4.32088A.32436.32436,0,0,0,31.84112,18.4267Z"/><path class="cls-1" d="M15.29707,0H2.22314A2.22449,2.22449,0,0,0,0,2.22314V20.98164a2.22449,2.22449,0,0,0,2.22314,2.22314H15.29707a2.22449,2.22449,0,0,0,2.22314-2.22314V2.22314A2.23191,2.23191,0,0,0,15.29707,0Zm.66234,20.97588a.66858.66858,0,0,1-.6681.6681H2.21738a.66858.66858,0,0,1-.66809-.6681V2.22314A.66857.66857,0,0,1,2.21738,1.555H15.29131a.66858.66858,0,0,1,.6681.66809Z"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="19" height="22.5" viewBox="0 0 19 22.5">
+    <defs>
+        <style>
+            .cls-1{fill:#f2f2f2}.cls-2{fill:#172736}
+        </style>
+    </defs>
+    <g id="Group_123" data-name="Group 123" transform="translate(-124.57 -60)">
+        <rect id="Rectangle_1255" width="19" height="22.5" class="cls-1" data-name="Rectangle 1255" rx="2" transform="translate(124.569 60)"/>
+        <path id="Path_238" d="M178.053 84.382l-7.553-4.376a.329.329 0 0 0-.5.3v8.753a.329.329 0 0 0 .493.286l7.557-4.377a.329.329 0 0 0 0-.582z" class="cls-2" data-name="Path 238" transform="translate(-39.141 -13.463)"/>
+    </g>
+</svg>

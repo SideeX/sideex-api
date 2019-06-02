@@ -1,7 +1,11 @@
 import React from "react";
 import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 import Slider from 'react-rangeslider';
-import SpeedIcon from "../../../../../icons/speed.svg";
+import SpeedIcon1 from "../../../../../icons/speed1.svg";
+import SpeedIcon2 from "../../../../../icons/speed2.svg";
+import SpeedIcon3 from "../../../../../icons/speed3.svg";
+import SpeedIcon4 from "../../../../../icons/speed4.svg";
+import SpeedIcon5 from "../../../../../icons/speed5.svg";
 import { connect } from "react-redux";
 import events from "../../../events";
 import cls from "../style.scss";
@@ -35,15 +39,15 @@ function SpeedButton({
     };
 
     const setSpeedIcon = (speed) => {
-        let rotate = `rotate(${(speed - 1) * 72 - 94}deg)`;
-        return (<img className={cls.commonStyle} style={{ transform: rotate }}
+        let speedIcons = [SpeedIcon1, SpeedIcon2, SpeedIcon3, SpeedIcon4, SpeedIcon5];
+        return (<img className={cls.commonStyle}
             src={browser.runtime.getURL ?
-                browser.runtime.getURL(`panel/js/UI/build/${SpeedIcon}`) : SpeedIcon}/>);
+                browser.runtime.getURL(`panel/js/UI/build/${speedIcons[speed - 1]}`) : speedIcons[speed - 1]}/>);
     };
 
     return (
         <Dropdown className={cls.dropdownStyle} isOpen={isShow} toggle={() => { toggle(!isShow); }}>
-            <DropdownToggle className={cls.IconContainer}>
+            <DropdownToggle className={cx(cls.IconContainer, cls.iconStyle)}>
                 {setSpeedIcon(value)}
                 <br />
                 <span className={cls.textStyle}>Speed</span>
