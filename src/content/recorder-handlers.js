@@ -357,4 +357,29 @@ export function recorderHandlersInit() {
             }
         }
     });
+    Recorder.addEventHandlerVar("getEle", null);
+    Recorder.addEventHandlerVar("checkFocus",0);
+    Recorder.addEventHandlerVar("contentTest","");
+    Recorder.addEventHandler('editContent','focus',function(event){
+        var editable = event.target.contentEditable;
+        if (editable == 'true') {
+            this.getEle = event.target;
+            this.contentTest = this.getEle.innerHTML;
+            console.log(this.contentTest);
+            this.checkFocus = 1;
+        }
+
+    },true);
+    Recorder.addEventHandler('editContent', 'blur', function(event) {
+        if (this.checkFocus == 1) {
+            if (event.target == this.getEle) {
+                if (this.getEle.innerHTML != this.contentTest) {
+                    console.log("success");
+                    this.record("editContent", this.locatorBuilders.buildAll(event.target), this.getEle.innerHTML);
+                }
+                this.checkFocus = 0;
+            }
+        }
+    }, true);
+
 }
