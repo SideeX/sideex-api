@@ -308,6 +308,79 @@ Sideex.commands = {
         // END
 
     },
+
+    async doContextMenu(locator) {
+        /**
+         * Simulates opening the context menu for the specified element (as might happen if the user "right-clicked" on the element).
+         *
+         * @param locator an element locator
+         *
+         */
+        var element = this.browserBot.findElement(locator);
+        this.browserBot.contextMenuOnElement(element);
+    },
+    // © Ming-Hung Hsu, SideeX Team
+    async verifyText(locator, value) {
+        var element = this.browserBot.findElement(locator);
+        if (Utils.getText(element) !== value) {
+            throw new Error("Actual value '" + Utils.getText(element) + "' did not match '" + value + "'");
+            //console.log("Actual value '" + Utils.getText(element) + "' did not match '" + value + "'");
+        }
+    },
+    // © Ming-Hung Hsu, SideeX Team
+    async verifyTitle(value) {
+        if (Utils.normalizeSpaces(this.getTitle()) !== value) {
+            throw new Error("Actual value '" + Utils.normalizeSpaces(this.getTitle()) + "' did not match '" + value + "'");
+        }
+    },
+    // © Ming-Hung Hsu, SideeX Team
+    async verifyValue(locator, value) {
+        if (this.getValue(locator) !== value) {
+            throw new Error("Actual value '" + this.getValue(locator) + "' did not match '" + value + "'");
+        }
+    },
+    // © Ming-Hung Hsu, SideeX Team
+    async assertText(locator, value) {
+        var element = this.browserBot.findElement(locator);
+        if (Utils.getText(element) !== value) {
+            throw new Error("Actual value '" + Utils.getText(element) + "' did not match '" + value + "'");
+        }
+    },
+    // © Ming-Hung Hsu, SideeX Team
+    async assertTitle(value) {
+        if (Utils.normalizeSpaces(this.getTitle()) !== value) {
+            throw new Error("Actual value '" + Utils.normalizeSpaces(this.getTitle()) + "' did not match '" + value + "'");
+        }
+    },
+    // © Ming-Hung Hsu, SideeX Team
+    async assertValue(locator, value) {
+        if (this.getValue(locator) !== value) {
+            throw new Error("Actual value '" + this.getValue(locator) + "' did not match '" + value + "'");
+        }
+    },
+    // © Ming-Hung Hsu, SideeX Team
+    async store(value, varName) {
+        browser.runtime.sendMessage({ "storeStr": value, "storeVar": varName });
+    },
+    // © Ming-Hung Hsu, SideeX Team
+    async storeText(locator, varName) {
+        var element = this.browserBot.findElement(locator);
+        var text = Utils.getText(element);
+        if(text === '')
+            throw new Error("Error: This element does not have property 'Text'. Please change to use storeValue command.");
+        browser.runtime.sendMessage({ "storeStr": text, "storeVar": varName });
+    },
+    // © Ming-Hung Hsu, SideeX Team
+    async storeTitle(value, varName) {
+        browser.runtime.sendMessage({ "storeStr": value, "storeVar": varName });
+    },
+    // © Ming-Hung Hsu, SideeX Team
+    async storeValue(locator, varName) {
+        var val = this.getValue(locator);
+        if(typeof val === 'undefined')
+            throw new Error("Error: This element does not have property 'value'. Please change to use storeText command.");
+        browser.runtime.sendMessage({ "storeStr": this.getValue(locator), "storeVar": varName });
+    },
     /**
      * Simulates a user hovering a mouse over the specified element.
      *
