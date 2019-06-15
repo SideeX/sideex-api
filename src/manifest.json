@@ -1,0 +1,64 @@
+{
+    "description": "SideeX (Extended Selenium IDE) - A smart record-playback automated web application testing tool",
+    "manifest_version": 2,
+    "name": "SideeX - Smart Record-Play Browser Automation",
+    "version": "3.0.0",
+    "homepage_url": "http://sideex.org/",
+    "icons": {
+        "48": "icons/logo-48.png",
+        "96": "icons/logo-96.png"
+    },
+    "permissions": [
+        "tabs",
+        "activeTab",
+        "webRequest",
+        "contextMenus",
+        "downloads",
+        "webNavigation",
+        "notifications",
+        "storage",
+        "<all_urls>"
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content/document_end.js"
+            ],
+            "match_about_blank": true,
+            "all_frames": true,
+            "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content/document_start.js"
+            ],
+            "match_about_blank": true,
+            "all_frames": true,
+            "run_at": "document_start"
+        }
+    ],
+    "background": {
+        "scripts": [
+            "background/background_script.js"
+        ]
+    },
+    "browser_action": {
+        "default_icon": "icons/logo-48.png",
+        "default_title": "SideeX"
+    },
+    "web_accessible_resources": [
+        "page/prompt.js",
+        "page/pageScript.js",
+        "panel/js/UI/build/assets/*"
+    ],
+    "options_ui": {
+        "page": "option/index.html"
+    }
+}

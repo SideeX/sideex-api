@@ -1,0 +1,485 @@
+/*******************************************
+    Option Page Settings
+*******************************************/
+body {
+    width: 900px;
+    height: 700px;
+}
+
+.width-40pa { width: 40% !important; }
+.height-100pa { height: 100% !important; }
+.margin-auto { margin: auto !important; }
+.margin-top-3pa { margin-top: 3% !important; }
+.margin-bottom-3pa { margin-bottom: 3% !important; }
+.padding-0 { padding: 0 !important; }
+.padding-bottom-10pa { padding-bottom: 10% !important; }
+.text-align-center { text-align: center !important; }
+.display-none { display: none !important; }
+.setting-container {
+    margin: 3% 0;
+}
+
+#webdriver-note {
+    padding: 5px 10px;
+    color:red;
+}
+
+.toggle-text {
+    margin: auto 0 auto 10%;
+}
+
+.period-select {
+    margin: 3% 0;
+}
+
+.profile-card {
+    height: 100%;
+}
+
+.profile-image {
+    width: 100%;
+    max-width: 80px;
+    border-radius: 50%;
+}
+
+.advance-setting {
+    margin-top: 3%;
+}
+
+.collapse-content {
+    padding: 10px;
+}
+
+.collapse-button {
+    width: 100%;
+    text-align: left;
+}
+
+.label {
+    display: inline;
+    margin: 0;
+}
+
+/*******************************************
+    Reference: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_switch
+    The switch - the box around the slider
+*******************************************/
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 25px;
+    margin-bottom: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 17px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(16px);
+    -ms-transform: translateX(16px);
+    transform: translateX(16px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/*******************************************
+    Bootstrap Select Settings
+*******************************************/
+
+.btn-light {
+    background-color: transparent;
+    border-color: #EEEEEE;
+    /*border-radius: 0;*/
+}
+
+/*******************************************
+    Service Settings
+*******************************************/
+
+/*** custom checkboxes ***/
+.service_lists input{
+    border: none;
+}
+
+.service-options {
+    margin:10px auto;
+}
+
+.service_lists {
+    /* margin-left:15px;
+    padding-left:10px; */
+}
+
+
+.service_lists:hover .btn__close--align_right {
+    color: #AAAAAA;
+    visibility: visible;
+}
+
+.service_lists .btn__close--align_right:hover {
+    color: #FF8888;
+    visibility: visible;
+}
+
+.service_lists:last-child .btn__close--align_right {
+    visibility: hidden;
+}
+
+.service_info__label {
+    margin-right:50px;
+}
+
+.service_table {
+    margin-bottom: 35px;
+    border-radius: 10px;
+    border-color: #263238;
+}
+
+.service_table tr th {
+    border: none;
+    border-bottom-color: #263238;
+    border-bottom-style: dotted;
+    border-bottom-width: 1px;
+}
+
+.service_table tr td {
+    vertical-align: middle!important;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: none;
+    width: 23%;
+}
+
+.service_table tr:not(:last-child) {
+    border-bottom: #263238 1px dotted;
+}
+
+.service_table tr td,
+.service_table tr th{
+    border-left: #263238 1px dotted;
+}
+
+.service_table tr td:first-child,
+.service_table tr td:last-child,
+.service_table tr th:first-child,
+.service_table tr th:last-child {
+    border-left: none;
+}
+
+.service_table tr td input[type="checkbox"]{
+    width: 15px;
+}
+.service_table tr th:first-child,
+.service_table tr td:first-child{
+    padding:8px;
+    width: 6%;
+}
+
+.service_table tr th:last-child,
+.service_table tr td:last-child{
+    /*margin: 4px;*/
+    width:2%
+}
+
+.service_table thead,
+.service_table tbody {
+    border: none;
+}
+
+.service_table tbody > tr:last-child {
+    opacity: 0.3;
+}
+
+.service_table tr input
+{
+    width: 100%;
+}
+
+.service_table tr:hover .btn__close,
+.service_table tr:hover .span__expand {
+    color: #AAAAAA;
+    visibility: visible;
+}
+
+.service_table tr:last-child .btn__close,
+.service_table tr:last-child .span__expand,
+.service_table tr:last-child input[name='active']
+{
+    visibility: hidden;
+}
+
+.service_info__label > input{
+    height: 38px;
+    border: #EEEEEE 1px solid;
+    width: 182px;
+}
+
+.service_lists > .service_info:last-child {
+    opacity: 0.5;
+}
+
+.service_info__label > span{
+    font-weight: 500;
+    /* font-size: 1.3rem; */
+}
+
+.service_lists .triggerBox {
+    display: block;
+    margin-bottom: 0;
+ }
+
+.service_lists .triggerBox span {
+    margin-left: 10px;
+}
+
+/*******************************************
+    Web Driver Settings
+*******************************************/
+
+/*** custom checkboxes ***/
+.selection input[type="checkbox"]{
+    display: none;
+}
+
+.server_lists input{
+    border: none;
+}
+
+.webdriver-options {
+    margin:10px auto;
+}
+
+.webdriver__toggle {
+    margin: 20px auto;
+}
+
+.webdriver__toggle span{
+    vertical-align: text-bottom !important;
+    font-size:1.5rem;
+    font-weight: 500;
+}
+
+.server_lists {
+    /* margin-left:15px;
+    padding-left:10px; */
+}
+
+
+.server_lists:hover .btn__close--align_right {
+    color: #AAAAAA;
+    visibility: visible;
+}
+
+.server_lists .btn__close--align_right:hover {
+    color: #FF8888;
+    visibility: visible;
+}
+
+.server_lists:last-child .btn__close--align_right {
+    visibility: hidden;
+}
+
+.server_info__label {
+    margin: 0;
+    width: 100%;
+}
+
+.server_table {
+    margin-bottom: 35px;
+    border-radius: 10px;
+    border-color: #263238;
+}
+
+.server_table tr th {
+    border: none;
+    border-bottom-color: #263238;
+    border-bottom-style: dotted;
+    border-bottom-width: 1px;
+}
+
+.server_table tr td {
+    vertical-align: middle!important;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: none;
+    width: 23%;
+}
+
+.server_table tr:not(:last-child) {
+    border-bottom: #263238 1px dotted;
+}
+
+.server_table tr td,
+.server_table tr th{
+    border-left: #263238 1px dotted;
+}
+
+.server_table tr td:first-child,
+.server_table tr td:last-child,
+.server_table tr th:first-child,
+.server_table tr th:last-child {
+    border-left: none;
+}
+
+.server_table tr td input[type="checkbox"]{
+    width: 15px;
+}
+.server_table tr th:first-child,
+.server_table tr td:first-child{
+    padding:8px;
+    width: 6%;
+}
+
+.server_table tr th:last-child,
+.server_table tr td:last-child{
+    /*margin: 4px;*/
+    width:2%
+}
+
+.server_table thead,
+.server_table tbody {
+    border: none;
+}
+
+.server_table tbody > tr:last-child {
+    opacity: 0.3;
+}
+
+.server_table tr input
+{
+    width: 100%;
+}
+
+.server_table tr:hover .btn__close,
+.server_table tr:hover .span__expand {
+    color: #AAAAAA;
+    visibility: visible;
+}
+
+.server_table tr:last-child .btn__close,
+.server_table tr:last-child .span__expand,
+.server_table tr:last-child input[name='active']
+{
+    visibility: hidden;
+}
+
+.server_info__label > input{
+    height: 36px;
+    border: #EEEEEE 1px solid;
+    width: 100%;
+}
+
+.server_lists > .server_info:last-child {
+    opacity: 0.5;
+}
+
+.server_info__label > span{
+    /* font-weight: 500; */
+    /* font-size: 1.3rem; */
+}
+
+.btn__close {
+    font-size:1rem;
+    padding:0;
+    margin:0;
+    color: #AAAAAA;
+    visibility: hidden;
+    box-shadow: none !important;
+}
+
+.span__expand {
+    float: left;
+    margin-top: 3px;
+    margin-right: 5px;
+    visibility: hidden;
+}
+
+.span__expand:focus, .span__expand:hover {
+    color: #BBBBBB;
+    visibility: visible;
+}
+
+.btn__close:focus, .btn__close:hover{
+    color: #FF8888 !important;
+    visibility: visible;
+}
+
+.btn__close--align_right {
+    float: right;
+    margin-right:15px;
+}
+
+
+/* ######################
+Extends
+###################### */
+#modalSettings .modal-header {
+    border-bottom: none;
+}
+
+#modalSettings .modal-footer {
+    border-top: none;
+}
+
+#modalSettings .extends input{
+    border: 1px #D0D0D0 solid;
+    margin-left:10px;
+    margin-bottom: 5px;
+}
+
+#modalSettings .extends:hover .btn__close{
+    color: #AAAAAA;
+    visibility: visible;
+}
+
+#modalSettings .extends .btn__close{
+    margin-left:10px;
+    margin-bottom:5px;
+}
+
+#modalSettings .extends:last-child {
+    opacity: 0.3;
+}
