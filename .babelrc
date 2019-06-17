@@ -38,19 +38,5 @@
                 "transform-remove-console"
             ]
         }
-    },
-    "overrides": [
-        {
-            "test": [
-                "app.js"
-            ],
-            "env": {
-                "development": {
-                    "plugins": [
-                        "react-hot-loader/babel"
-                    ]
-                }
-            }
-        }
-    ]
+    }
 }

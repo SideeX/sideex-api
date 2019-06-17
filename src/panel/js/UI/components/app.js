@@ -1,8 +1,6 @@
 import React from 'react';
 import { ToolBar } from '../containers';
 import { Container } from "reactstrap";
-import { hot } from 'react-hot-loader';
-import events from '../events';
 
 class App extends React.Component {
     constructor(props) {
@@ -26,4 +24,4 @@ class App extends React.Component {
     }
 }
 
-export default hot(module)(App);
+export default App;

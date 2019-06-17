@@ -8,6 +8,12 @@ module.exports = {
     performance: {
         hints: false
     },
+    stats: {
+        excludeAssets: (assetName) => {
+            return !assetName.match(/\.[jt]sx?$/);
+        },
+        modules: false
+    },
     target: 'web',
     watch: true,
     watchOptions: {
