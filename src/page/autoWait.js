@@ -138,13 +138,10 @@ window.addEventListener("message", async function (event) {
         if (event.data.direction == "from-content-playback-auto-wait") {
             let type = event.data.type;
             let result = false;
-            if (type == "pageWait") {
-                result = await autoWait.checkPageWaitLoop();
-            } else if (type == "ajaxWait") {
-                result = await autoWait.checkAjaxWaitLoop();
-            } else if (type == "DOMWait") {
-                result = await autoWait.checkDOMWait();
-            }
+            result = await autoWait.checkPageWaitLoop();
+            result = await autoWait.checkAjaxWaitLoop();
+            result = await autoWait.checkDOMWait();
+
             window.postMessage({
                 direction: "from-page-playback-auto-wait",
                 type: type,
