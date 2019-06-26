@@ -398,7 +398,7 @@ Sideex.commands = {
     },
 
     async mouseOut(locator, coordString) {
-        var element = this.browserbot.findElement(locator);
+        var element = this.browserBot.findElement(locator);
         this.browserBot.fireMouseEvent(element, 'mouseout', true);
     },
     async dragAndDrop(locator, movementsString, coordString) {
