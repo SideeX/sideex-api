@@ -71,8 +71,8 @@ export class Sideex {
                 case "ajaxWait":
                     errorMessage = "Ajax Wait timed out";
                     break;
-                case "resourceWait":
-                    errorMessage = "Resource Wait timed out";
+                case "DOMWait":
+                    errorMessage = "DOM Wait timed out";
                     break;
             }
             this.wait = {};

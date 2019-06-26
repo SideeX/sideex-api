@@ -148,7 +148,7 @@ export class WindowController {
     async sendCommand(command, target, value, index, top) {
         let tabId = this.getCurrentPlayingTabId();
         let frameId = this.getCurrentPlayingFrameId();
-        let action = ("pageWait, ajaxWait, DOMWait" === command ) ? "Wait" : "Command";
+        let action = ("waitSeries" === command ) ? "Wait" : "Command";
         return await browser.tabs.sendMessage(tabId, {
             action: action,
             command: command,

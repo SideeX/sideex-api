@@ -485,9 +485,9 @@ export class Playback {
         // await this.doAutoWait("ajaxWait", preWaitTime.ajax);
         // await this.doAutoWait("DOMWait", preWaitTime.DOM);
         if (this.shutdown)
-            Promise.reject();
+            return;
         else
-            await this.windowController.sendCommand("pageWait, ajaxWait, DOMWait", "", 0, JSON.stringify(this.curPlayIndex));
+            await this.windowController.sendCommand("waitSeries", "", 0, JSON.stringify(this.curPlayIndex));
     }
 
     // async doAutoWait(type, value = 0) {
