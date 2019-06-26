@@ -110,7 +110,97 @@ export function recorderHandlersInit() {
             }
         }
     }, true);
-
+    Recorder.addEventHandler('dragAndDrop', 'mousedown', function(event) {
+        var self = this;
+        if (event.clientX < window.document.documentElement.clientWidth && event.clientY < window.document.documentElement.clientHeight) {
+            this.mousedown = event;
+            this.mouseup = setTimeout(function() {
+                delete self.mousedown;
+            }.bind(this), 200);
+    
+            this.selectMouseup = setTimeout(function() {
+                self.selectMousedown = event;
+            }.bind(this), 200);
+        }
+        this.mouseoverQ = [];
+    
+        if (event.target.nodeName) {
+            var tagName = event.target.nodeName.toLowerCase();
+            if ('option' == tagName) {
+                var parent = event.target.parentNode;
+                if (parent.multiple) {
+                    var options = parent.options;
+                    for (var i = 0; i < options.length; i++) {
+                        options[i]._wasSelected = options[i].selected;
+                    }
+                }
+            }
+        }
+    }, true);
+    // END
+    
+    // © Shuo-Heng Shih, SideeX Team
+    Recorder.addEventHandler('dragAndDrop', 'mouseup', function(event) {
+        clearTimeout(this.selectMouseup);
+        if (this.selectMousedown) {
+            var x = event.clientX - this.selectMousedown.clientX;
+            var y = event.clientY - this.selectMousedown.clientY;
+    
+            function getSelectionText() {
+                var text = "";
+                var activeEl = window.document.activeElement;
+                var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
+                if (activeElTagName == "textarea" || activeElTagName == "input") {
+                    text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
+                } else if (window.getSelection) {
+                    text = window.getSelection().toString();
+                }
+                return text.trim();
+            }
+    
+            if (this.selectMousedown && event.button === 0 && (x + y) && (event.clientX < window.document.documentElement.clientWidth && event.clientY < window.document.documentElement.clientHeight) && getSelectionText() === '') {
+                var sourceRelateX = this.selectMousedown.pageX - this.selectMousedown.target.getBoundingClientRect().left - window.scrollX;
+                var sourceRelateY = this.selectMousedown.pageY - this.selectMousedown.target.getBoundingClientRect().top - window.scrollY;
+                var targetRelateX, targetRelateY;
+                if (!!this.mouseoverQ.length && this.mouseoverQ[1].relatedTarget == this.mouseoverQ[0].target && this.mouseoverQ[0].target == event.target) {
+                    targetRelateX = event.pageX - this.mouseoverQ[1].target.getBoundingClientRect().left - window.scrollX;
+                    targetRelateY = event.pageY - this.mouseoverQ[1].target.getBoundingClientRect().top - window.scrollY;
+                    this.record("mouseDownAt", this.locatorBuilders.buildAll(this.selectMousedown.target), sourceRelateX + ',' + sourceRelateY);
+                    this.record("mouseMoveAt", this.locatorBuilders.buildAll(this.mouseoverQ[1].target), targetRelateX + ',' + targetRelateY);
+                    this.record("mouseUpAt", this.locatorBuilders.buildAll(this.mouseoverQ[1].target), targetRelateX + ',' + targetRelateY);
+                } else {
+                    targetRelateX = event.pageX - event.target.getBoundingClientRect().left - window.scrollX;
+                    targetRelateY = event.pageY - event.target.getBoundingClientRect().top - window.scrollY;
+                    this.record("mouseDownAt", this.locatorBuilders.buildAll(event.target), targetRelateX + ',' + targetRelateY);
+                    this.record("mouseMoveAt", this.locatorBuilders.buildAll(event.target), targetRelateX + ',' + targetRelateY);
+                    this.record("mouseUpAt", this.locatorBuilders.buildAll(event.target), targetRelateX + ',' + targetRelateY);
+                }
+            }
+        } else {
+            delete this.clickLocator;
+            delete this.mouseup;
+            var x = event.clientX - this.mousedown.clientX;
+            var y = event.clientY - this.mousedown.clientY;
+    
+            if (this.mousedown && this.mousedown.target !== event.target && !(x + y)) {
+                this.record("mouseDown", this.locatorBuilders.buildAll(this.mousedown.target), '');
+                this.record("mouseUp", this.locatorBuilders.buildAll(event.target), '');
+            } else if (this.mousedown && this.mousedown.target === event.target) {
+                //var self = this;
+                //var target = this.locatorBuilders.buildAll(this.mousedown.target);
+                // setTimeout(function() {
+                //     if (!self.clickLocator)
+                //         this.record("click", target, '');
+                // }.bind(this), 100);
+            }
+    
+        }
+        delete this.mousedown;
+        delete this.selectMousedown;
+        delete this.mouseoverQ;
+    
+    }, true);
+    // END
     //drop
     Recorder.addEventHandler('dragAndDropToObject', 'dragstart', function (event) {
         var self = this;
