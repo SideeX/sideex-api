@@ -20,6 +20,7 @@ class AutoWait {
 
     constructor() {
         this.startTime = 0;
+        this.waitErrType = "";
     }
 
     doAutoWaitPreprocessing() {
@@ -59,6 +60,7 @@ class AutoWait {
     }
 
     async checkPageWaitLoop() {
+        this.waitErrType = "pageWait";
         while (true) {
             let response = window.document.readyState == "complete";
             if (this.startTime != 0 && (Date.now() - this.startTime) > AutoWait.PAGE_WAIT_TIMEOUT) {
@@ -81,6 +83,7 @@ class AutoWait {
     }
 
     async checkAjaxWaitLoop() {
+        this.waitErrType = "ajaxWait";
         while (true) {
             let response = this.checkAjaxWait();
             if (this.startTime != 0 && (Date.now() - this.startTime) > AutoWait.COMMAND_WAIT_TIMEOUT) {
@@ -100,6 +103,7 @@ class AutoWait {
     }
 
     async checkDOMWait(preWaitTime) {
+        this.waitErrType = "DOMWait";
         await this.delay(preWaitTime);
         return true;
     }
@@ -138,13 +142,10 @@ window.addEventListener("message", async function (event) {
         if (event.data.direction == "from-content-playback-auto-wait") {
             let type = event.data.type;
             let result = false;
-            if (type == "pageWait") {
-                result = await autoWait.checkPageWaitLoop();
-            } else if (type == "ajaxWait") {
-                result = await autoWait.checkAjaxWaitLoop();
-            } else if (type == "DOMWait") {
-                result = await autoWait.checkDOMWait();
-            }
+            result = await autoWait.checkPageWaitLoop();
+            result = result && await autoWait.checkAjaxWaitLoop();
+            result = result && await autoWait.checkDOMWait();
+
             window.postMessage({
                 direction: "from-page-playback-auto-wait",
                 type: type,

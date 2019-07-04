@@ -71,8 +71,8 @@ export class Sideex {
                 case "ajaxWait":
                     errorMessage = "Ajax Wait timed out";
                     break;
-                case "resourceWait":
-                    errorMessage = "Resource Wait timed out";
+                case "DOMWait":
+                    errorMessage = "DOM Wait timed out";
                     break;
             }
             this.wait = {};
@@ -398,7 +398,7 @@ Sideex.commands = {
     },
 
     async mouseOut(locator, coordString) {
-        var element = this.browserbot.findElement(locator);
+        var element = this.browserBot.findElement(locator);
         this.browserBot.fireMouseEvent(element, 'mouseout', true);
     },
     async dragAndDrop(locator, movementsString, coordString) {

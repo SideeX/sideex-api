@@ -481,15 +481,17 @@ export class Playback {
         if (!preWaitTime) {
             return Promise.resolve();
         }
-        await this.doAutoWait("pageWait");
-        await this.doAutoWait("ajaxWait", preWaitTime.ajax);
-        await this.doAutoWait("DOMWait", preWaitTime.DOM);
+        // await this.doAutoWait("pageWait");
+        // await this.doAutoWait("ajaxWait", preWaitTime.ajax);
+        // await this.doAutoWait("DOMWait", preWaitTime.DOM);
+        if (this.shutdown)
+            return;
+        else
+            await this.windowController.sendCommand("waitSeries", "", 0, JSON.stringify(this.curPlayIndex));
     }
 
-    async doAutoWait(type, value = 0) {
-        if (this.shutdown) return Promise.reject();
-        return await this.windowController.sendCommand(type, "", value, JSON.stringify(this.curPlayIndex));
-    }
+    // async doAutoWait(type, value = 0) {
+    // }
 
     async dispatchCommand(index, command) {
         let result;
