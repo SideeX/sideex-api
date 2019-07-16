@@ -277,6 +277,20 @@ export default {
     
                 workArea.syncCommands();
             },
+            clearStatus: function () {
+                let caseIdText = Panel.fileController.getSelectedCases()[0];
+                let records = Panel.fileController.getRecords(caseIdText);
+                // let caseEle = Panel.fileController.getTestCase(caseIdText);
+                Panel.fileController.clearIncludedRecords(records);
+                Panel.fileController.clearRecordsStatus(["status", "snapshot"], records, true);
+                // Panel.fileController.setFileStatus(caseEle, "default");
+                // Panel.snapshot.resizeAllSnapshots();
+                workArea.syncCommands();
+                fileList.syncFiles();
+            },
+            clearAllStatus: function() {
+
+            },
             setSelected: function (recordIdText) {
                 Panel.fileController.setSelectedRecords([recordIdText]);
             },
