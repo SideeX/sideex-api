@@ -1,4 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
+import { fileList } from "../UI/entryPoint";
 
 export default {
     toolBar: {
@@ -68,6 +69,100 @@ export default {
             EntryPoint.toolBar.updateSpeed(parseInt(value));
         }
 
+    }
+};
+
+    },
+    file: {
+        testSuite: {
+            add: function (suiteName) {
+                let checkResult = Panel.fileController.checkNameValid(suiteName);
+                if (checkResult.result) {
+                    if (!Panel.fileController.isSuiteNameUsed(suiteName)) {
+                        Panel.fileController.addTestSuite(suiteName);
+                        fileList.setModal({ isOpen: false, type: "default" });
+                        fileList.syncFiles();
+                    } else {
+                        fileList.setModal({
+                            error: "This name has been used. Please use another one."
+                        });
+                    }
+                } else {
+                    fileList.setModal({ error: checkResult.message });
+                }
+            },
+            get: function(suiteName) {
+                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+                return Panel.fileController.getTestSuite(suiteIdText);
+            }, 
+            rename: function (oldSuiteName, newSuiteName) {
+                let suiteIdText = Panel.fileController.getSuiteKey(oldSuiteName);
+                let checkResult = Panel.fileController.checkNameValid(newSuiteName);
+                if (checkResult.result) {
+                    if (!Panel.fileController.isSuiteNameUsed(newSuiteName)) {
+                        Panel.fileController.setSuiteTitle(suiteIdText, newSuiteName);
+                        Panel.fileController.setSuiteModified(suiteIdText, true, false);
+                        fileList.setModal({ isOpen: false, type: "default" });
+                        fileList.syncFiles();
+                    } else {
+                        fileList.setModal({
+                            error: "The test suite name has been used. Please use another name."
+                        });
+                    }
+                } else {
+                    fileList.setModal({ error: checkResult.message });
+                }
+            },
+
+        },
+        testCase: {
+            add: function (suiteName, caseName) {
+                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+                let checkResult = Panel.fileController.checkNameValid(caseName);
+                // console.log("selectedSuiteIdText: ", Panel.fileController.getSelectedSuites());
+                if (checkResult.result) {
+                    if (!Panel.fileController.isCaseNameUsed(caseName, suiteIdText)) {
+                        let caseIdText = Panel.fileController.addTestCase(caseName);
+                        Panel.fileController.setCaseModified(caseIdText, true, true);
+                        fileList.setModal({ isOpen: false, type: "default" });
+                        fileList.syncFiles();
+                    } else {
+                        fileList.setModal({
+                            error: "This name has been used. Please use another one."
+                        });
+                    }
+                } else {
+                    fileList.setModal({ error: checkResult.message });
+                }
+            },
+            get: function(suiteName, caseName) {
+                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+                let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
+                return Panel.fileController.getTestCase(caseIdText);
+            },
+            rename: function (suiteName, oldCaseName, newCaseName) {
+                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+                let caseIdText = Panel.fileController.getCaseKey(suiteIdText, oldCaseName);
+                let checkResult = Panel.fileController.checkNameValid(newCaseName);
+                if (checkResult.result) {
+                    if (!Panel.fileController.isCaseNameUsed(newCaseName, suiteIdText)) {
+                        Panel.fileController.setCaseTitle(caseIdText, newCaseName);
+                        Panel.fileController.setCaseModified(caseIdText, true, true);
+                        fileList.setModal({ isOpen: false, type: "default" });
+                        fileList.syncFiles();
+                    } else {
+                        fileList.setModal({
+                            error: "The test case name has been used. Please use another name."
+                        });
+                    }
+                } else {
+                    fileList.setModal({ error: checkResult.message });
+                }
+            }
+        },
+        command: {
+
+        }
     },
     //NOTE: 1. define func in var-crtler? 2. object or parameter? 3. local var? 4. logconsole in entrypoint?
     variables: {
