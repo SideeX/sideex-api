@@ -300,6 +300,13 @@ export default {
     
                 workArea.syncCommands();
             },
+            setSelected: function (recordIdText) {
+                Panel.fileController.setSelectedRecords([recordIdText]);
+            },
+            getSelected: function () {
+                return Panel.fileController.getSelectedRecord();
+            },
+
         }
     },
 
