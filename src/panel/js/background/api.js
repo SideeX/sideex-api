@@ -248,8 +248,12 @@ export default {
                 return Panel.fileController.getSelectedRecords();
             },
 
+                let caseIdText = caseName === undefined ?
+                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
+                Panel.fileController.setSelectedCases([caseIdText]);
+
                 Panel.recorder.prepareRecord();
-                let info = Panel.fileController.insertCommand("after", name, target, value);
+                let info = Panel.fileController.insertCommand("after", commandName, commandTarget, commandValue);
                 let recordInfo = Panel.fileController.getRecord(info.caseIdText, info.index);
                 Panel.fileController.setSelectedRecords([`records-${info.index}`]);
 
