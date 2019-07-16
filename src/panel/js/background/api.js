@@ -220,20 +220,17 @@ export default {
             },
         },
         command: {
-            add: function (name, target = { options: [{ type: "other", value: "" }] }, value = { options: [{ type: "other", value: "" }] }, caseName, suiteName) {
-                if (suiteName != undefined) {
-                    // this.file.testSuite.setSelected(suiteName);
-                    let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
-                    Panel.fileController.setSelectedSuites([suiteIdText]);
-                }
-                if (caseName != undefined) {
-                    let suiteIdText = Panel.fileController.getSelectedSuites();
-                    let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
-                    Panel.fileController.setSelectedCases([caseIdText]);
-                }
+            add: function (commandName, commandTarget = { options: [{ type: "other", value: "" }] }, commandValue = { options: [{ type: "other", value: "" }] }, caseName, suiteName) {
+                let suiteIdText = suiteName === undefined ?
+                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
+                Panel.fileController.setSelectedSuites([suiteIdText]);
+
+                let caseIdText = caseName === undefined ?
+                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
+                Panel.fileController.setSelectedCases([caseIdText]);
 
                 Panel.recorder.prepareRecord();
-                let info = Panel.fileController.insertCommand("after", name, target, value);
+                let info = Panel.fileController.insertCommand("after", commandName, commandTarget, commandValue);
                 let recordInfo = Panel.fileController.getRecord(info.caseIdText, info.index);
                 Panel.fileController.setSelectedRecords([`records-${info.index}`]);
 
