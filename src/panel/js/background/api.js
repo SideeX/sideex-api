@@ -113,6 +113,35 @@ export default {
                     fileList.setModal({ error: checkResult.message });
                 }
             },
+            copy: function(suiteName, newSuiteName) {
+                // check is suiteName exist
+            },
+            cut: function() {
+
+            },
+            paste: function() {
+
+            },
+            close: function (suiteNames) {
+                if (suiteNames.length > 0) {
+                    for (let suiteName of suiteNames) {
+                        let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+                        Panel.fileController.deleteSuite(suiteIdText);
+                    }
+                    fileList.setModal({ isOpen: false, type: "default" });
+                    fileList.syncFiles();
+                }
+            },
+            closeAll: function () {
+                let suiteIdTexts = Panel.fileController.getAllSuiteIdTexts();
+                if (suiteIdTexts.length > 0) {
+                    for (let suiteIdText of suiteIdTexts) {
+                        Panel.fileController.deleteSuite(suiteIdText);
+                    }
+                    fileList.setModal({ isOpen: false, type: "default" });
+                    fileList.syncFiles();
+                }
+            },
 
         },
         testCase: {
