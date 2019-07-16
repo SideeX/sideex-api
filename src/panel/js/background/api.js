@@ -556,6 +556,22 @@ export default {
             });
         }
     },
+    log: {
+        get: (target) => {
+            switch (target) {
+                case "logs":
+                    return Panel.log.logs;
+                case "typeMap":
+                    return Panel.log.logTypeMap;
+                default:
+                    break;
+            }
+        },
+        clear: () => {
+            Panel.fileController.clearLog();
+            Panel.log.clearLog();
+        }
+    },
     recorder: {
         start: (caseIdText = Panel.fileController.getSelectedCases()[0]) => {
             Panel.recorder.prepareRecord();
