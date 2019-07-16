@@ -248,6 +248,26 @@ export default {
                 return Panel.fileController.getSelectedRecords();
             },
 
+                Panel.recorder.prepareRecord();
+                let info = Panel.fileController.insertCommand("after", name, target, value);
+                let recordInfo = Panel.fileController.getRecord(info.caseIdText, info.index);
+                Panel.fileController.setSelectedRecords([`records-${info.index}`]);
+
+                workArea.syncCommands();
+                fileList.syncFiles();
+                workArea.setEditBlock({
+                    index: info.index, isOpen: true, isSelect: false,
+                    usedIndex: {
+                        target: recordInfo.target.usedIndex,
+                        value: recordInfo.value.usedIndex
+                    },
+                    value: {
+                        name: recordInfo.name,
+                        targets: recordInfo.target.options,
+                        values: recordInfo.value.options
+                    }
+                });
+            },
         }
     },
 
