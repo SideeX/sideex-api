@@ -195,6 +195,16 @@ export default {
                     fileList.setModal({ error: checkResult.message });
                 }
             },
+            remove: function (suiteName, caseName) {
+                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+                let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
+                Panel.fileController.setCaseModified(caseIdText, true, true);
+                if (caseIdText) {
+                    fileList.setModal({ isOpen: false, type: "default" });
+                    Panel.fileController.deleteCase(caseIdText);
+                    fileList.syncFiles();
+                }
+            },
             setSelected: function (suiteName, caseName) {
                 let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
                 let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
