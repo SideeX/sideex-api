@@ -152,8 +152,9 @@ export default {
 
         },
         testCase: {
-            add: function (caseName, suiteName = Panel.fileController.getSelectedSuites()) {
-                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+            add: function (caseName, suiteName) {
+                let suiteIdText = suiteName === undefined ?
+                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
                 let checkResult = Panel.fileController.checkNameValid(caseName);
                 // console.log("selectedSuiteIdText: ", Panel.fileController.getSelectedSuites());
                 if (checkResult.result) {
@@ -171,13 +172,15 @@ export default {
                     fileList.setModal({ error: checkResult.message });
                 }
             },
-            get: function(caseName, suiteName = Panel.fileController.getSelectedSuites()) {
-                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+            get: function(caseName, suiteName) {
+                let suiteIdText = suiteName === undefined ?
+                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
                 let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
                 return Panel.fileController.getTestCase(caseIdText);
             },
-            rename: function (caseName, newcaseName, suiteName = Panel.fileController.getSelectedSuites()) {
-                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+            rename: function (caseName, newCaseName, suiteName) {
+                let suiteIdText = suiteName === undefined ?
+                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
                 let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
                 let checkResult = Panel.fileController.checkNameValid(newCaseName);
                 if (checkResult.result) {
@@ -195,8 +198,9 @@ export default {
                     fileList.setModal({ error: checkResult.message });
                 }
             },
-            remove: function (caseName, suiteName = Panel.fileController.getSelectedSuites()) {
-                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+            remove: function (caseName, suiteName) {
+                let suiteIdText = suiteName === undefined ?
+                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
                 let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
                 Panel.fileController.setCaseModified(caseIdText, true, true);
                 if (caseIdText) {
@@ -205,8 +209,9 @@ export default {
                     fileList.syncFiles();
                 }
             },
-            setSelected: function (caseName, suiteName = Panel.fileController.getSelectedSuites()) {
-                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+            setSelected: function (caseName, suiteName) {
+                let suiteIdText = suiteName === undefined ?
+                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
                 let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
                 Panel.fileController.setSelectedCases([caseIdText]);
             },
@@ -215,7 +220,7 @@ export default {
             },
         },
         command: {
-            add: function (name, target = { options: [{ type: "other", value: "" }] }, value = { options: [{ type: "other", value: "" }] }, caseName, suiteName = Panel.fileController.getSelectedSuites()) {
+            add: function (name, target = { options: [{ type: "other", value: "" }] }, value = { options: [{ type: "other", value: "" }] }, caseName, suiteName) {
                 if (suiteName != undefined) {
                     // this.file.testSuite.setSelected(suiteName);
                     let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
