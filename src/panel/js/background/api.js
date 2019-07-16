@@ -104,5 +104,25 @@ export default {
             if (varIdText)
                 Panel.variables.updateVarValue(varIdText, value);
         }
+    },
+    recorder: {
+        start: () => {
+            console.log("Recording");
+            Panel.recorder.attach();
+            Panel.recorder.notificationCount = 0;
+            Panel.recorder.prepareRecord();
+            Panel.recorder.isRecord = true;
+
+            EntryPoint.toolBar.syncButtonState();
+            EntryPoint.fileList.syncFiles();
+        },
+        stop: () => {
+            console.log("Stop");
+            Panel.recorder.detach();
+            Panel.recorder.isRecord = false;
+
+            EntryPoint.toolBar.syncButtonState();
+            EntryPoint.fileList.syncFiles();
+        }
     }
 };
