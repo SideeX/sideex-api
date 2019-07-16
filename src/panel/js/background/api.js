@@ -68,5 +68,41 @@ export default {
             EntryPoint.toolBar.updateSpeed(parseInt(value));
         }
 
+    },
+    //NOTE: 1. define func in var-crtler? 2. object or parameter? 3. local var? 4. logconsole in entrypoint?
+    variables: {
+        add: (name, value) => {
+            Panel.variables.addVariable(name, value);
+        },
+        get: (target) => {
+            switch (target) {
+                case "count":
+                    return Panel.variables.getVarNum();
+                case "startNum":
+                    return Panel.variables.globalVars.startNum;
+                case "varNames":
+                    return Panel.variables.globalVars.varNames;
+                case "vars":
+                    return Panel.variables.globalVars.vars;
+                default:
+                    break;
+            }
+        },
+        //NOTE: (name)?
+        delete: (varIdText) => {
+            Panel.variables.deleteVariable(varIdText); //"var-0"
+        },
+        //NOTE: UI: setModal ?
+        clearAll: () => {
+            Panel.variables.clearVariables();
+        },
+        changeName: (varIdText, name) => {
+            if (varIdText)
+                Panel.variables.updateVarName(varIdText, name);
+        },
+        changeValue: (varIdText, value) => {
+            if (varIdText)
+                Panel.variables.updateVarValue(varIdText, value);
+        }
     }
 };
