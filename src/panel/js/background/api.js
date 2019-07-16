@@ -512,5 +512,15 @@ export default {
             EntryPoint.toolBar.syncButtonState();
             EntryPoint.fileList.syncFiles();
         }
+    },
+    setting: {
+        setSpeed: (value) => {
+            Panel.setting.set({ delay: 500 * (5 - value) });
+            EntryPoint.toolBar.updateSpeed(parseInt(value));
+        },
+        getSpeed: () => {
+            let speed = 5 - (Panel.setting.params.delay / 500);
+            return speed;
+        }
     }
 };
