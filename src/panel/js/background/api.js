@@ -277,6 +277,13 @@ export default {
     
                 workArea.syncCommands();
             },
+            setSelected: function (recordIdText) {
+                Panel.fileController.setSelectedRecords([recordIdText]);
+            },
+            getSelected: function () {
+                return Panel.fileController.getSelectedRecord();
+            },
+
         }
     },
     //NOTE: 1. define func in var-crtler? 2. object or parameter? 3. local var? 4. logconsole in entrypoint?
