@@ -94,9 +94,9 @@ export default {
             get: function(suiteName) {
                 let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
                 return Panel.fileController.getTestSuite(suiteIdText);
-            }, 
-            rename: function (oldSuiteName, newSuiteName) {
-                let suiteIdText = Panel.fileController.getSuiteKey(oldSuiteName);
+            },
+            rename: function (suiteName, newSuiteName) {
+                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
                 let checkResult = Panel.fileController.checkNameValid(newSuiteName);
                 if (checkResult.result) {
                     if (!Panel.fileController.isSuiteNameUsed(newSuiteName)) {
@@ -142,6 +142,13 @@ export default {
                     fileList.syncFiles();
                 }
             },
+            setSelected: function (suiteName) {
+                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+                Panel.fileController.setSelectedSuites([suiteIdText]);
+            },
+            getSelected: function () {
+                return Panel.fileController.getSelectedSuites();
+            },
 
         },
         testCase: {
@@ -169,9 +176,9 @@ export default {
                 let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
                 return Panel.fileController.getTestCase(caseIdText);
             },
-            rename: function (suiteName, oldCaseName, newCaseName) {
+            rename: function (suiteName, caseName, newCaseName) {
                 let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
-                let caseIdText = Panel.fileController.getCaseKey(suiteIdText, oldCaseName);
+                let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
                 let checkResult = Panel.fileController.checkNameValid(newCaseName);
                 if (checkResult.result) {
                     if (!Panel.fileController.isCaseNameUsed(newCaseName, suiteIdText)) {
@@ -187,7 +194,15 @@ export default {
                 } else {
                     fileList.setModal({ error: checkResult.message });
                 }
-            }
+            },
+            setSelected: function (suiteName, caseName) {
+                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+                let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
+                Panel.fileController.setSelectedCases([caseIdText]);
+            },
+            getSelected: function () {
+                return Panel.fileController.getSelectedCases();
+            },
         },
         command: {
 
