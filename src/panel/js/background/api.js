@@ -272,6 +272,34 @@ export default {
                     }
                 });
             },
+            get: function(recordIndex, caseName, suiteName) {
+                let suiteIdText = suiteName === undefined ?
+                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
+                let caseIdText = caseName === undefined ?
+                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
+                return Panel.fileController.getRecord(caseIdText, recordIndex);
+            },
+            delete: function (recordIndex, caseName, suiteName) {
+                let suiteIdText = suiteName === undefined ?
+                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
+                let caseIdText = caseName === undefined ?
+                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
+                // let recordIdText = Panel.fileController.getSelectedRecords()[0];
+                // let recordIndex = parseInt(recordIdText.split('-')[1]);
+                Panel.fileController.deleteRecord(caseIdText, recordIndex);
+    
+                workArea.syncCommands();
+            },
+            deleteAll: function (caseName, suiteName) {
+                let suiteIdText = suiteName === undefined ?
+                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
+                let caseIdText = caseName === undefined ?
+                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
+
+                Panel.fileController.deleteAllRecords(caseIdText);
+    
+                workArea.syncCommands();
+            },
         }
     },
 
