@@ -1,5 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
-import { fileList } from "../UI/entryPoint";
+import { logConsole, toolBar, fileList, app, workArea, refreshUI } from "../UI/entryPoint";
 
 export default {
     toolBar: {
@@ -152,7 +152,7 @@ export default {
 
         },
         testCase: {
-            add: function (suiteName, caseName) {
+            add: function (caseName, suiteName = Panel.fileController.getSelectedSuites()) {
                 let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
                 let checkResult = Panel.fileController.checkNameValid(caseName);
                 // console.log("selectedSuiteIdText: ", Panel.fileController.getSelectedSuites());
@@ -171,12 +171,12 @@ export default {
                     fileList.setModal({ error: checkResult.message });
                 }
             },
-            get: function(suiteName, caseName) {
+            get: function(caseName, suiteName = Panel.fileController.getSelectedSuites()) {
                 let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
                 let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
                 return Panel.fileController.getTestCase(caseIdText);
             },
-            rename: function (suiteName, caseName, newCaseName) {
+            rename: function (caseName, newcaseName, suiteName = Panel.fileController.getSelectedSuites()) {
                 let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
                 let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
                 let checkResult = Panel.fileController.checkNameValid(newCaseName);
@@ -195,7 +195,7 @@ export default {
                     fileList.setModal({ error: checkResult.message });
                 }
             },
-            remove: function (suiteName, caseName) {
+            remove: function (caseName, suiteName = Panel.fileController.getSelectedSuites()) {
                 let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
                 let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
                 Panel.fileController.setCaseModified(caseIdText, true, true);
@@ -205,7 +205,7 @@ export default {
                     fileList.syncFiles();
                 }
             },
-            setSelected: function (suiteName, caseName) {
+            setSelected: function (caseName, suiteName = Panel.fileController.getSelectedSuites()) {
                 let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
                 let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
                 Panel.fileController.setSelectedCases([caseIdText]);
@@ -215,7 +215,38 @@ export default {
             },
         },
         command: {
+            add: function (name, target = { options: [{ type: "other", value: "" }] }, value = { options: [{ type: "other", value: "" }] }, caseName, suiteName = Panel.fileController.getSelectedSuites()) {
+                if (suiteName != undefined) {
+                    // this.file.testSuite.setSelected(suiteName);
+                    let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+                    Panel.fileController.setSelectedSuites([suiteIdText]);
+                }
+                if (caseName != undefined) {
+                    let suiteIdText = Panel.fileController.getSelectedSuites();
+                    let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
+                    Panel.fileController.setSelectedCases([caseIdText]);
+                }
 
+                Panel.recorder.prepareRecord();
+                let info = Panel.fileController.insertCommand("after", name, target, value);
+                let recordInfo = Panel.fileController.getRecord(info.caseIdText, info.index);
+                Panel.fileController.setSelectedRecords([`records-${info.index}`]);
+
+                workArea.syncCommands();
+                fileList.syncFiles();
+                workArea.setEditBlock({
+                    index: info.index, isOpen: true, isSelect: false,
+                    usedIndex: {
+                        target: recordInfo.target.usedIndex,
+                        value: recordInfo.value.usedIndex
+                    },
+                    value: {
+                        name: recordInfo.name,
+                        targets: recordInfo.target.options,
+                        values: recordInfo.value.options
+                    }
+                });
+            },
         }
     },
     //NOTE: 1. define func in var-crtler? 2. object or parameter? 3. local var? 4. logconsole in entrypoint?
