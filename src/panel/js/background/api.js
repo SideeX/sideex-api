@@ -86,6 +86,13 @@ export default {
                     fileList.syncFiles();
                 }
             },
+            setSelected: function (suiteName) {
+                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+                Panel.fileController.setSelectedSuites([suiteIdText]);
+            },
+            getSelected: function () {
+                return Panel.fileController.getSelectedSuites();
+            },
 
         },
         testCase: {
