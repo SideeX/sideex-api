@@ -618,10 +618,16 @@ export default {
             EntryPoint.fileList.syncFiles();
         }
     },
+    //TODO: return value
     setting: {
         setSpeed: (value) => {
-            Panel.setting.set({ delay: 500 * (5 - value) });
-            EntryPoint.toolBar.updateSpeed(parseInt(value));
+            if (value < 0 || value > 5) {
+                return Panel.log.pushLog('error', 'speed should be set from range 1 to 5');
+            } else {
+                Panel.setting.set({ delay: 500 * (5 - value) });
+                EntryPoint.toolBar.updateSpeed(parseInt(value));
+                return value;
+            }
         },
         getSpeed: () => {
             let speed = 5 - (Panel.setting.params.delay / 500);
