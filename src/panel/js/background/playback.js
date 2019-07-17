@@ -357,7 +357,6 @@ export class Playback {
                     await this.waitForResumption();
                     continue;
                 }
-
                 this.errorMessage = e.message ? e.message : e;
                 if (this.isReceivingEndError(this.errorMessage)) {
                     await this.delay();
@@ -496,11 +495,12 @@ export class Playback {
     async dispatchCommand(index, command) {
         let result;
         let name = command.name, target = command.target, value = command.value;
-
+        
         switch (this.determineCommandType(name)) {
             case Playback.COMMAND_TYPE_CONTENT:
             case Playback.COMMAND_TYPE_CONTEXTMENU: {
                 result = await this.windowController.sendCommand(name, target, value, index);
+                console.log(result);
                 return this.handleCommandResult(result);
             }
             case Playback.COMMAND_TYPE_EXTENSION:

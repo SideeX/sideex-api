@@ -20,6 +20,7 @@ import { Utils } from "../common/utils";
 import { PatternMatcher } from "../common/patternMatcher";
 import storage from "../common/storage";
 import { browser } from "webextension-polyfill-ts";
+import { escapeHTML } from "../common/escape.js";
 
 export class Sideex {
     constructor(browserBot) {
@@ -433,7 +434,7 @@ Sideex.commands = {
         while ((clientX != clientFinishX) || (clientY != clientFinishY)) {
             clientX = move(clientX, clientFinishX);
             clientY = move(clientY, clientFinishY);
-            this.browserbot.triggerMouseEvent(element, 'mousemove', true, clientX, clientY);
+            this.browserBot.triggerMouseEvent(element, 'mousemove', true, clientX, clientY);
         }
 
         this.browserBot.triggerMouseEvent(element, 'mousemove', true, clientFinishX, clientFinishY);
@@ -661,6 +662,22 @@ Sideex.commands = {
         }
         this.browserBot.openLocation(url);
         window.scrollTo(0, 0);
+    },
+
+    /**
+     *to set text in the element which's conentEditable attribute is true
+     *@param locator an element locator
+     *@param value the context of the element in html
+     */
+    async editContent(locator, value){
+        var element = this.browserBot.findElement(locator);
+        var editable = element.contentEditable;
+        if (editable == "true") {
+            element.innerHTML = escapeHTML(value);
+        } else {
+            throw new SeleniumError("The value of contentEditable attribute of this element is not true.");
+        }
+
     }
 };
 
