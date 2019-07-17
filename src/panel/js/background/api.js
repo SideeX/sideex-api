@@ -372,5 +372,51 @@ export default {
             let speed = 5 - (Panel.setting.params.delay / 500);
             return speed;
         }
+    },
+    playback: {
+        start: (mode, speed = 5) => {
+            this.setSpeed(speed);
+            console.log(mode);
+            Panel.recorder.isRecord = false;
+            Panel.playback.isPlay = true;
+            Panel.recorder.detach();
+
+            switch (mode) {
+                case "case": {
+                    Panel.playback.doPlay(0, 0); // Playback.PLAY_CASE
+                    break;
+                }
+                case "suite": {
+                    Panel.playback.doPlay(1, 0); // Playback.PLAY_SUITE
+                    break;
+                }
+                case "all": {
+                    Panel.playback.doPlay(2, 0); // Playback.PLAY_ALL_SUITES
+                    break;
+                }
+            }
+            EntryPoint.toolBar.syncButtonState();
+
+        },
+        stop: () => {
+            Panel.playback.stop();
+
+            Panel.playback.isPlay = false;
+            EntryPoint.toolBar.syncButtonState();
+        },
+        pause: () => {
+            Panel.playback.pause();
+
+            Panel.playback.isPlay = false;
+            Panel.playback.isPause = true;
+            EntryPoint.toolBar.syncButtonState();
+        },
+        resume: () => {
+            Panel.playback.resume();
+
+            Panel.playback.isPlay = true;
+            Panel.playback.isPause = false;
+            EntryPoint.toolBar.syncButtonState();
+        }
     }
 };
