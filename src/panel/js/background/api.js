@@ -300,10 +300,10 @@ export default {
 
         }
     },
-    //NOTE: 1. define func in var-crtler? 2. object or parameter? 3. local var? 4. logconsole in entrypoint?
+
     variables: {
         add: (name, value) => {
-            Panel.variables.addVariable(name, value);
+            return Panel.variables.addVariable(name, value);
         },
         get: (target) => {
             switch (target) {
@@ -319,21 +319,22 @@ export default {
                     break;
             }
         },
-        //NOTE: (name)?
         delete: (varIdText) => {
-            Panel.variables.deleteVariable(varIdText); //"var-0"
+            Panel.variables.deleteVariable(varIdText);
+            return varIdText;
         },
-        //NOTE: UI: setModal ?
         clearAll: () => {
             Panel.variables.clearVariables();
         },
         changeName: (varIdText, name) => {
             if (varIdText)
                 Panel.variables.updateVarName(varIdText, name);
+            return {varIdText, name};
         },
         changeValue: (varIdText, value) => {
             if (varIdText)
                 Panel.variables.updateVarValue(varIdText, value);
+            return {varIdText, value};
         }
     },
     recorder: {
@@ -356,10 +357,16 @@ export default {
             EntryPoint.fileList.syncFiles();
         }
     },
+    //TODO: return value
     setting: {
         setSpeed: (value) => {
-            Panel.setting.set({ delay: 500 * (5 - value) });
-            EntryPoint.toolBar.updateSpeed(parseInt(value));
+            if (value < 0 || value > 5) {
+                return Panel.log.pushLog('error', 'speed should be set from range 1 to 5');
+            } else {
+                Panel.setting.set({ delay: 500 * (5 - value) });
+                EntryPoint.toolBar.updateSpeed(parseInt(value));
+                return value;
+            }
         },
         getSpeed: () => {
             let speed = 5 - (Panel.setting.params.delay / 500);
