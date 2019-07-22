@@ -71,11 +71,11 @@ export default {
     },
     file: {
         testSuite: {
-            add: function (suiteName) {
+            add: function (suiteName = Panel.fileController.newUntitledName("suite")) {
                 let checkResult = Panel.fileController.checkNameValid(suiteName);
                 if (checkResult.result) {
                     if (!Panel.fileController.isSuiteNameUsed(suiteName)) {
-                        Panel.fileController.addTestSuite(suiteName);
+                        Panel.fileController.addTestSuite({ title: suiteName });
                     } else {
                         console.log("[Error] This name has been used. Please use another one.");
                     }
@@ -129,11 +129,12 @@ export default {
 
         },
         testCase: {
-            add: function (caseName, suiteIdText = Panel.fileController.getSelectedSuites()) {
+            add: function (caseName = Panel.fileController.newUntitledName("case"), 
+                            suiteIdText = Panel.fileController.getSelectedSuites()) {
                 let checkResult = Panel.fileController.checkNameValid(caseName);
                 if (checkResult.result) {
                     if (!Panel.fileController.isCaseNameUsed(caseName, suiteIdText)) {
-                        let caseIdText = Panel.fileController.addTestCase(caseName);
+                        let caseIdText = Panel.fileController.addTestCase({ title: caseName });
                         Panel.fileController.setCaseModified(caseIdText, true, true);
                     } else {
                         console.log("[Error] This name has been used. Please use another one.");
@@ -215,7 +216,7 @@ export default {
                 } else if (type === "value") {
                     record.value.usedIndex = usedIndex;
                 } else {
-                    console.log("${" + type+ "} is invalid type. Only accept \"target\", \"value\"");
+                    console.log("${" + type + "} is invalid type. Only accept \"target\", \"value\"");
                 }
             },
             clearStatus: function (caseIdText = Panel.fileController.getSelectedCases()) {

@@ -102,7 +102,8 @@ export class FileController {
         return name;
     }
 
-    addTestSuite(title = this.newUntitledName("suite"), cases = []) {
+    addTestSuite(suiteData) {
+        let title = suiteData && suiteData.title ? suiteData.title : this.newUntitledName("suite");
         if (title.includes("Untitled Test Suite")) {
             this.testSuite.untitledCount++;
         }
@@ -111,18 +112,21 @@ export class FileController {
         this.testSuite.suites[idText] = {
             fileName: `${title}.html`,
             title: title,
-            cases: cases,
+            cases: [],
             modified: true,
-            status: "default"
+            status: "default",
+            ...suiteData
         };
         this.testSuite.order.push(idText);
         this.testSuite.nameMap[title] = idText;
+        this.setSelectedCases([]);
         this.setSelectedSuites([idText]);
 
         return idText;
     }
 
-    addTestCase(title = this.newUntitledName("case"), records = []) {
+    addTestCase(caseData) {
+        let title = caseData && caseData.title ? caseData.title : this.newUntitledName("case");
         if (title.includes("Untitled Test Case")) {
             this.testCase.untitledCount++;
         }
@@ -132,10 +136,11 @@ export class FileController {
         let idText = `case-${this.testCase.count++}`;
         this.testCase.cases[idText] = {
             title: title,
-            records: records,
+            records: [],
             suiteIdText: suiteIdText,
             modified: true,
-            status: "default"
+            status: "default",
+            ...caseData
         };
 
         this.setSelectedCases([idText]);
@@ -280,6 +285,22 @@ export class FileController {
         this.testCase.cases[caseIdText].modified = modified;
         setSuite &&
             this.setSuiteModified(this.testCase.cases[caseIdText].suiteIdText, modified, false);
+    }
+
+    setTestSuite(suiteIdText, testSuite) {
+        this.testSuite.suites[suiteIdText] = testSuite;
+    }
+
+    setTestCase(caseIdText, testCase) {
+        this.testCase.cases[caseIdText] = testCase;
+    }
+
+    setTestSuite(suiteIdText, newSuiteIdText) {
+        this.testSuite.suites[suiteIdText] = this.testSuite.suites[newSuiteIdText]
+    }
+
+    setTestCase(caseIdText, newCaseIdText) {
+        this.testCase.cases[caseIdText] = this.testCase.cases[newCaseIdText];
     }
 
     setRecordStatusByIndex(caseIdText, index, status) {
