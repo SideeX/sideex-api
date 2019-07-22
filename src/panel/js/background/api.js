@@ -282,17 +282,45 @@ export default {
     
                 workArea.syncCommands();
             },
-            clearStatus: function () {
-                let caseIdText = Panel.fileController.getSelectedCases()[0];
+            setBreakpoint: function (bool, 
+                                    recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
+                                    caseIdText  = Panel.fileController.getSelectedCases()) {
+                let record = Panel.fileController.getRecord(caseIdText, recordIndex);
+                record.breakpoint = bool;
+            },
+            getBreakpoint: function (recordIndex, caseIdText  = Panel.fileController.getSelectedCases()) {
+                let record = Panel.fileController.getRecord(caseIdText, recordIndex);
+                return record.breakpoint;
+            },
+            changeUsedIndex: function(usedIndex, type, 
+                                        recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
+                                        caseIdText  = Panel.fileController.getSelectedCases()) {
+                let record = Panel.fileController.getRecord(caseIdText, recordIndex);
+                if (type === "target") {
+                    record.target.usedIndex = usedIndex;
+                } else if (type === "value") {
+                    record.value.usedIndex = usedIndex;
+                } else {
+                    console.log("${" + type+ "} is invalid type. Only accept \"target\", \"value\"");
+                }
+            },
+            clearStatus: function (caseIdText = Panel.fileController.getSelectedCases()) {
                 let records = Panel.fileController.getRecords(caseIdText);
                 Panel.fileController.clearIncludedRecords(records);
                 Panel.fileController.clearRecordsStatus(["status", "snapshot"], records, true);
-                workArea.syncCommands();
-                fileList.syncFiles();
             },
             clearAllStatus: function() {
-                // iterate clear status
-
+                let suiteIdTexts = Panel.fileController.getAllSuiteIdTexts();
+                if (suiteIdTexts.length > 0) {
+                    for (let suiteIdText of suiteIdTexts) {
+                        let caseIdTexts = Panel.fileController.getCaseIdTextsInSuite(suiteIdText);
+                        for (let caseIdText of caseIdTexts) {
+                            let records = Panel.fileController.getRecords(caseIdText);
+                            Panel.fileController.clearIncludedRecords(records);
+                            Panel.fileController.clearRecordsStatus(["status", "snapshot"], records, true);
+                        }
+                    }
+                }
             },
             setSelected: function (recordIdText) {
                 Panel.fileController.setSelectedRecords([recordIdText]);
