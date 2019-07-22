@@ -69,9 +69,6 @@ export default {
             EntryPoint.toolBar.updateSpeed(parseInt(value));
         }
 
-    }
-};
-
     },
     file: {
         testSuite: {
@@ -91,12 +88,13 @@ export default {
                     fileList.setModal({ error: checkResult.message });
                 }
             },
-            get: function(suiteName) {
-                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+            get: function(suiteIdText) {
                 return Panel.fileController.getTestSuite(suiteIdText);
             },
-            rename: function (suiteName, newSuiteName) {
-                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+            getSuiteIdText: function(suiteName) {
+                return Panel.fileController.getSuiteKey(suiteName);
+            },
+            rename: function (suiteIdText, newSuiteName) {
                 let checkResult = Panel.fileController.checkNameValid(newSuiteName);
                 if (checkResult.result) {
                     if (!Panel.fileController.isSuiteNameUsed(newSuiteName)) {
@@ -113,19 +111,12 @@ export default {
                     fileList.setModal({ error: checkResult.message });
                 }
             },
-            copy: function(suiteName, newSuiteName) {
-                // check is suiteName exist
+            copy: function(suiteIdText, newSuiteName) {
+                // check is suiteIdText exist
             },
-            cut: function() {
-
-            },
-            paste: function() {
-
-            },
-            close: function (suiteNames) {
-                if (suiteNames.length > 0) {
-                    for (let suiteName of suiteNames) {
-                        let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+            close: function (suiteIdTexts) {
+                if (suiteIdTexts.length > 0) {
+                    for (let suiteIdText of suiteIdTexts) {
                         Panel.fileController.deleteSuite(suiteIdText);
                     }
                     fileList.setModal({ isOpen: false, type: "default" });
@@ -142,8 +133,7 @@ export default {
                     fileList.syncFiles();
                 }
             },
-            setSelected: function (suiteName) {
-                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+            setSelected: function (suiteIdText) {
                 Panel.fileController.setSelectedSuites([suiteIdText]);
             },
             getSelected: function () {
@@ -152,11 +142,8 @@ export default {
 
         },
         testCase: {
-            add: function (caseName, suiteName) {
-                let suiteIdText = suiteName === undefined ?
-                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
+            add: function (caseName, suiteIdText = Panel.fileController.getSelectedSuites()) {
                 let checkResult = Panel.fileController.checkNameValid(caseName);
-                // console.log("selectedSuiteIdText: ", Panel.fileController.getSelectedSuites());
                 if (checkResult.result) {
                     if (!Panel.fileController.isCaseNameUsed(caseName, suiteIdText)) {
                         let caseIdText = Panel.fileController.addTestCase(caseName);
@@ -172,16 +159,13 @@ export default {
                     fileList.setModal({ error: checkResult.message });
                 }
             },
-            get: function(caseName, suiteName) {
-                let suiteIdText = suiteName === undefined ?
-                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
-                let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
+            get: function(caseIdText) {
                 return Panel.fileController.getTestCase(caseIdText);
             },
-            rename: function (caseName, newCaseName, suiteName) {
-                let suiteIdText = suiteName === undefined ?
-                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
-                let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
+            getCaseIdText: function(caseName, suiteIdText = Panel.fileController.getSelectedSuites()) {
+                return Panel.fileController.getCaseKey(suiteIdText, caseName);
+            },
+            rename: function (caseIdText, newCaseName, suiteIdText = Panel.fileController.getSelectedSuites()) {
                 let checkResult = Panel.fileController.checkNameValid(newCaseName);
                 if (checkResult.result) {
                     if (!Panel.fileController.isCaseNameUsed(newCaseName, suiteIdText)) {
@@ -198,10 +182,7 @@ export default {
                     fileList.setModal({ error: checkResult.message });
                 }
             },
-            remove: function (caseName, suiteName) {
-                let suiteIdText = suiteName === undefined ?
-                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
-                let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
+            remove: function (caseIdText) {
                 Panel.fileController.setCaseModified(caseIdText, true, true);
                 if (caseIdText) {
                     fileList.setModal({ isOpen: false, type: "default" });
@@ -209,24 +190,19 @@ export default {
                     fileList.syncFiles();
                 }
             },
-            setSelected: function (caseName, suiteName) {
-                let suiteIdText = suiteName === undefined ?
-                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
-                let caseIdText = Panel.fileController.getCaseKey(suiteIdText, caseName);
+            setSelected: function (caseIdText) {
                 Panel.fileController.setSelectedCases([caseIdText]);
             },
             getSelected: function () {
                 return Panel.fileController.getSelectedCases();
             },
         },
-        command: {
-            add: function (commandName, commandTarget = { options: [{ type: "other", value: "" }] }, commandValue = { options: [{ type: "other", value: "" }] }, caseName, suiteName) {
-                let suiteIdText = suiteName === undefined ?
-                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
-                Panel.fileController.setSelectedSuites([suiteIdText]);
+        record: {
+            add: function (commandName, 
+                            commandTarget = { options: [{ type: "other", value: "" }] }, 
+                            commandValue = { options: [{ type: "other", value: "" }] }, 
+                            caseIdText = Panel.fileController.getSelectedCases()) {
 
-                let caseIdText = caseName === undefined ?
-                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
                 Panel.fileController.setSelectedCases([caseIdText]);
 
                 Panel.recorder.prepareRecord();
@@ -249,30 +225,15 @@ export default {
                     }
                 });
             },
-            get: function(recordIndex, caseName, suiteName) {
-                let suiteIdText = suiteName === undefined ?
-                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
-                let caseIdText = caseName === undefined ?
-                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
+            get: function(recordIndex, caseIdText = Panel.fileController.getSelectedCases()) {
                 return Panel.fileController.getRecord(caseIdText, recordIndex);
             },
-            delete: function (recordIndex, caseName, suiteName) {
-                let suiteIdText = suiteName === undefined ?
-                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
-                let caseIdText = caseName === undefined ?
-                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
-                // let recordIdText = Panel.fileController.getSelectedRecords()[0];
-                // let recordIndex = parseInt(recordIdText.split('-')[1]);
+            delete: function (recordIndex, caseIdText = Panel.fileController.getSelectedCases()) {
                 Panel.fileController.deleteRecord(caseIdText, recordIndex);
     
                 workArea.syncCommands();
             },
-            deleteAll: function (caseName, suiteName) {
-                let suiteIdText = suiteName === undefined ?
-                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
-                let caseIdText = caseName === undefined ?
-                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
-
+            deleteAll: function (caseIdText = Panel.fileController.getSelectedCases()) {
                 Panel.fileController.deleteAllRecords(caseIdText);
     
                 workArea.syncCommands();
@@ -280,15 +241,13 @@ export default {
             clearStatus: function () {
                 let caseIdText = Panel.fileController.getSelectedCases()[0];
                 let records = Panel.fileController.getRecords(caseIdText);
-                // let caseEle = Panel.fileController.getTestCase(caseIdText);
                 Panel.fileController.clearIncludedRecords(records);
                 Panel.fileController.clearRecordsStatus(["status", "snapshot"], records, true);
-                // Panel.fileController.setFileStatus(caseEle, "default");
-                // Panel.snapshot.resizeAllSnapshots();
                 workArea.syncCommands();
                 fileList.syncFiles();
             },
             clearAllStatus: function() {
+                // iterate clear status
 
             },
             setSelected: function (recordIdText) {
