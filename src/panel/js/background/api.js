@@ -1,5 +1,4 @@
 import { browser } from "webextension-polyfill-ts";
-import { logConsole, toolBar, fileList, app, workArea, refreshUI } from "../UI/entryPoint";
 
 export default {
     toolBar: {
@@ -77,15 +76,11 @@ export default {
                 if (checkResult.result) {
                     if (!Panel.fileController.isSuiteNameUsed(suiteName)) {
                         Panel.fileController.addTestSuite(suiteName);
-                        fileList.setModal({ isOpen: false, type: "default" });
-                        fileList.syncFiles();
                     } else {
-                        fileList.setModal({
-                            error: "This name has been used. Please use another one."
-                        });
+                        console.log("[Error] This name has been used. Please use another one.");
                     }
                 } else {
-                    fileList.setModal({ error: checkResult.message });
+                    console.log("[Error]", checkResult.message);
                 }
             },
             get: function(suiteIdText) {
@@ -100,15 +95,11 @@ export default {
                     if (!Panel.fileController.isSuiteNameUsed(newSuiteName)) {
                         Panel.fileController.setSuiteTitle(suiteIdText, newSuiteName);
                         Panel.fileController.setSuiteModified(suiteIdText, true, false);
-                        fileList.setModal({ isOpen: false, type: "default" });
-                        fileList.syncFiles();
                     } else {
-                        fileList.setModal({
-                            error: "The test suite name has been used. Please use another name."
-                        });
+                        console.log("[Error] The test suite name has been used. Please use another name.");
                     }
                 } else {
-                    fileList.setModal({ error: checkResult.message });
+                    console.log("[Error]", checkResult.message);
                 }
             },
             copy: function(suiteIdText, newSuiteName) {
@@ -119,8 +110,6 @@ export default {
                     for (let suiteIdText of suiteIdTexts) {
                         Panel.fileController.deleteSuite(suiteIdText);
                     }
-                    fileList.setModal({ isOpen: false, type: "default" });
-                    fileList.syncFiles();
                 }
             },
             closeAll: function () {
@@ -129,8 +118,6 @@ export default {
                     for (let suiteIdText of suiteIdTexts) {
                         Panel.fileController.deleteSuite(suiteIdText);
                     }
-                    fileList.setModal({ isOpen: false, type: "default" });
-                    fileList.syncFiles();
                 }
             },
             setSelected: function (suiteIdText) {
@@ -148,15 +135,11 @@ export default {
                     if (!Panel.fileController.isCaseNameUsed(caseName, suiteIdText)) {
                         let caseIdText = Panel.fileController.addTestCase(caseName);
                         Panel.fileController.setCaseModified(caseIdText, true, true);
-                        fileList.setModal({ isOpen: false, type: "default" });
-                        fileList.syncFiles();
                     } else {
-                        fileList.setModal({
-                            error: "This name has been used. Please use another one."
-                        });
+                        console.log("[Error] This name has been used. Please use another one.");
                     }
                 } else {
-                    fileList.setModal({ error: checkResult.message });
+                    console.log("[Error]", checkResult.message);
                 }
             },
             get: function(caseIdText) {
@@ -171,23 +154,17 @@ export default {
                     if (!Panel.fileController.isCaseNameUsed(newCaseName, suiteIdText)) {
                         Panel.fileController.setCaseTitle(caseIdText, newCaseName);
                         Panel.fileController.setCaseModified(caseIdText, true, true);
-                        fileList.setModal({ isOpen: false, type: "default" });
-                        fileList.syncFiles();
                     } else {
-                        fileList.setModal({
-                            error: "The test case name has been used. Please use another name."
-                        });
+                        console.log("[Error] The test case name has been used. Please use another name.");
                     }
                 } else {
-                    fileList.setModal({ error: checkResult.message });
+                    console.log("[Error]", checkResult.message);
                 }
             },
             remove: function (caseIdText) {
                 Panel.fileController.setCaseModified(caseIdText, true, true);
                 if (caseIdText) {
-                    fileList.setModal({ isOpen: false, type: "default" });
                     Panel.fileController.deleteCase(caseIdText);
-                    fileList.syncFiles();
                 }
             },
             setSelected: function (caseIdText) {
@@ -209,34 +186,15 @@ export default {
                 let info = Panel.fileController.insertCommand("after", commandName, commandTarget, commandValue);
                 let recordInfo = Panel.fileController.getRecord(info.caseIdText, info.index);
                 Panel.fileController.setSelectedRecords([`records-${info.index}`]);
-
-                workArea.syncCommands();
-                fileList.syncFiles();
-                workArea.setEditBlock({
-                    index: info.index, isOpen: true, isSelect: false,
-                    usedIndex: {
-                        target: recordInfo.target.usedIndex,
-                        value: recordInfo.value.usedIndex
-                    },
-                    value: {
-                        name: recordInfo.name,
-                        targets: recordInfo.target.options,
-                        values: recordInfo.value.options
-                    }
-                });
             },
             get: function(recordIndex, caseIdText = Panel.fileController.getSelectedCases()) {
                 return Panel.fileController.getRecord(caseIdText, recordIndex);
             },
             delete: function (recordIndex, caseIdText = Panel.fileController.getSelectedCases()) {
                 Panel.fileController.deleteRecord(caseIdText, recordIndex);
-    
-                workArea.syncCommands();
             },
             deleteAll: function (caseIdText = Panel.fileController.getSelectedCases()) {
                 Panel.fileController.deleteAllRecords(caseIdText);
-    
-                workArea.syncCommands();
             },
             setBreakpoint: function (bool, 
                                     recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
