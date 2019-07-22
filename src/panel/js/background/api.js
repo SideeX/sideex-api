@@ -55,37 +55,6 @@ export default {
                     }
                 }
             },
-            setSelected: function (suiteIdTexts) {
-                Panel.fileController.setSelectedSuites(suiteIdTexts);
-            },
-            getSelected: function () {
-                return Panel.fileController.getSelectedSuites();
-            },
-
-            },
-            paste: function() {
-
-            },
-            close: function (suiteNames) {
-                if (suiteNames.length > 0) {
-                    for (let suiteName of suiteNames) {
-                        let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
-                        Panel.fileController.deleteSuite(suiteIdText);
-                    }
-                    fileList.setModal({ isOpen: false, type: "default" });
-                    fileList.syncFiles();
-                }
-            },
-            closeAll: function () {
-                let suiteIdTexts = Panel.fileController.getAllSuiteIdTexts();
-                if (suiteIdTexts.length > 0) {
-                    for (let suiteIdText of suiteIdTexts) {
-                        Panel.fileController.deleteSuite(suiteIdText);
-                    }
-                    fileList.setModal({ isOpen: false, type: "default" });
-                    fileList.syncFiles();
-                }
-            },
             setSelected: function (suiteIdText) {
                 Panel.fileController.setSelectedSuites([suiteIdText]);
             },
@@ -253,34 +222,15 @@ export default {
                 let info = Panel.fileController.insertCommand("after", commandName, commandTarget, commandValue);
                 let recordInfo = Panel.fileController.getRecord(info.caseIdText, info.index);
                 Panel.fileController.setSelectedRecords([`records-${info.index}`]);
-
-                workArea.syncCommands();
-                fileList.syncFiles();
-                workArea.setEditBlock({
-                    index: info.index, isOpen: true, isSelect: false,
-                    usedIndex: {
-                        target: recordInfo.target.usedIndex,
-                        value: recordInfo.value.usedIndex
-                    },
-                    value: {
-                        name: recordInfo.name,
-                        targets: recordInfo.target.options,
-                        values: recordInfo.value.options
-                    }
-                });
             },
             get: function(recordIndex, caseIdText = Panel.fileController.getSelectedCases()) {
                 return Panel.fileController.getRecord(caseIdText, recordIndex);
             },
             delete: function (recordIndex, caseIdText = Panel.fileController.getSelectedCases()) {
                 Panel.fileController.deleteRecord(caseIdText, recordIndex);
-    
-                workArea.syncCommands();
             },
             deleteAll: function (caseIdText = Panel.fileController.getSelectedCases()) {
                 Panel.fileController.deleteAllRecords(caseIdText);
-    
-                workArea.syncCommands();
             },
             setBreakpoint: function (bool, 
                                     recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
