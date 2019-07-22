@@ -86,8 +86,7 @@ export default {
                     fileList.syncFiles();
                 }
             },
-            setSelected: function (suiteName) {
-                let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
+            setSelected: function (suiteIdText) {
                 Panel.fileController.setSelectedSuites([suiteIdText]);
             },
             getSelected: function () {
@@ -248,8 +247,6 @@ export default {
                 return Panel.fileController.getSelectedRecords();
             },
 
-                let caseIdText = caseName === undefined ?
-                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
                 Panel.fileController.setSelectedCases([caseIdText]);
 
                 Panel.recorder.prepareRecord();
@@ -272,30 +269,15 @@ export default {
                     }
                 });
             },
-            get: function(recordIndex, caseName, suiteName) {
-                let suiteIdText = suiteName === undefined ?
-                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
-                let caseIdText = caseName === undefined ?
-                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
+            get: function(recordIndex, caseIdText = Panel.fileController.getSelectedCases()) {
                 return Panel.fileController.getRecord(caseIdText, recordIndex);
             },
-            delete: function (recordIndex, caseName, suiteName) {
-                let suiteIdText = suiteName === undefined ?
-                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
-                let caseIdText = caseName === undefined ?
-                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
-                // let recordIdText = Panel.fileController.getSelectedRecords()[0];
-                // let recordIndex = parseInt(recordIdText.split('-')[1]);
+            delete: function (recordIndex, caseIdText = Panel.fileController.getSelectedCases()) {
                 Panel.fileController.deleteRecord(caseIdText, recordIndex);
     
                 workArea.syncCommands();
             },
-            deleteAll: function (caseName, suiteName) {
-                let suiteIdText = suiteName === undefined ?
-                    Panel.fileController.getSelectedSuites() : Panel.fileController.getSuiteKey(suiteName);
-                let caseIdText = caseName === undefined ?
-                    Panel.fileController.getSelectedCases() : Panel.fileController.getCaseKey(suiteIdText, caseName);
-
+            deleteAll: function (caseIdText = Panel.fileController.getSelectedCases()) {
                 Panel.fileController.deleteAllRecords(caseIdText);
     
                 workArea.syncCommands();
@@ -303,15 +285,13 @@ export default {
             clearStatus: function () {
                 let caseIdText = Panel.fileController.getSelectedCases()[0];
                 let records = Panel.fileController.getRecords(caseIdText);
-                // let caseEle = Panel.fileController.getTestCase(caseIdText);
                 Panel.fileController.clearIncludedRecords(records);
                 Panel.fileController.clearRecordsStatus(["status", "snapshot"], records, true);
-                // Panel.fileController.setFileStatus(caseEle, "default");
-                // Panel.snapshot.resizeAllSnapshots();
                 workArea.syncCommands();
                 fileList.syncFiles();
             },
             clearAllStatus: function() {
+                // iterate clear status
 
             },
             setSelected: function (recordIdText) {
