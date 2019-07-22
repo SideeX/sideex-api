@@ -251,7 +251,7 @@ export default {
                 } else if (type === "value") {
                     record.value.usedIndex = usedIndex;
                 } else {
-                    console.log("${" + type+ "} is invalid type. Only accept \"target\", \"value\"");
+                    console.log("${" + type + "} is invalid type. Only accept \"target\", \"value\"");
                 }
             },
             clearStatus: function (caseIdText = Panel.fileController.getSelectedCases()) {

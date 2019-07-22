@@ -301,6 +301,22 @@ export class FileController {
             this.setSuiteModified(this.testCase.cases[caseIdText].suiteIdText, modified, false);
     }
 
+    setTestSuite(suiteIdText, testSuite) {
+        this.testSuite.suites[suiteIdText] = testSuite;
+    }
+
+    setTestCase(caseIdText, testCase) {
+        this.testCase.cases[caseIdText] = testCase;
+    }
+
+    setTestSuite(suiteIdText, newSuiteIdText) {
+        this.testSuite.suites[suiteIdText] = this.testSuite.suites[newSuiteIdText]
+    }
+
+    setTestCase(caseIdText, newCaseIdText) {
+        this.testCase.cases[caseIdText] = this.testCase.cases[newCaseIdText];
+    }
+
     setRecordStatusByIndex(caseIdText, index, status) {
         this.testCase.cases[caseIdText].records[index].status = status;
     }
