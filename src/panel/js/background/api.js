@@ -593,23 +593,48 @@ export default {
         }
     },
     playback: {
-        start: (mode, speed = 5) => {
-            this.setSpeed(speed);
-            console.log(mode);
+        start: (mode = "all", idText = undefined, speed = 5) => {
+
+            SideeX.default.setting.setSpeed(speed);
+
             Panel.recorder.isRecord = false;
             Panel.playback.isPlay = true;
             Panel.recorder.detach();
 
             switch (mode) {
                 case "case": {
-                    Panel.playback.doPlay(0, 0); // Playback.PLAY_CASE
-                    break;
+                    let caseIdText = idText === undefined ? Panel.fileController.getSelectedCases()[0] : idText;
+                    if (Panel.fileController.getTestCase(caseIdText)) {
+                        Panel.fileController.setSelectedCases([caseIdText]);
+                        Panel.playback.doPlay(0, 0); // Playback.PLAY_CASE
+                        return caseIdText;
+                    } else {
+                        if (caseIdText) {
+                            return Panel.log.pushLog('error', caseIdText + " doesn't exist");
+                        } else {
+                            return Panel.log.pushLog('error', "There is no cases available, please record one first");
+                        }
+                    }
                 }
                 case "suite": {
-                    Panel.playback.doPlay(1, 0); // Playback.PLAY_SUITE
-                    break;
+                    let suiteIdText = idText === undefined ? Panel.fileController.getSelectedSuites()[0] : idText;
+                    if (Panel.fileController.getTestSuite(suiteIdText)) {
+                        Panel.fileController.setSelectedSuites([suiteIdText]);
+                        Panel.playback.doPlay(0, 0); // Playback.PLAY_CASE
+                        return suiteIdText;
+                    } else {
+                        if (suiteIdText) {
+                            return Panel.log.pushLog('error', suiteIdText + " doesn't exist");
+                        } else {
+                            return Panel.log.pushLog('error', "There is no suites available, please record one first");
+                        }
+                    }
                 }
                 case "all": {
+                    let caseIdText = idText === undefined ? Panel.fileController.getSelectedCases()[0] : idText;
+                    if (Panel.fileController.getTestCase(caseIdText) === undefined) {
+                        return Panel.log.pushLog('error', "There is no suites available, please record one first");
+                    }
                     Panel.playback.doPlay(2, 0); // Playback.PLAY_ALL_SUITES
                     break;
                 }
