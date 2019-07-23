@@ -284,15 +284,24 @@ export default {
         }
     },
     recorder: {
-        start: () => {
-            console.log("Recording");
-            Panel.recorder.attach();
-            Panel.recorder.notificationCount = 0;
+        start: (caseIdText = Panel.fileController.getSelectedCases()[0]) => {
             Panel.recorder.prepareRecord();
-            Panel.recorder.isRecord = true;
 
-            EntryPoint.toolBar.syncButtonState();
-            EntryPoint.fileList.syncFiles();
+            if (Panel.fileController.getTestCase(caseIdText)) {
+                console.log("Recording");
+                Panel.fileController.setSelectedCases([caseIdText]);
+                Panel.recorder.attach();
+                Panel.recorder.notificationCount = 0;
+
+                Panel.recorder.isRecord = true;
+
+                EntryPoint.toolBar.syncButtonState();
+                EntryPoint.fileList.syncFiles();
+            } else {
+                if (caseIdText)
+                    return Panel.log.pushLog('error', caseIdText + " is not exist");
+            }
+
         },
         stop: () => {
             console.log("Stop");
