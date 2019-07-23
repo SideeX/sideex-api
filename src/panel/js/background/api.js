@@ -59,7 +59,7 @@ export default {
                 Panel.fileController.setSelectedSuites([suiteIdText]);
             },
             getSelected: function () {
-                return Panel.fileController.getSelectedSuites();
+                return Panel.fileController.getSelectedSuites()[0];
             },
 
         },
@@ -122,7 +122,7 @@ export default {
                 Panel.fileController.setSelectedCases(caseIdTexts);
             },
             getSelected: function () {
-                return Panel.fileController.getSelectedCases();
+                return Panel.fileController.getSelectedCases()[0];
             },
         },
         record: {
@@ -223,28 +223,56 @@ export default {
                 let recordInfo = Panel.fileController.getRecord(info.caseIdText, info.index);
                 Panel.fileController.setSelectedRecords([`records-${info.index}`]);
             },
-            get: function(recordIndex, caseIdText = Panel.fileController.getSelectedCases()) {
+            get: function(recordIndex, caseIdText = Panel.fileController.getSelectedCases()[0]) {
                 return Panel.fileController.getRecord(caseIdText, recordIndex);
             },
-            delete: function (recordIndex, caseIdText = Panel.fileController.getSelectedCases()) {
+            delete: function (recordIndex, caseIdText = Panel.fileController.getSelectedCases()[0]) {
                 Panel.fileController.deleteRecord(caseIdText, recordIndex);
             },
-            deleteAll: function (caseIdText = Panel.fileController.getSelectedCases()) {
+            deleteAll: function (caseIdText = Panel.fileController.getSelectedCases()[0]) {
                 Panel.fileController.deleteAllRecords(caseIdText);
+            },
+            copy: function (srcCaseIdText = Panel.fileController.getSelectedCases()[0],
+                            srcRecordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
+                            destCaseIdText = Panel.fileController.getSelectedCases()[0],
+                            destRecordIndex = Panel.fileController.getRecordNum(destCaseIdText) - 1) {
+                if (destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText)) {
+                    console.log("[Error] destRecordIndex out of bound");
+                    return;
+                }
+                let record = Panel.fileController.getRecord(srcCaseIdText, srcRecordIndex);
+                Panel.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
+            },
+            cut: function (srcCaseIdText = Panel.fileController.getSelectedCases()[0],
+                            srcRecordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
+                            destCaseIdText = Panel.fileController.getSelectedCases()[0],
+                            destRecordIndex = Panel.fileController.getRecordNum(destCaseIdText) - 1) {
+                if (srcCaseIdText === destCaseIdText
+                        && destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText) - 1) {
+                    console.log("[Error] destRecordIndex out of bound");
+                    return;
+                } else if (srcCaseIdText !== destCaseIdText 
+                        && destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText)) {
+                    console.log("[Error] destRecordIndex out of bound");
+                    return;
+                }
+                let record = Panel.fileController.getRecord(srcCaseIdText, srcRecordIndex);
+                Panel.fileController.deleteRecord(srcCaseIdText, srcRecordIndex);
+                Panel.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
             },
             setBreakpoint: function (bool, 
                                     recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
-                                    caseIdText  = Panel.fileController.getSelectedCases()) {
+                                    caseIdText  = Panel.fileController.getSelectedCases()[0]) {
                 let record = Panel.fileController.getRecord(caseIdText, recordIndex);
                 record.breakpoint = bool;
             },
-            getBreakpoint: function (recordIndex, caseIdText  = Panel.fileController.getSelectedCases()) {
+            getBreakpoint: function (recordIndex, caseIdText  = Panel.fileController.getSelectedCases()[0]) {
                 let record = Panel.fileController.getRecord(caseIdText, recordIndex);
                 return record.breakpoint;
             },
             changeUsedIndex: function(usedIndex, type, 
                                         recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
-                                        caseIdText  = Panel.fileController.getSelectedCases()) {
+                                        caseIdText  = Panel.fileController.getSelectedCases()[0]) {
                 let record = Panel.fileController.getRecord(caseIdText, recordIndex);
                 if (type === "target") {
                     record.target.usedIndex = usedIndex;
@@ -254,7 +282,7 @@ export default {
                     console.log("${" + type + "} is invalid type. Only accept \"target\", \"value\"");
                 }
             },
-            clearStatus: function (caseIdText = Panel.fileController.getSelectedCases()) {
+            clearStatus: function (caseIdText = Panel.fileController.getSelectedCases()[0]) {
                 let records = Panel.fileController.getRecords(caseIdText);
                 Panel.fileController.clearIncludedRecords(records);
                 Panel.fileController.clearRecordsStatus(["status", "snapshot"], records, true);
