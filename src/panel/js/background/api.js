@@ -414,5 +414,26 @@ export default {
             Panel.playback.isPause = false;
             EntryPoint.toolBar.syncButtonState();
         }
+    },
+    others: {
+        selectElement: {
+            start: () => {
+                Panel.recorder.isSelecting = true;
+                if (Panel.recorder.isRecord)
+                    SideeX.default.recorder.start();
+                Panel.recorder.startSelectingTarget()
+                    .catch((error) => {
+                        console.error(error);
+                        log.pushLog("error", "Current active tab can't use inspector or was closed.");
+                        Panel.recorder.isSelecting = false;
+                        Panel.recorder.stopSelectingTarget();
+                    });
+            },
+            stop: () => {
+                Panel.recorder.isSelecting = false;
+                Panel.recorder.stopSelectingTarget()
+                    .catch((error) => { console.error(error); });
+            }
+        }
     }
 };
