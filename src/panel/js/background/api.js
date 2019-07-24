@@ -16,7 +16,7 @@ export default {
                     throw new Error(checkResult.message);
                 }
             },
-            get: function(suiteIdText) { // ask: 要判斷 ｓｕｉｔｅＩｄＴｅｘｔ？？
+            get: function(suiteIdText) {
                 return Panel.fileController.getTestSuite(suiteIdText);
             },
             getSuiteIdText: function(suiteName) {
@@ -65,7 +65,7 @@ export default {
         },
         testCase: {
             add: function (caseData = { title: Panel.fileController.newUntitledName("case"),
-                                        suiteIdText: Panel.fileController.getSelectedSuites()[0] }) {
+                                        suiteIdText: Panel.fileController.getSelectedSuites()[0]}) {
                 let checkResult = Panel.fileController.checkNameValid(caseData.title);
                 if (checkResult.result) {
                     if (!Panel.fileController.isCaseNameUsed(caseData.title, caseData.suiteIdText)) {
