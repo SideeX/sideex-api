@@ -1,4 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
+import cloneDeep from "lodash/cloneDeep";
 
 export default {
     toolBar: {
@@ -71,11 +72,11 @@ export default {
     },
     file: {
         testSuite: {
-            add: function (suiteName = Panel.fileController.newUntitledName("suite")) {
-                let checkResult = Panel.fileController.checkNameValid(suiteName);
+            add: function (suiteData = { title : Panel.fileController.newUntitledName("suite") }) {
+                let checkResult = Panel.fileController.checkNameValid(suiteData.title);
                 if (checkResult.result) {
-                    if (!Panel.fileController.isSuiteNameUsed(suiteName)) {
-                        Panel.fileController.addTestSuite({ title: suiteName });
+                    if (!Panel.fileController.isSuiteNameUsed(suiteData.title)) {
+                        return Panel.fileController.addTestSuite(suiteData);
                     } else {
                         console.log("[Error] This name has been used. Please use another one.");
                     }
@@ -83,7 +84,7 @@ export default {
                     console.log("[Error]", checkResult.message);
                 }
             },
-            get: function(suiteIdText) {
+            get: function(suiteIdText) { // ask: 要判斷 ｓｕｉｔｅＩｄＴｅｘｔ？？
                 return Panel.fileController.getTestSuite(suiteIdText);
             },
             getSuiteIdText: function(suiteName) {
@@ -94,7 +95,7 @@ export default {
                 if (checkResult.result) {
                     if (!Panel.fileController.isSuiteNameUsed(newSuiteName)) {
                         Panel.fileController.setSuiteTitle(suiteIdText, newSuiteName);
-                        Panel.fileController.setSuiteModified(suiteIdText, true, false);
+                        return newSuiteName;
                     } else {
                         console.log("[Error] The test suite name has been used. Please use another name.");
                     }
@@ -103,7 +104,6 @@ export default {
                 }
             },
             copy: function(suiteIdText = Panel.fileController.getSelectedSuites()[0]) {
-                
             },
             close: function (suiteIdTexts) {
                 if (suiteIdTexts.length > 0) {
@@ -120,23 +120,22 @@ export default {
                     }
                 }
             },
-            setSelected: function (suiteIdText) {
-                Panel.fileController.setSelectedSuites([suiteIdText]);
+            setSelected: function (suiteIdTexts) {
+                Panel.fileController.setSelectedSuites(suiteIdTexts);
             },
             getSelected: function () {
-                return Panel.fileController.getSelectedSuites()[0];
+                return Panel.fileController.getSelectedSuites();
             },
 
         },
         testCase: {
-            add: function (caseName = Panel.fileController.newUntitledName("case"), 
-                            suiteIdText = Panel.fileController.getSelectedSuites()[0]) {
-                let checkResult = Panel.fileController.checkNameValid(caseName);
+            // 改成 caseData
+            add: function (caseData = { title : Panel.fileController.newUntitledName("case"),
+                                        suiteIdText : Panel.fileController.getSelectedSuites()[0]}) {
+                let checkResult = Panel.fileController.checkNameValid(caseData.title);
                 if (checkResult.result) {
-                    if (!Panel.fileController.isCaseNameUsed(caseName, suiteIdText)) {
-                        Panel.fileController.setSelectedSuites([suiteIdText]);
-                        let caseIdText = Panel.fileController.addTestCase({ title: caseName });
-                        Panel.fileController.setCaseModified(caseIdText, true, true);
+                    if (!Panel.fileController.isCaseNameUsed(caseData.title, caseData.suiteIdText)) {
+                        return Panel.fileController.addTestCase(caseData);
                     } else {
                         console.log("[Error] This name has been used. Please use another one.");
                     }
@@ -151,12 +150,13 @@ export default {
                 return Panel.fileController.getCaseKey(suiteIdText, caseName);
             },
             rename: function (caseIdText, newCaseName) {
-                let suiteIdText = Panel.fileController.getTestCase(caseIdText).suiteIdText;
+                let suiteIdText = Panel.fileController.getTestCase(caseIdText).suiteIdText; //做判斷
                 let checkResult = Panel.fileController.checkNameValid(newCaseName);
                 if (checkResult.result) {
                     if (!Panel.fileController.isCaseNameUsed(newCaseName, suiteIdText)) {
                         Panel.fileController.setCaseTitle(caseIdText, newCaseName);
                         Panel.fileController.setCaseModified(caseIdText, true, true);
+                        return newCaseName;
                     } else {
                         console.log("[Error] The test case name has been used. Please use another name.");
                     }
@@ -165,29 +165,27 @@ export default {
                 }
             },
             remove: function (caseIdText) {
+                Panel.fileController.deleteCase(caseIdText);
                 Panel.fileController.setCaseModified(caseIdText, true, true);
-                if (caseIdText) {
-                    Panel.fileController.deleteCase(caseIdText);
-                }
             },
-            setSelected: function (caseIdText) {
-                Panel.fileController.setSelectedCases([caseIdText]);
+            removeAllCasesInSuite: function () {
+
+            },
+            setSelected: function (caseIdTexts) {
+                Panel.fileController.setSelectedCases(caseIdTexts);
             },
             getSelected: function () {
-                return Panel.fileController.getSelectedCases()[0];
+                return Panel.fileController.getSelectedCases();
             },
         },
         record: {
-            add: function (commandName, 
-                            commandTarget = { options: [{ type: "other", value: "" }] }, 
-                            commandValue = { options: [{ type: "other", value: "" }] }, 
+            add: function (recordData = { name: "Untitled Record", 
+                                        target: { options: [{ type: "other", value: "" }] }, 
+                                        value : { options: [{ type: "other", value: "" }] }},
                             caseIdText = Panel.fileController.getSelectedCases()[0]) {
-
-                Panel.fileController.setSelectedCases([caseIdText]);
-
                 Panel.recorder.prepareRecord();
-                let info = Panel.fileController.insertCommand("after", commandName, commandTarget, commandValue);
-                let recordInfo = Panel.fileController.getRecord(info.caseIdText, info.index);
+                let index = Panel.fileController.getRecordNum(caseIdText)
+                let info = Panel.fileController.addCommand(caseIdText, index, recordData.name, recordData.target, recordData.value);
                 Panel.fileController.setSelectedRecords([`records-${info.index}`]);
             },
             get: function(recordIndex, caseIdText = Panel.fileController.getSelectedCases()[0]) {
@@ -224,8 +222,8 @@ export default {
                     return;
                 }
                 let record = Panel.fileController.getRecord(srcCaseIdText, srcRecordIndex);
-                Panel.fileController.deleteRecord(srcCaseIdText, srcRecordIndex);
                 Panel.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
+                Panel.fileController.deleteRecord(srcCaseIdText, srcRecordIndex);
             },
             setBreakpoint: function (bool, 
                                     recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
@@ -246,7 +244,7 @@ export default {
                 } else if (type === "value") {
                     record.value.usedIndex = usedIndex;
                 } else {
-                    console.log("${" + type + "} is invalid type. Only accept \"target\", \"value\"");
+                    console.log(`"${type}" is invalid type. Only accept "target", "value"`);
                 }
             },
             clearStatus: function (caseIdText = Panel.fileController.getSelectedCases()[0]) {
@@ -267,11 +265,11 @@ export default {
                     }
                 }
             },
-            setSelected: function (recordIdText) {
-                Panel.fileController.setSelectedRecords([recordIdText]);
+            setSelected: function (recordIdTexts) {
+                Panel.fileController.setSelectedRecords(recordIdTexts);
             },
             getSelected: function () {
-                return Panel.fileController.getSelectedRecord();
+                return Panel.fileController.getSelectedRecords();
             },
 
         }
