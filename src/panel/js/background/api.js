@@ -72,7 +72,7 @@ export default {
     },
     file: {
         testSuite: {
-            add: function (suiteData = { title : Panel.fileController.newUntitledName("suite") }) {
+            add: function (suiteData = { title: Panel.fileController.newUntitledName("suite") }) {
                 let checkResult = Panel.fileController.checkNameValid(suiteData.title);
                 if (checkResult.result) {
                     if (!Panel.fileController.isSuiteNameUsed(suiteData.title)) {
@@ -84,7 +84,7 @@ export default {
                     console.log("[Error]", checkResult.message);
                 }
             },
-            get: function(suiteIdText) { // ask: 要判斷 ｓｕｉｔｅＩｄＴｅｘｔ？？
+            get: function(suiteIdText) {
                 return Panel.fileController.getTestSuite(suiteIdText);
             },
             getSuiteIdText: function(suiteName) {
@@ -104,6 +104,7 @@ export default {
                 }
             },
             copy: function(suiteIdText = Panel.fileController.getSelectedSuites()[0]) {
+                Panel.fileController.copySuites(suiteIdText);
             },
             close: function (suiteIdTexts) {
                 if (suiteIdTexts.length > 0) {
@@ -129,8 +130,8 @@ export default {
 
         },
         testCase: {
-            add: function (caseData = { title : Panel.fileController.newUntitledName("case"),
-                                        suiteIdText : Panel.fileController.getSelectedSuites()[0]}) {
+            add: function (caseData = { title: Panel.fileController.newUntitledName("case"),
+                                        suiteIdText: Panel.fileController.getSelectedSuites()[0]}) {
                 let checkResult = Panel.fileController.checkNameValid(caseData.title);
                 if (checkResult.result) {
                     if (!Panel.fileController.isCaseNameUsed(caseData.title, caseData.suiteIdText)) {
@@ -163,21 +164,15 @@ export default {
                     console.log("[Error]", checkResult.message);
                 }
             },
-            copy: function (srcCaseIdText = Panel.fileController.getSelectedCases()[0],
+            copy: function (srcCaseIdTexts = Panel.fileController.getSelectedCases(),
                             dstSuiteIdText = Panel.fileController.getSelectedSuites()[0]) {
+                // 這邊的判斷要加ㄇ//
                 if (Panel.fileController.getTestSuite(dstSuiteIdText) === undefined) {
                     console.log(`[Error] test suite "${dstSuiteIdText}" not found.`);
                     return;
                 }
 
-                let testCase = Panel.fileController.getTestCase(srcCaseIdText);
-                let newTestCase = {
-                    ...cloneDeep(testCase),
-                    title: `${testCase.title}-1`, 
-                    suiteIdText: dstSuiteIdText,
-                    modified: true,
-                }
-                return Panel.fileController.addTestCase(newTestCase);
+                Panel.fileController.copyCases(srcCaseIdTexts, dstSuiteIdText);
             },
             cut: function (srcCaseIdText = Panel.fileController.getSelectedCases()[0], 
                             dstSuiteIdText = Panel.fileController.getSelectedSuites()[0]) {

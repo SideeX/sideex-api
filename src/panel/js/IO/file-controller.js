@@ -102,6 +102,22 @@ export class FileController {
         return name;
     }
 
+    newCopyName(type, name) {
+        let newName = "";
+        let nameCount = 1;
+        switch (type) {
+            case "case":
+                newName = `${name}-${nameCount}`;
+                break;
+            case "suite":
+                newName = `${name}-${nameCount}`;
+                break;
+            default:
+                break;
+        }
+        return newName;
+    }
+
     addTestSuite(suiteData) {
         let title = suiteData && suiteData.title ? suiteData.title : this.newUntitledName("suite");
         if (title.includes("Untitled Test Suite")) {
@@ -301,6 +317,46 @@ export class FileController {
 
     setRecordStatusByIndex(caseIdText, index, status) {
         this.testCase.cases[caseIdText].records[index].status = status;
+    }
+
+    copySuite(suiteIdText) {
+        let testSuite = this.getTestSuite(suiteIdText);
+        let newTitle = this.newCopyName("suite", testSuite.title);
+        let newSuiteIdText = this.addTestSuite({title: newTitle});
+        this.copyCases(testSuite.cases, newSuiteIdText);
+        return newSuiteIdText;
+    }
+
+    copySuites(suiteIdTexts) {
+        if (typeof(suiteIdTexts) === "string") {
+            this.copySuite(suiteIdTexts);
+        } else if (typeof(suiteIdTexts) === "object"){
+            for (let suiteIdText of suiteIdTexts) {
+                this.copySuite(suiteIdText);
+            }
+        }
+    }
+
+    copyCase(srcCaseIdText, dstSuiteIdText) {
+        let testCase = this.getTestCase(srcCaseIdText);
+        let newTitle = srcCaseIdText === dstSuiteIdText ? testCase.title : this.newCopyName("case", testCase.title);
+        let newTestCase = {
+            ...cloneDeep(testCase),
+            title: newTitle,
+            suiteIdText: dstSuiteIdText,
+            modified: true,
+        }
+        return this.addTestCase(newTestCase);
+    }
+
+    copyCases(srcCaseIdTexts, dstSuiteIdText) {
+        if (typeof(srcCaseIdTexts) === "string") {
+            this.copyCase(srcCaseIdTexts, dstSuiteIdText);
+        } else if (typeof(srcCaseIdTexts) === "object"){
+            for (let srcCaseIdText of srcCaseIdTexts) {
+                this.copyCase(srcCaseIdText, dstSuiteIdText);
+            }
+        }
     }
 
     setRecordStatus(recordRef, status) {
