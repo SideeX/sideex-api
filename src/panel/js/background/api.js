@@ -84,7 +84,7 @@ export default {
                 return Panel.fileController.getCaseKey(suiteIdText, caseName);
             },
             rename: function (caseIdText, newCaseName) {
-                let suiteIdText = Panel.fileController.getTestCase(caseIdText).suiteIdText; //做判斷
+                let suiteIdText = Panel.fileController.getTestCase(caseIdText).suiteIdText;
                 let checkResult = Panel.fileController.checkNameValid(newCaseName);
                 if (checkResult.result) {
                     if (!Panel.fileController.isCaseNameUsed(newCaseName, suiteIdText)) {
