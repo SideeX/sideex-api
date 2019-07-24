@@ -16,7 +16,7 @@ export default {
                     throw new Error(checkResult.message);
                 }
             },
-            get: function(suiteIdText) {
+            get: function(suiteIdText) { // ask: 要判斷 ｓｕｉｔｅＩｄＴｅｘｔ？？
                 return Panel.fileController.getTestSuite(suiteIdText);
             },
             getSuiteIdText: function(suiteName) {
@@ -55,11 +55,11 @@ export default {
                     }
                 }
             },
-            setSelected: function (suiteIdText) {
-                Panel.fileController.setSelectedSuites([suiteIdText]);
+            setSelected: function (suiteIdTexts) {
+                Panel.fileController.setSelectedSuites(suiteIdTexts);
             },
             getSelected: function () {
-                return Panel.fileController.getSelectedSuites()[0];
+                return Panel.fileController.getSelectedSuites();
             },
 
         },
@@ -84,7 +84,7 @@ export default {
                 return Panel.fileController.getCaseKey(suiteIdText, caseName);
             },
             rename: function (caseIdText, newCaseName) {
-                let suiteIdText = Panel.fileController.getTestCase(caseIdText).suiteIdText;
+                let suiteIdText = Panel.fileController.getTestCase(caseIdText).suiteIdText; //做判斷
                 let checkResult = Panel.fileController.checkNameValid(newCaseName);
                 if (checkResult.result) {
                     if (!Panel.fileController.isCaseNameUsed(newCaseName, suiteIdText)) {
@@ -121,106 +121,21 @@ export default {
             setSelected: function (caseIdTexts) {
                 Panel.fileController.setSelectedCases(caseIdTexts);
             },
+            setSelected: function (caseIdTexts) {
+                Panel.fileController.setSelectedCases(caseIdTexts);
+            },
             getSelected: function () {
-                return Panel.fileController.getSelectedCases()[0];
+                return Panel.fileController.getSelectedCases();
             },
         },
         record: {
-            add: function (recordData = { name: "Untitled Record",
-                                        target: { options: [{ type: "other", value: "" }] },
+            add: function (recordData = { name: "Untitled Record", 
+                                        target: { options: [{ type: "other", value: "" }] }, 
                                         value : { options: [{ type: "other", value: "" }] }},
                             caseIdText = Panel.fileController.getSelectedCases()[0]) {
                 Panel.recorder.prepareRecord();
-                let index = Panel.fileController.getRecordNum(caseIdText);
+                let index = Panel.fileController.getRecordNum(caseIdText)
                 let info = Panel.fileController.addCommand(caseIdText, index, recordData.name, recordData.target, recordData.value);
-                Panel.fileController.setSelectedRecords([`records-${info.index}`]);
-            },
-            get: function(recordIndex, caseIdText = Panel.fileController.getSelectedCases()[0]) {
-                return Panel.fileController.getRecord(caseIdText, recordIndex);
-            },
-            delete: function (recordIndex, caseIdText = Panel.fileController.getSelectedCases()[0]) {
-                Panel.fileController.deleteRecord(caseIdText, recordIndex);
-            },
-            deleteAll: function (caseIdText = Panel.fileController.getSelectedCases()[0]) {
-                Panel.fileController.deleteAllRecords(caseIdText);
-            },
-            copy: function (srcCaseIdText = Panel.fileController.getSelectedCases()[0],
-                            srcRecordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length - 1],
-                            destCaseIdText = Panel.fileController.getSelectedCases()[0],
-                            destRecordIndex = Panel.fileController.getRecordNum(destCaseIdText) - 1) {
-                if (destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText)) {
-                    throw new Error(`DestRecordIndex "${destRecordIndex}" out of bound`);
-                }
-                let record = Panel.fileController.getRecord(srcCaseIdText, srcRecordIndex);
-                Panel.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
-            },
-            cut: function (srcCaseIdText = Panel.fileController.getSelectedCases()[0],
-                            srcRecordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length - 1],
-                            destCaseIdText = Panel.fileController.getSelectedCases()[0],
-                            destRecordIndex = Panel.fileController.getRecordNum(destCaseIdText) - 1) {
-                if (srcCaseIdText === destCaseIdText
-                        && destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText) - 1) {
-                    throw new Error(`DestRecordIndex "${destRecordIndex}" out of bound`);
-                } else if (srcCaseIdText !== destCaseIdText
-                        && destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText)) {
-                    throw new Error(`DestRecordIndex "${destRecordIndex}" out of bound`);
-                }
-                let record = Panel.fileController.getRecord(srcCaseIdText, srcRecordIndex);
-                Panel.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
-                Panel.fileController.deleteRecord(srcCaseIdText, srcRecordIndex);
-            },
-            setBreakpoint: function (bool,
-                                    recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length - 1],
-                                    caseIdText  = Panel.fileController.getSelectedCases()[0]) {
-                let record = Panel.fileController.getRecord(caseIdText, recordIndex);
-                record.breakpoint = bool;
-            },
-            getBreakpoint: function (recordIndex, caseIdText  = Panel.fileController.getSelectedCases()[0]) {
-                let record = Panel.fileController.getRecord(caseIdText, recordIndex);
-                return record.breakpoint;
-            },
-            changeUsedIndex: function(usedIndex, type,
-                                        recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length - 1],
-                                        caseIdText  = Panel.fileController.getSelectedCases()[0]) {
-                let record = Panel.fileController.getRecord(caseIdText, recordIndex);
-                if (type === "target") {
-                    record.target.usedIndex = usedIndex;
-                } else if (type === "value") {
-                    record.value.usedIndex = usedIndex;
-                } else {
-                    throw new Error(`"${type}" is invalid type. Only accept "target", "value"`);
-                }
-            },
-            clearStatus: function (caseIdText = Panel.fileController.getSelectedCases()[0]) {
-                let records = Panel.fileController.getRecords(caseIdText);
-                Panel.fileController.clearIncludedRecords(records);
-                Panel.fileController.clearRecordsStatus(["status", "snapshot"], records, true);
-            },
-            clearAllStatus: function() {
-                let suiteIdTexts = Panel.fileController.getAllSuiteIdTexts();
-                if (suiteIdTexts.length > 0) {
-                    for (let suiteIdText of suiteIdTexts) {
-                        let caseIdTexts = Panel.fileController.getCaseIdTextsInSuite(suiteIdText);
-                        for (let caseIdText of caseIdTexts) {
-                            let records = Panel.fileController.getRecords(caseIdText);
-                            Panel.fileController.clearIncludedRecords(records);
-                            Panel.fileController.clearRecordsStatus(["status", "snapshot"], records, true);
-                        }
-                    }
-                }
-            },
-            setSelected: function (recordIdTexts) {
-                Panel.fileController.setSelectedRecords(recordIdTexts);
-            },
-            getSelected: function () {
-                return Panel.fileController.getSelectedRecords();
-            },
-
-                Panel.fileController.setSelectedCases([caseIdText]);
-
-                Panel.recorder.prepareRecord();
-                let info = Panel.fileController.insertCommand("after", commandName, commandTarget, commandValue);
-                let recordInfo = Panel.fileController.getRecord(info.caseIdText, info.index);
                 Panel.fileController.setSelectedRecords([`records-${info.index}`]);
             },
             get: function(recordIndex, caseIdText = Panel.fileController.getSelectedCases()[0]) {
@@ -257,8 +172,8 @@ export default {
                     return;
                 }
                 let record = Panel.fileController.getRecord(srcCaseIdText, srcRecordIndex);
-                Panel.fileController.deleteRecord(srcCaseIdText, srcRecordIndex);
                 Panel.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
+                Panel.fileController.deleteRecord(srcCaseIdText, srcRecordIndex);
             },
             setBreakpoint: function (bool, 
                                     recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
@@ -279,7 +194,7 @@ export default {
                 } else if (type === "value") {
                     record.value.usedIndex = usedIndex;
                 } else {
-                    console.log("${" + type + "} is invalid type. Only accept \"target\", \"value\"");
+                    console.log(`"${type}" is invalid type. Only accept "target", "value"`);
                 }
             },
             clearStatus: function (caseIdText = Panel.fileController.getSelectedCases()[0]) {
@@ -300,11 +215,11 @@ export default {
                     }
                 }
             },
-            setSelected: function (recordIdText) {
-                Panel.fileController.setSelectedRecords([recordIdText]);
+            setSelected: function (recordIdTexts) {
+                Panel.fileController.setSelectedRecords(recordIdTexts);
             },
             getSelected: function () {
-                return Panel.fileController.getSelectedRecord();
+                return Panel.fileController.getSelectedRecords();
             },
 
         }
