@@ -129,7 +129,6 @@ export default {
 
         },
         testCase: {
-            // 改成 caseData
             add: function (caseData = { title : Panel.fileController.newUntitledName("case"),
                                         suiteIdText : Panel.fileController.getSelectedSuites()[0]}) {
                 let checkResult = Panel.fileController.checkNameValid(caseData.title);
@@ -150,7 +149,7 @@ export default {
                 return Panel.fileController.getCaseKey(suiteIdText, caseName);
             },
             rename: function (caseIdText, newCaseName) {
-                let suiteIdText = Panel.fileController.getTestCase(caseIdText).suiteIdText; //做判斷
+                let suiteIdText = Panel.fileController.getTestCase(caseIdText).suiteIdText;
                 let checkResult = Panel.fileController.checkNameValid(newCaseName);
                 if (checkResult.result) {
                     if (!Panel.fileController.isCaseNameUsed(newCaseName, suiteIdText)) {
@@ -163,6 +162,34 @@ export default {
                 } else {
                     console.log("[Error]", checkResult.message);
                 }
+            },
+            copy: function (srcCaseIdText = Panel.fileController.getSelectedCases()[0],
+                            dstSuiteIdText = Panel.fileController.getSelectedSuites()[0]) {
+                if (Panel.fileController.getTestSuite(dstSuiteIdText) === undefined) {
+                    console.log(`[Error] test suite "${dstSuiteIdText}" not found.`);
+                    return;
+                }
+
+                let testCase = Panel.fileController.getTestCase(srcCaseIdText);
+                let newTestCase = {
+                    ...cloneDeep(testCase),
+                    title: `${testCase.title}-1`, 
+                    suiteIdText: dstSuiteIdText,
+                    modified: true,
+                }
+                return Panel.fileController.addTestCase(newTestCase);
+            },
+            cut: function (srcCaseIdText = Panel.fileController.getSelectedCases()[0], 
+                            dstSuiteIdText = Panel.fileController.getSelectedSuites()[0]) {
+                if (Panel.fileController.getTestSuite(dstSuiteIdText) === undefined) {
+                    console.log(`[Error] test suite "${dstSuiteIdText}" not found.`);
+                    return;
+                }
+                let testCase = Panel.fileController.getTestCase(srcCaseIdText);
+                Panel.fileController.deleteCaseInSuite(testCase.suiteIdText, srcCaseIdText);
+                Panel.fileController.appendCaseInSuite(dstSuiteIdText, srcCaseIdText);
+                Panel.fileController.setCaseSuiteIdText(srcCaseIdText, dstSuiteIdText);
+                Panel.fileController.setCaseModified(srcCaseIdText, true, true);
             },
             remove: function (caseIdText) {
                 Panel.fileController.deleteCase(caseIdText);

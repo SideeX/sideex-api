@@ -152,6 +152,14 @@ export class FileController {
         this.testSuite.suites[suiteIdText].cases.push(caseIdText);
     }
 
+    deleteCaseInSuite(suiteIdText, caseIdText) {
+        for (let [index, testCase] of this.testSuite.suites[suiteIdText].cases.entries()) {
+            if (testCase === caseIdText) {
+                this.testSuite.suites[suiteIdText].cases.splice(index, 1);
+            }
+        }
+    }
+
     setSelectedSuites(idTexts) {
         this.selectedSuiteIdTexts = idTexts;
     }
@@ -269,6 +277,10 @@ export class FileController {
     setCaseTitle(caseIdText, title) {
         this.testCase.cases[caseIdText].title = title;
         this.setCaseModified(caseIdText, true, true);
+    }
+
+    setCaseSuiteIdText(caseIdText, suiteIdText) {
+        this.testCase.cases[caseIdText].suiteIdText = suiteIdText;
     }
 
     setSuiteModified(suiteIdText, modified, setCases = false) {
