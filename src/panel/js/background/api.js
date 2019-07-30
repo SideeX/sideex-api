@@ -103,8 +103,8 @@ export default {
                     console.log("[Error]", checkResult.message);
                 }
             },
-            copy: function(suiteIdText = Panel.fileController.getSelectedSuites()[0]) {
-                Panel.fileController.copySuites(suiteIdText);
+            copy: function(suiteIdTexts = Panel.fileController.getSelectedSuites()[0]) {
+                Panel.fileController.copySuites(suiteIdTexts);
             },
             close: function (suiteIdTexts) {
                 if (suiteIdTexts.length > 0) {
@@ -131,7 +131,7 @@ export default {
         },
         testCase: {
             add: function (caseData = { title: Panel.fileController.newUntitledName("case"),
-                                        suiteIdText: Panel.fileController.getSelectedSuites()[0]}) {
+                                        suiteIdText: Panel.fileController.getSelectedSuites()[0] }) {
                 let checkResult = Panel.fileController.checkNameValid(caseData.title);
                 if (checkResult.result) {
                     if (!Panel.fileController.isCaseNameUsed(caseData.title, caseData.suiteIdText)) {
@@ -166,25 +166,22 @@ export default {
             },
             copy: function (srcCaseIdTexts = Panel.fileController.getSelectedCases(),
                             dstSuiteIdText = Panel.fileController.getSelectedSuites()[0]) {
-                // 這邊的判斷要加ㄇ//
-                if (Panel.fileController.getTestSuite(dstSuiteIdText) === undefined) {
+                if (Panel.fileController.isSuiteExist(dstSuiteIdText)) {
+                    Panel.fileController.copyCases(srcCaseIdTexts, dstSuiteIdText);
+                    return;
+                } else {
                     console.log(`[Error] test suite "${dstSuiteIdText}" not found.`);
                     return;
                 }
-
-                Panel.fileController.copyCases(srcCaseIdTexts, dstSuiteIdText);
             },
-            cut: function (srcCaseIdText = Panel.fileController.getSelectedCases()[0], 
+            cut: function (srcCaseIdTexts = Panel.fileController.getSelectedCases()[0], 
                             dstSuiteIdText = Panel.fileController.getSelectedSuites()[0]) {
-                if (Panel.fileController.getTestSuite(dstSuiteIdText) === undefined) {
+                if (Panel.fileController.isSuiteExist(dstSuiteIdText)) {
+                    Panel.fileController.cutCases(srcCaseIdTexts, dstSuiteIdText);
+                } else {
                     console.log(`[Error] test suite "${dstSuiteIdText}" not found.`);
                     return;
                 }
-                let testCase = Panel.fileController.getTestCase(srcCaseIdText);
-                Panel.fileController.deleteCaseInSuite(testCase.suiteIdText, srcCaseIdText);
-                Panel.fileController.appendCaseInSuite(dstSuiteIdText, srcCaseIdText);
-                Panel.fileController.setCaseSuiteIdText(srcCaseIdText, dstSuiteIdText);
-                Panel.fileController.setCaseModified(srcCaseIdText, true, true);
             },
             remove: function (caseIdText) {
                 Panel.fileController.deleteCase(caseIdText);
@@ -238,7 +235,7 @@ export default {
                         && destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText) - 1) {
                     console.log("[Error] destRecordIndex out of bound");
                     return;
-                } else if (srcCaseIdText !== destCaseIdText 
+                } else if (srcCaseIdText !== destCaseIdText
                         && destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText)) {
                     console.log("[Error] destRecordIndex out of bound");
                     return;

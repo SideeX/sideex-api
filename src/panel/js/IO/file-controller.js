@@ -104,12 +104,17 @@ export class FileController {
 
     newCopyName(type, name) {
         let newName = "";
-        let nameCount = 1;
+        let nameCount = 0;
         switch (type) {
             case "case":
                 newName = `${name}-${nameCount}`;
                 break;
             case "suite":
+                // for (suite of this.testSuite.suites) {
+                //     if (suite.title === name) {
+                //         nameCount++;
+                //     }
+                // }
                 newName = `${name}-${nameCount}`;
                 break;
             default:
@@ -322,6 +327,14 @@ export class FileController {
     copySuite(suiteIdText) {
         let testSuite = this.getTestSuite(suiteIdText);
         let newTitle = this.newCopyName("suite", testSuite.title);
+        // let newTestSuite = {
+        //     ...cloneDeep(testSuite),
+        //     fileName: `${newTitle}.html`,
+        //     title: newTitle,
+        //     cases: [],
+        //     modified: true,
+        // }
+        // let newSuiteIdText = this.addTestSuite(newTestSuite);
         let newSuiteIdText = this.addTestSuite({title: newTitle});
         this.copyCases(testSuite.cases, newSuiteIdText);
         return newSuiteIdText;
@@ -330,7 +343,7 @@ export class FileController {
     copySuites(suiteIdTexts) {
         if (typeof(suiteIdTexts) === "string") {
             this.copySuite(suiteIdTexts);
-        } else if (typeof(suiteIdTexts) === "object"){
+        } else if (typeof(suiteIdTexts) === "object") {
             for (let suiteIdText of suiteIdTexts) {
                 this.copySuite(suiteIdText);
             }
@@ -344,17 +357,35 @@ export class FileController {
             ...cloneDeep(testCase),
             title: newTitle,
             suiteIdText: dstSuiteIdText,
-            modified: true,
-        }
+            modified: true
+        };
         return this.addTestCase(newTestCase);
     }
 
     copyCases(srcCaseIdTexts, dstSuiteIdText) {
         if (typeof(srcCaseIdTexts) === "string") {
             this.copyCase(srcCaseIdTexts, dstSuiteIdText);
-        } else if (typeof(srcCaseIdTexts) === "object"){
+        } else if (typeof(srcCaseIdTexts) === "object") {
             for (let srcCaseIdText of srcCaseIdTexts) {
                 this.copyCase(srcCaseIdText, dstSuiteIdText);
+            }
+        }
+    }
+
+    cutCase(srcCaseIdText, dstSuiteIdText) {
+        let testCase = this.getTestCase(srcCaseIdText);
+        this.deleteCaseInSuite(testCase.suiteIdText, srcCaseIdText);
+        this.appendCaseInSuite(dstSuiteIdText, srcCaseIdText);
+        this.setCaseSuiteIdText(srcCaseIdText, dstSuiteIdText);
+        this.setCaseModified(srcCaseIdText, true, true);
+    }
+
+    cutCases(srcCaseIdTexts, dstSuiteIdText) {
+        if (typeof(srcCaseIdTexts) === "string") {
+            this.cutCase(srcCaseIdTexts, dstSuiteIdText);
+        } else if (typeof(srcCaseIdTexts) === "object") {
+            for (let srcCaseIdText of srcCaseIdTexts) {
+                this.cutCase(srcCaseIdText, dstSuiteIdText);
             }
         }
     }
@@ -632,6 +663,14 @@ export class FileController {
             }
         }
         return false;
+    }
+
+    isSuiteExist(suiteIdText) {
+        return this.testSuite.suites[suiteIdText] !== undefined ? true : false;
+    }
+
+    isCaseExist(caseIdText) {
+        return this.testSuite.cases[caseIdText] !== undefined ? true : false;
     }
 
     checkNameValid(name) {
