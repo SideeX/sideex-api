@@ -65,7 +65,7 @@ export default {
         },
         testCase: {
             add: function (caseData = { title: Panel.fileController.newUntitledName("case"),
-                                        suiteIdText: Panel.fileController.getSelectedSuites()[0]}) {
+                                        suiteIdText: Panel.fileController.getSelectedSuites()[0] }) {
                 let checkResult = Panel.fileController.checkNameValid(caseData.title);
                 if (checkResult.result) {
                     if (!Panel.fileController.isCaseNameUsed(caseData.title, caseData.suiteIdText)) {
@@ -166,7 +166,7 @@ export default {
                         && destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText) - 1) {
                     console.log("[Error] destRecordIndex out of bound");
                     return;
-                } else if (srcCaseIdText !== destCaseIdText 
+                } else if (srcCaseIdText !== destCaseIdText
                         && destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText)) {
                     console.log("[Error] destRecordIndex out of bound");
                     return;

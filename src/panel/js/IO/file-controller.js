@@ -104,12 +104,17 @@ export class FileController {
 
     newCopyName(type, name) {
         let newName = "";
-        let nameCount = 1;
+        let nameCount = 0;
         switch (type) {
             case "case":
                 newName = `${name}-${nameCount}`;
                 break;
             case "suite":
+                // for (suite of this.testSuite.suites) {
+                //     if (suite.title === name) {
+                //         nameCount++;
+                //     }
+                // }
                 newName = `${name}-${nameCount}`;
                 break;
             default:
