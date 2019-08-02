@@ -463,9 +463,9 @@ export class Playback {
     }
 
     preprocessTarget(str) {
-        // if (!str.includes("TAC_LOCATOR")) {
-        //     return str.supplant(Panel.variables.localVars);
-        // }
+        if (!str.includes("TAC_LOCATOR")) {
+            return str.supplant(Panel.variables.localVars, Panel.variables.globalVars);
+        }
         return str;
     }
 
@@ -584,6 +584,8 @@ export class Playback {
             case "selectWindow":
             case "selectFrame":
                 return Playback.COMMAND_TYPE_EXTENSION_SELECT;
+            case "store":
+            case "storeGlobalVars":
             case "storeText":
             case "storeTitle":
             case "storeValue":

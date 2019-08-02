@@ -64,7 +64,7 @@ export class BackgroundRecorder {
     requestHandler(message, sender) {
         if (message.attachRecorderRequest) {
             if (this.attached && this.openedWindowIds[sender.tab.windowId] !== undefined) {
-                browser.tabs.sendMessage(sender.tab.id, {action: "AttachRecorder"});
+                browser.tabs.sendMessage(sender.tab.id, { action: "AttachRecorder" });
             }
             return;
         }
@@ -84,7 +84,7 @@ export class BackgroundRecorder {
         // Because the action of capturing this event is so fast that selectWindow command
         // is added before other commands like clicking a link to browse in new tab.
         // Delay a little time to add command in order.
-        setTimeout(function() {
+        setTimeout(function () {
             if (self.currentRecordingTabId[caseIdText] === activeInfo.tabId &&
                 self.currentRecordingWindowId[caseIdText] === activeInfo.windowId) {
                 return;
@@ -136,7 +136,7 @@ export class BackgroundRecorder {
         browser.tabs.query({
             windowId: windowId,
             active: true
-        }).then(function(tabs) {
+        }).then(function (tabs) {
             if (tabs.length === 0 || self.isPrivilegedPage(tabs[0].url)) {
                 return;
             }
@@ -164,7 +164,7 @@ export class BackgroundRecorder {
                 );
             }
             return;
-        }).catch(function(error) {
+        }).catch(function (error) {
             console.error(error);
         });
     }
@@ -224,10 +224,10 @@ export class BackgroundRecorder {
                 // Retrieve windowId from tab information.
                 let self = this;
                 browser.tabs.get(details.tabId)
-                    .then(function(tabInfo) {
+                    .then(function (tabInfo) {
                         self.addOpenedWindow(tabInfo.windowId);
                         return;
-                    }).catch(function(error) {
+                    }).catch(function (error) {
                         console.error(error);
                     });
             }
@@ -279,8 +279,8 @@ export class BackgroundRecorder {
 
         if (Panel.fileController.getRecordNum(caseIdText) === 0) {
             Panel.fileController.insertCommand("after", "open",
-                { options: [{ type: "other", value: sender.tab.url }]},
-                { options: [{ type: "other", value: "" }]}
+                { options: [{ type: "other", value: sender.tab.url }] },
+                { options: [{ type: "other", value: "" }] }
             );
         }
 
@@ -292,8 +292,8 @@ export class BackgroundRecorder {
             let oldFrameLevels = this.currentRecordingFrameLocation[caseIdText].split(':');
             while (oldFrameLevels.length > newFrameLevels.length) {
                 Panel.fileController.insertCommand("after", "selectFrame",
-                    { options: [{ type: "other", value: "relative=parent" }]},
-                    { options: [{ type: "other", value: "" }]}
+                    { options: [{ type: "other", value: "relative=parent" }] },
+                    { options: [{ type: "other", value: "" }] }
                 );
                 oldFrameLevels.pop();
             }
@@ -301,15 +301,15 @@ export class BackgroundRecorder {
                 oldFrameLevels[oldFrameLevels.length - 1] != newFrameLevels[oldFrameLevels.length - 1]
             ) {
                 Panel.fileController.insertCommand("after", "selectFrame",
-                    { options: [{ type: "other", value: "relative=parent" }]},
-                    { options: [{ type: "other", value: "" }]}
+                    { options: [{ type: "other", value: "relative=parent" }] },
+                    { options: [{ type: "other", value: "" }] }
                 );
                 oldFrameLevels.pop();
             }
             while (oldFrameLevels.length < newFrameLevels.length) {
                 Panel.fileController.insertCommand("after", "selectFrame",
-                    { options: [{ type: "other", value: "index=" + newFrameLevels[oldFrameLevels.length] }]},
-                    { options: [{ type: "other", value: "" }]}
+                    { options: [{ type: "other", value: "index=" + newFrameLevels[oldFrameLevels.length] }] },
+                    { options: [{ type: "other", value: "" }] }
                 );
                 oldFrameLevels.push(newFrameLevels[oldFrameLevels.length]);
             }
@@ -360,7 +360,7 @@ export class BackgroundRecorder {
 
         if (message.cancelSelectTarget) {
             Panel.recorder.isSelecting = false;
-            browser.tabs.sendMessage(sender.tab.id, {action: "SelectElement", selecting: false});
+            browser.tabs.sendMessage(sender.tab.id, { action: "SelectElement", selecting: false });
             EntryPoint.workArea.updateEditBlockSelect();
             return;
         }
@@ -390,7 +390,7 @@ export class BackgroundRecorder {
      * Check whether the URL begins with privileged scheme
      * @param {String} url A valid URL
      */
-    isPrivilegedPage (url) {
+    isPrivilegedPage(url) {
         if (url.substr(0, 13) === 'moz-extension' ||
             url.substr(0, 16) === 'chrome-extension') {
             return true;
@@ -490,12 +490,12 @@ export class BackgroundRecorder {
         browser.tabs.query({
             windowId: this.getContentWindowId(),
             url: "<all_urls>"
-        }).then(function(tabs) {
+        }).then(function (tabs) {
             for (let tab of tabs) {
-                browser.tabs.sendMessage(tab.id, {action: "AttachRecorder"}).catch(function () {});
+                browser.tabs.sendMessage(tab.id, { action: "AttachRecorder" }).catch(function () { });
             }
             return;
-        }).catch(function(error) { console.error(error); });
+        }).catch(function (error) { console.error(error); });
     }
 
     /**
@@ -505,12 +505,12 @@ export class BackgroundRecorder {
         browser.tabs.query({
             windowId: this.getContentWindowId(),
             url: "<all_urls>"
-        }).then(function(tabs) {
+        }).then(function (tabs) {
             for (let tab of tabs) {
-                browser.tabs.sendMessage(tab.id, {action: "DetachRecorder"}).catch(function () {});
+                browser.tabs.sendMessage(tab.id, { action: "DetachRecorder" }).catch(function () { });
             }
             return;
-        }).catch(function(error) { console.error(error); });
+        }).catch(function (error) { console.error(error); });
     }
 
     /**
@@ -555,7 +555,7 @@ export class BackgroundRecorder {
             let response = await browser.tabs.sendMessage(infos.tabId, {
                 action: "ShowElement",
                 targetValue: infos.targetValue
-            }, { frameId: infos.frameIds[infos.index]});
+            }, { frameId: infos.frameIds[infos.index] });
             if (response) {
                 if (!response.result) {
                     Panel.recorder.prepareSendNextFrame(infos);
@@ -594,14 +594,18 @@ export class BackgroundRecorder {
             "message": `command: ${String(name)}\ntarget: ${String(target)}\nvalue: ${String(value)}`
         });
 
-        setTimeout(function() {
+        setTimeout(function () {
             browser.notifications.clear(tempCount);
         }, 1500);
     }
 
     handleFormatCommand(message) {
         if (message.storeStr) {
-            Panel.variables.localVars[message.storeVar] = message.storeStr;
+            if (message.isGlobal) {
+                Panel.variables.addVariable(message.storeVar, message.storeStr);
+            } else {
+                Panel.variables.localVars[message.storeVar] = message.storeStr;
+            }
         } else if (message.echoStr) {
             Panel.log.pushLog("info", `echo: ${message.echoStr}`);
         }
@@ -611,7 +615,7 @@ export class BackgroundRecorder {
         console.log("receive", message);
         if (message.selfWindowId != undefined && message.commWindowId != undefined) {
             console.log("sender: ", sender);
-            response({check: true});
+            response({ check: true });
             Panel.recorder.selfWindowId = message.selfWindowId;
             Panel.recorder.contentWindowId = message.commWindowId;
             Panel.playback.setContentWindowId(Panel.recorder.contentWindowId);

@@ -55,6 +55,7 @@ export class VariableController {
         let index = Panel.variables.globalVars.startNum++;
         let varIdText = `var-${index}`;
         if (name !== "") Panel.variables.globalVars.varNames[name] = true;
+        Panel.variables.globalVars[name] = value;
         Panel.variables.globalVars.vars[varIdText] = {
             index: index,
             name: name,
