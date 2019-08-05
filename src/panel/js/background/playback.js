@@ -316,8 +316,8 @@ export class Playback {
 
         // parse variable
         try {
-            target = this.preprocessTarget(target);
-            value = this.preprocessValue(value);
+            target = this.preprocessTargetValue(target);
+            value = this.preprocessTargetValue(value);
         } catch (e) {
             console.error(e);
             this.errorMessage = e.message;
@@ -462,8 +462,8 @@ export class Playback {
         }
     }
 
-    preprocessTarget(str) {
-        if (!str.includes("TAC_LOCATOR")) {
+    preprocessTargetValue(str) {
+        if (!str.includes("TAC_LOCATOR") && !Panel.variables.isKeyBoardVars(str)) {
             return str.supplant(Panel.variables.localVars, Panel.variables.globalVars);
         }
         return str;
