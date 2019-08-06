@@ -77,10 +77,10 @@ export default {
                     if (!Panel.fileController.isSuiteNameUsed(suiteData.title)) {
                         return Panel.fileController.addTestSuite(suiteData);
                     } else {
-                        console.log("[Error] This name has been used. Please use another one.");
+                        throw new Error(`Suite name "${suiteData.title}" has been used. Please use another one.`);
                     }
                 } else {
-                    console.log("[Error]", checkResult.message);
+                    throw new Error(checkResult.message);
                 }
             },
             get: function(suiteIdText) {
@@ -96,10 +96,10 @@ export default {
                         Panel.fileController.setSuiteTitle(suiteIdText, newSuiteName);
                         return newSuiteName;
                     } else {
-                        console.log("[Error] The test suite name has been used. Please use another name.");
+                        throw new Error(`Suite name "${newSuiteName}" has been used. Please use another one.`);
                     }
                 } else {
-                    console.log("[Error]", checkResult.message);
+                    throw new Error(checkResult.message);
                 }
             },
             copy: function(suiteIdTexts = Panel.fileController.getSelectedSuites()[0]) {
@@ -138,10 +138,10 @@ export default {
                     if (!Panel.fileController.isCaseNameUsed(caseData.title, caseData.suiteIdText)) {
                         return Panel.fileController.addTestCase(caseData);
                     } else {
-                        console.log("[Error] This name has been used. Please use another one.");
+                        throw new Error(`Case name "${caseData.title}" has been used in "${suiteIdText}". Please use another one.`);
                     }
                 } else {
-                    console.log("[Error]", checkResult.message);
+                    throw new Error(checkResult.message);
                 }
             },
             get: function(caseIdText) {
@@ -159,20 +159,18 @@ export default {
                         Panel.fileController.setCaseModified(caseIdText, true, true);
                         return newCaseName;
                     } else {
-                        console.log("[Error] The test case name has been used. Please use another name.");
+                        throw new Error(`Case name "${newCaseName}" has been used in "${suiteIdText}". Please use another one.`);
                     }
                 } else {
-                    console.log("[Error]", checkResult.message);
+                    throw new Error(checkResult.message);
                 }
             },
             copy: function (srcCaseIdTexts = Panel.fileController.getSelectedCases(),
                             dstSuiteIdText = Panel.fileController.getSelectedSuites()[0]) {
                 if (Panel.fileController.isSuiteExist(dstSuiteIdText)) {
                     Panel.fileController.copyCases(srcCaseIdTexts, dstSuiteIdText);
-                    return;
                 } else {
-                    console.log(`[Error] test suite "${dstSuiteIdText}" not found.`);
-                    return;
+                    throw new Error(`Suite "${dstSuiteIdText}" not found.`);
                 }
             },
             cut: function (srcCaseIdTexts = Panel.fileController.getSelectedCases()[0],
@@ -180,16 +178,12 @@ export default {
                 if (Panel.fileController.isSuiteExist(dstSuiteIdText)) {
                     Panel.fileController.cutCases(srcCaseIdTexts, dstSuiteIdText);
                 } else {
-                    console.log(`[Error] test suite "${dstSuiteIdText}" not found.`);
-                    return;
+                    throw new Error(`Suite "${dstSuiteIdText}" not found.`);
                 }
             },
             remove: function (caseIdText) {
                 Panel.fileController.deleteCase(caseIdText);
                 Panel.fileController.setCaseModified(caseIdText, true, true);
-            },
-            removeAllCasesInSuite: function () {
-
             },
             setSelected: function (caseIdTexts) {
                 Panel.fileController.setSelectedCases(caseIdTexts);
@@ -222,8 +216,7 @@ export default {
                             destCaseIdText = Panel.fileController.getSelectedCases()[0],
                             destRecordIndex = Panel.fileController.getRecordNum(destCaseIdText) - 1) {
                 if (destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText)) {
-                    console.log("[Error] destRecordIndex out of bound");
-                    return;
+                    throw new Error(`DestRecordIndex "${destRecordIndex}" out of bound`);
                 }
                 let record = Panel.fileController.getRecord(srcCaseIdText, srcRecordIndex);
                 Panel.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
@@ -234,12 +227,10 @@ export default {
                             destRecordIndex = Panel.fileController.getRecordNum(destCaseIdText) - 1) {
                 if (srcCaseIdText === destCaseIdText
                         && destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText) - 1) {
-                    console.log("[Error] destRecordIndex out of bound");
-                    return;
+                    throw new Error(`DestRecordIndex "${destRecordIndex}" out of bound`);
                 } else if (srcCaseIdText !== destCaseIdText
                         && destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText)) {
-                    console.log("[Error] destRecordIndex out of bound");
-                    return;
+                    throw new Error(`DestRecordIndex "${destRecordIndex}" out of bound`);
                 }
                 let record = Panel.fileController.getRecord(srcCaseIdText, srcRecordIndex);
                 Panel.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
@@ -264,7 +255,7 @@ export default {
                 } else if (type === "value") {
                     record.value.usedIndex = usedIndex;
                 } else {
-                    console.log(`"${type}" is invalid type. Only accept "target", "value"`);
+                    throw new Error(`"${type}" is invalid type. Only accept "target", "value"`);
                 }
             },
             clearStatus: function (caseIdText = Panel.fileController.getSelectedCases()[0]) {
