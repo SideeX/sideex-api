@@ -361,7 +361,7 @@ export default {
                 EntryPoint.fileList.syncFiles();
             } else {
                 if (caseIdText)
-                    return Panel.log.pushLog('error', caseIdText + " is not exist");
+                    throw new Error(caseIdText + " is not exist");
             }
 
         },
