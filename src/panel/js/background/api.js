@@ -129,12 +129,12 @@ export default {
             },
         },
         record: {
-            add: function (recordData = { name: "Untitled Record", 
-                                        target: { options: [{ type: "other", value: "" }] }, 
+            add: function (recordData = { name: "Untitled Record",
+                                        target: { options: [{ type: "other", value: "" }] },
                                         value : { options: [{ type: "other", value: "" }] }},
                             caseIdText = Panel.fileController.getSelectedCases()[0]) {
                 Panel.recorder.prepareRecord();
-                let index = Panel.fileController.getRecordNum(caseIdText)
+                let index = Panel.fileController.getRecordNum(caseIdText);
                 let info = Panel.fileController.addCommand(caseIdText, index, recordData.name, recordData.target, recordData.value);
                 Panel.fileController.setSelectedRecords([`records-${info.index}`]);
             },
@@ -148,7 +148,7 @@ export default {
                 Panel.fileController.deleteAllRecords(caseIdText);
             },
             copy: function (srcCaseIdText = Panel.fileController.getSelectedCases()[0],
-                            srcRecordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
+                            srcRecordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length - 1],
                             destCaseIdText = Panel.fileController.getSelectedCases()[0],
                             destRecordIndex = Panel.fileController.getRecordNum(destCaseIdText) - 1) {
                 if (destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText)) {
@@ -159,7 +159,7 @@ export default {
                 Panel.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
             },
             cut: function (srcCaseIdText = Panel.fileController.getSelectedCases()[0],
-                            srcRecordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
+                            srcRecordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length - 1],
                             destCaseIdText = Panel.fileController.getSelectedCases()[0],
                             destRecordIndex = Panel.fileController.getRecordNum(destCaseIdText) - 1) {
                 if (srcCaseIdText === destCaseIdText
@@ -175,8 +175,8 @@ export default {
                 Panel.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
                 Panel.fileController.deleteRecord(srcCaseIdText, srcRecordIndex);
             },
-            setBreakpoint: function (bool, 
-                                    recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
+            setBreakpoint: function (bool,
+                                    recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length - 1],
                                     caseIdText  = Panel.fileController.getSelectedCases()[0]) {
                 let record = Panel.fileController.getRecord(caseIdText, recordIndex);
                 record.breakpoint = bool;
@@ -185,8 +185,8 @@ export default {
                 let record = Panel.fileController.getRecord(caseIdText, recordIndex);
                 return record.breakpoint;
             },
-            changeUsedIndex: function(usedIndex, type, 
-                                        recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length-1],
+            changeUsedIndex: function(usedIndex, type,
+                                        recordIndex = Panel.fileController.getSelectedRecord()[Panel.fileController.getSelectedRecord().length - 1],
                                         caseIdText  = Panel.fileController.getSelectedCases()[0]) {
                 let record = Panel.fileController.getRecord(caseIdText, recordIndex);
                 if (type === "target") {

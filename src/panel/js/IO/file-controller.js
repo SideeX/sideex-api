@@ -102,27 +102,6 @@ export class FileController {
         return name;
     }
 
-    newCopyName(type, name) {
-        let newName = "";
-        let nameCount = 0;
-        switch (type) {
-            case "case":
-                newName = `${name}-${nameCount}`;
-                break;
-            case "suite":
-                // for (suite of this.testSuite.suites) {
-                //     if (suite.title === name) {
-                //         nameCount++;
-                //     }
-                // }
-                newName = `${name}-${nameCount}`;
-                break;
-            default:
-                break;
-        }
-        return newName;
-    }
-
     addTestSuite(suiteData) {
         let title = suiteData && suiteData.title ? suiteData.title : this.newUntitledName("suite");
         if (title.includes("Untitled Test Suite")) {
