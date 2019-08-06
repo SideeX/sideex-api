@@ -262,6 +262,71 @@ export class Sideex {
         var element = this.browserBot.findElement(locator);
         return element.offsetHeight;
     }
+    // Added show element by SideeX comitters (Copyright 2017)
+    async doShowElement(element) {
+        try {
+            if (document.getElementById("sideexShowElement")) {
+                if (!Utils.isWebdriver()) {
+                    await this.doConcealElement(0);
+                }
+            }
+
+            const box = document.createElement("div");
+            let isWindowMove = false;
+            let r = element.getBoundingClientRect();
+            // move to element
+            if (r.right <= 0) {
+                window.scrollBy(r.left, 0);
+                isWindowMove = true;
+            }
+            if (r.left >= window.innerWidth) {
+                window.scrollBy(r.right - window.innerWidth, 0);
+                isWindowMove = true;
+            }
+            if (r.bottom <= 0) {
+                window.scrollBy(0, r.top);
+                isWindowMove = true;
+            }
+            if (r.top >= window.innerHeight) {
+                window.scrollBy(0, r.bottom - window.innerHeight);
+                isWindowMove = true;
+            }
+            // update element location
+            if (isWindowMove) {
+                r = element.getBoundingClientRect();
+            }
+            box.style.display = "block";
+            box.style.pointerEvents = "none";
+            box.style.position = "fixed";
+            box.style.boxShadow = "0 0 0 1px black";
+            box.style.outlineColor = "white";
+            box.style.outlineStyle = "dashed";
+            box.style.outlineOffset = "-1px";
+            box.style.outlineWidth = "1px";
+            box.style.backgroundColor = "rgba(250,250,128,0.4)";
+            box.style.zIndex = "2147483647";
+            box.style.top = String(r.top) + "px";
+            box.style.left = String(r.left) + "px";
+            box.style.width = String(r.width) + "px";
+            box.style.height = String(r.height) + "px";
+            box.id = "sideexShowElement";
+            document.body.appendChild(box);
+            return;
+        } catch (e) {
+            return { result: false };
+        }
+    }
+    async doConcealElement(delay) {
+        try {
+            await Utils.delay(delay);
+            const box = document.getElementById("sideexShowElement");
+            box && document.body.removeChild(box);
+            return;
+        } catch (e) {
+            return { result: false };
+        }
+    }
+
 }
 
 Sideex.commands = {
@@ -383,7 +448,7 @@ Sideex.commands = {
     async storeText(locator, varName) {
         var element = this.browserBot.findElement(locator);
         var text = Utils.getText(element);
-        if(text === '')
+        if (text === '')
             throw new Error("Error: This element does not have property 'Text'. Please change to use storeValue command.");
         browser.runtime.sendMessage({ "storeStr": text, "storeVar": varName, "isGlobal": false });
     },
@@ -394,7 +459,7 @@ Sideex.commands = {
     // © Ming-Hung Hsu, SideeX Team
     async storeValue(locator, varName) {
         var val = this.getValue(locator);
-        if(typeof val === 'undefined')
+        if (typeof val === 'undefined')
             throw new Error("Error: This element does not have property 'value'. Please change to use storeText command.");
         browser.runtime.sendMessage({ "storeStr": this.getValue(locator), "storeVar": varName, "isGlobal": false });
     },
@@ -440,7 +505,7 @@ Sideex.commands = {
         var clientFinishY = ((clientStartY + movementY) < 0) ? 0 : (clientStartY + movementY);
 
         var mouseSpeed = this.mouseSpeed;
-        var move = function(current, dest) {
+        var move = function (current, dest) {
             if (current == dest) return current;
             if (Math.abs(current - dest) < mouseSpeed) return dest;
             return (current < dest) ? current + mouseSpeed : current - mouseSpeed;
