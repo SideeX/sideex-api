@@ -121,9 +121,6 @@ export default {
             setSelected: function (caseIdTexts) {
                 Panel.fileController.setSelectedCases(caseIdTexts);
             },
-            setSelected: function (caseIdTexts) {
-                Panel.fileController.setSelectedCases(caseIdTexts);
-            },
             getSelected: function () {
                 return Panel.fileController.getSelectedCases();
             },
@@ -152,8 +149,7 @@ export default {
                             destCaseIdText = Panel.fileController.getSelectedCases()[0],
                             destRecordIndex = Panel.fileController.getRecordNum(destCaseIdText) - 1) {
                 if (destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText)) {
-                    console.log("[Error] destRecordIndex out of bound");
-                    return;
+                    throw new Error(`DestRecordIndex "${destRecordIndex}" out of bound`);
                 }
                 let record = Panel.fileController.getRecord(srcCaseIdText, srcRecordIndex);
                 Panel.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
@@ -164,12 +160,10 @@ export default {
                             destRecordIndex = Panel.fileController.getRecordNum(destCaseIdText) - 1) {
                 if (srcCaseIdText === destCaseIdText
                         && destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText) - 1) {
-                    console.log("[Error] destRecordIndex out of bound");
-                    return;
+                    throw new Error(`DestRecordIndex "${destRecordIndex}" out of bound`);
                 } else if (srcCaseIdText !== destCaseIdText
                         && destRecordIndex > Panel.fileController.getRecordNum(destCaseIdText)) {
-                    console.log("[Error] destRecordIndex out of bound");
-                    return;
+                    throw new Error(`DestRecordIndex "${destRecordIndex}" out of bound`);
                 }
                 let record = Panel.fileController.getRecord(srcCaseIdText, srcRecordIndex);
                 Panel.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
@@ -194,7 +188,7 @@ export default {
                 } else if (type === "value") {
                     record.value.usedIndex = usedIndex;
                 } else {
-                    console.log(`"${type}" is invalid type. Only accept "target", "value"`);
+                    throw new Error(`"${type}" is invalid type. Only accept "target", "value"`);
                 }
             },
             clearStatus: function (caseIdText = Panel.fileController.getSelectedCases()[0]) {
