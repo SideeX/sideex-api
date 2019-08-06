@@ -102,27 +102,6 @@ export class FileController {
         return name;
     }
 
-    newCopyName(type, name) {
-        let newName = "";
-        let nameCount = 0;
-        switch (type) {
-            case "case":
-                newName = `${name}-${nameCount}`;
-                break;
-            case "suite":
-                // for (suite of this.testSuite.suites) {
-                //     if (suite.title === name) {
-                //         nameCount++;
-                //     }
-                // }
-                newName = `${name}-${nameCount}`;
-                break;
-            default:
-                break;
-        }
-        return newName;
-    }
-
     addTestSuite(suiteData) {
         let title = suiteData && suiteData.title ? suiteData.title : this.newUntitledName("suite");
         if (title.includes("Untitled Test Suite")) {
@@ -136,6 +115,7 @@ export class FileController {
             cases: [],
             modified: true,
             status: "default",
+            copyCount: 0,
             ...suiteData
         };
         this.testSuite.order.push(idText);
@@ -161,6 +141,7 @@ export class FileController {
             suiteIdText: suiteIdText,
             modified: true,
             status: "default",
+            copyCount: 0,
             ...caseData
         };
 
@@ -326,33 +307,25 @@ export class FileController {
 
     copySuite(suiteIdText) {
         let testSuite = this.getTestSuite(suiteIdText);
-        let newTitle = this.newCopyName("suite", testSuite.title);
-        // let newTestSuite = {
-        //     ...cloneDeep(testSuite),
-        //     fileName: `${newTitle}.html`,
-        //     title: newTitle,
-        //     cases: [],
-        //     modified: true,
-        // }
-        // let newSuiteIdText = this.addTestSuite(newTestSuite);
+        testSuite.copyCount++;
+        let newTitle = `${testSuite.title}-${testSuite.copyCount}`;
         let newSuiteIdText = this.addTestSuite({title: newTitle});
         this.copyCases(testSuite.cases, newSuiteIdText);
         return newSuiteIdText;
     }
 
     copySuites(suiteIdTexts) {
-        if (typeof(suiteIdTexts) === "string") {
-            this.copySuite(suiteIdTexts);
-        } else if (typeof(suiteIdTexts) === "object") {
-            for (let suiteIdText of suiteIdTexts) {
-                this.copySuite(suiteIdText);
-            }
+        suiteIdTexts = typeof(suiteIdTexts) === "string" ?
+            [suiteIdTexts] : suiteIdTexts;
+        for (let suiteIdText of suiteIdTexts) {
+            this.copySuite(suiteIdText);
         }
     }
 
     copyCase(srcCaseIdText, dstSuiteIdText) {
         let testCase = this.getTestCase(srcCaseIdText);
-        let newTitle = srcCaseIdText === dstSuiteIdText ? testCase.title : this.newCopyName("case", testCase.title);
+        testCase.copyCount++;
+        let newTitle = srcCaseIdText === dstSuiteIdText ? testCase.title : `${testCase.title}-${testCase.copyCount}`;
         let newTestCase = {
             ...cloneDeep(testCase),
             title: newTitle,
@@ -362,13 +335,11 @@ export class FileController {
         return this.addTestCase(newTestCase);
     }
 
-    copyCases(srcCaseIdTexts, dstSuiteIdText) {
-        if (typeof(srcCaseIdTexts) === "string") {
-            this.copyCase(srcCaseIdTexts, dstSuiteIdText);
-        } else if (typeof(srcCaseIdTexts) === "object") {
-            for (let srcCaseIdText of srcCaseIdTexts) {
-                this.copyCase(srcCaseIdText, dstSuiteIdText);
-            }
+    copyCases(srcCaseIdTexts = [], dstSuiteIdText) {
+        srcCaseIdTexts = typeof(srcCaseIdTexts) === "string" ?
+            [srcCaseIdTexts] : srcCaseIdTexts;
+        for (let srcCaseIdText of srcCaseIdTexts) {
+            this.copyCase(srcCaseIdText, dstSuiteIdText);
         }
     }
 
@@ -380,13 +351,11 @@ export class FileController {
         this.setCaseModified(srcCaseIdText, true, true);
     }
 
-    cutCases(srcCaseIdTexts, dstSuiteIdText) {
-        if (typeof(srcCaseIdTexts) === "string") {
-            this.cutCase(srcCaseIdTexts, dstSuiteIdText);
-        } else if (typeof(srcCaseIdTexts) === "object") {
-            for (let srcCaseIdText of srcCaseIdTexts) {
-                this.cutCase(srcCaseIdText, dstSuiteIdText);
-            }
+    cutCases(srcCaseIdTexts = [], dstSuiteIdText) {
+        srcCaseIdTexts = typeof(srcCaseIdTexts) === "string" ?
+            [srcCaseIdTexts] : srcCaseIdTexts;
+        for (let srcCaseIdText of srcCaseIdTexts) {
+            this.cutCase(srcCaseIdText, dstSuiteIdText);
         }
     }
 
