@@ -293,7 +293,7 @@ export default {
                 EntryPoint.fileList.syncFiles();
             } else {
                 if (caseIdText)
-                    throw new Error(caseIdText + " is not exist");
+                    throw new Error(`${caseIdText} doesen't exist`);
             }
 
         },
@@ -340,7 +340,7 @@ export default {
                         return caseIdText;
                     } else {
                         if (caseIdText) {
-                            throw new Error(caseIdText + " doesn't exist");
+                            throw new Error(`${caseIdText} doesen't exist`);
                         } else {
                             throw new Error("There is no cases available, please record one first");
                         }
@@ -354,7 +354,7 @@ export default {
                         return suiteIdText;
                     } else {
                         if (suiteIdText) {
-                            throw new Error(suiteIdText + " doesn't exist");
+                            throw new Error(`${suiteIdText} doesen't exist`);
                         } else {
                             throw new Error("There is no suites available, please record one first");
                         }
