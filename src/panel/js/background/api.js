@@ -650,6 +650,90 @@ export default {
                 Panel.recorder.stopSelectingTarget()
                     .catch((error) => { console.error(error); });
             }
+        },
+        showElement: async (target) => {
+            try {
+                // TODO: handle tac value
+                let tabs = await browser.tabs.query({
+                    active: true,
+                    windowId: Panel.recorder.contentWindowId
+                });
+                if (tabs.length === 0) {
+                    console.log("No match tabs");
+                } else {
+                    let framesInfo = await browser.webNavigation.getAllFrames({ tabId: tabs[0].id });
+                    let frameIds = [];
+                    for (let info of framesInfo) {
+                        frameIds.push(info.frameId);
+                    }
+                    frameIds.sort();
+                    let infos = {
+                        index: 0,
+                        tabId: tabs[0].id,
+                        frameIds: frameIds,
+                        targetValue: target
+                    };
+                    Panel.recorder.sendShowElementMessage(infos);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        },
+        reportError: async (errorText, mode) => {
+            if (errorText.length === 0 && mode === "none") return;
+
+            let obj = {
+                env: {
+                    browser: platform.name,
+                    browserVersion: platform.version,
+                    os: platform.os.family,
+                    osVersion: platform.os.version,
+                    screen: {
+                        width: (screen.width) ? screen.width : -1,
+                        height: (screen.height) ? screen.height : -1
+                    }
+                },
+                content: {
+                    text: errorText,
+                    file: { type: mode, testSuite: { suites: {} }, testCase: { cases: {} } },
+                    logs: Panel.log.logs
+                }
+            };
+            switch (mode) {
+                case "case": {
+                    let caseIdText = Panel.fileController.getSelectedCases()[0];
+                    if (!caseIdText) break;
+                    obj.content.file.testCase.cases[caseIdText] = Panel.fileController.getTestCase(caseIdText);
+                    break;
+                }
+                case "suite": {
+                    let suiteIdText = Panel.fileController.getSelectedSuites()[0];
+                    if (!suiteIdText) break;
+                    let caseIdTexts = Panel.fileController.getTestSuite(suiteIdText).cases;
+                    obj.content.file.testSuite.suites[suiteIdText] = Panel.fileController.getTestSuite(suiteIdText);
+                    for (let caseIdText of caseIdTexts) {
+                        obj.content.file.testCase.cases[caseIdText] = Panel.fileController.getTestCase(caseIdText);
+                    }
+                    break;
+                }
+                case "all": {
+                    obj.content.file.testSuite = Panel.fileController.testSuite;
+                    obj.content.file.testCase = Panel.fileController.testCase;
+                    break;
+                }
+                default:
+                    break;
+            }
+            console.log(obj);
+            console.log(Panel.setting.get("token"));
+            return await fetch("https://sideex.io/api/reports/widget/error", {
+                headers: {
+                    'content-type': 'application/json'
+                    // 'Authorization': `Bearer ${Panel.setting.get("token")}`
+                },
+                method: 'POST',
+                body: JSON.stringify(obj)
+            });
         }
     }
 };
