@@ -316,8 +316,8 @@ export class Playback {
 
         // parse variable
         try {
-            target = this.preprocessTarget(target);
-            value = this.preprocessValue(value);
+            target = this.preprocessTargetValue(target);
+            value = this.preprocessTargetValue(value);
         } catch (e) {
             console.error(e);
             this.errorMessage = e.message;
@@ -462,10 +462,10 @@ export class Playback {
         }
     }
 
-    preprocessTarget(str) {
-        // if (!str.includes("TAC_LOCATOR")) {
-        //     return str.supplant(Panel.variables.localVars);
-        // }
+    preprocessTargetValue(str) {
+        if (!str.includes("TAC_LOCATOR") && !Panel.variables.isKeyBoardVars(str)) {
+            return str.supplant(Panel.variables.localVars, Panel.variables.globalVars);
+        }
         return str;
     }
 
@@ -584,6 +584,8 @@ export class Playback {
             case "selectWindow":
             case "selectFrame":
                 return Playback.COMMAND_TYPE_EXTENSION_SELECT;
+            case "store":
+            case "storeGlobalVars":
             case "storeText":
             case "storeTitle":
             case "storeValue":

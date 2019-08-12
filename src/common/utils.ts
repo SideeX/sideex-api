@@ -4,7 +4,7 @@ declare global {
         src: string
     }
     interface String {
-        supplant<T>(o: { [key: string]: T }): string
+        supplant<T>(o1: { [key: string]: T }, o2: { [key: string]: T }): string
         lcfirst(): string
         ucfirst(): string
     }
@@ -22,11 +22,13 @@ declare global {
     }
 }
 
-String.prototype.supplant = function <T>(o: { [key: string]: T }) {
+String.prototype.supplant = function <T>(localVarsObj: { [key: string]: T }, globalVarsObj: { [key: string]: T }) {
     return this.replace(/\${([^{}]*)}/g, (match: string, p1: string) => {
-        const r = o[p1.trim()]
-        if (r instanceof String || r instanceof Number) {
-            return r.toString()
+        for (let vars of [localVarsObj, globalVarsObj]) {
+            let r = vars[p1.trim()];
+            if (typeof r == "string" || typeof r == "number") {
+                return r.toString();
+            }
         }
         throw new TypeError("Variable " + match + " does not defined")
     })
