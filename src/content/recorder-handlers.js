@@ -406,6 +406,12 @@ export function recorderHandlersInit() {
         }
     };
 
+    browser.runtime.sendMessage({
+        attachRecorderRequest: true
+    }).catch(() => {
+        // Failed silently if receiving end does not exist
+    });
+
     //select / addSelect / removeSelect
     Recorder.addEventHandler('select', 'focus', function (event) {
         if (event.target.nodeName) {
