@@ -373,6 +373,8 @@ export function recorderHandlersInit() {
                 self.record(m.cmd, [[tmpTitle]], '');
             } else if (m.cmd.includes("Value")) {
                 self.record(m.cmd, tmpText, getInputValue(event.target));
+            } else if (m.cmd.includes("Visibility")){
+                self.record(m.cmd, tmpText, tmpVal);
             }
             myPort.onMessage.removeListener(portListener);
         });

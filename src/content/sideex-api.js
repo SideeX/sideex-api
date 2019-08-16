@@ -497,6 +497,17 @@ Sideex.commands = {
             throw new Error("Actual value '" + this.getValue(locator) + "' did not match '" + value + "'");
         }
     },
+
+    async verifyVisibility(locator, value){
+        var element = this.browserBot.findElement(locator);
+        console.log(window.getComputedStyle(element).height);
+        console.log(window.getComputedStyle(element).width);
+        if(window.getComputedStyle(element).visibility === "hidden"){
+            throw new Error("It is hidden");
+        }
+        
+    },
+
     // © Ming-Hung Hsu, SideeX Team
     async assertText(locator, value) {
         var element = this.browserBot.findElement(locator);
