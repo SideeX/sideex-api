@@ -554,8 +554,9 @@ export class BackgroundRecorder {
         try {
             let response = await browser.tabs.sendMessage(infos.tabId, {
                 action: "ShowElement",
-                targetValue: infos.targetValue
-            }, { frameId: infos.frameIds[infos.index] });
+                targetValue: infos.targetValue,
+                customHtml: infos.customHtml
+            }, { frameId: infos.frameIds[infos.index]});
             if (response) {
                 if (!response.result) {
                     Panel.recorder.prepareSendNextFrame(infos);

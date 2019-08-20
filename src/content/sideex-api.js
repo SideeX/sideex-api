@@ -263,7 +263,7 @@ export class Sideex {
         return element.offsetHeight;
     }
     // Added show element by SideeX comitters (Copyright 2017)
-    async doShowElement(element) {
+    async doShowElement(element, customHtmlString) {
         try {
             if (document.getElementById("sideexShowElement")) {
                 if (!Utils.isWebdriver()) {
@@ -271,7 +271,6 @@ export class Sideex {
                 }
             }
 
-            const box = document.createElement("div");
             let isWindowMove = false;
             let r = element.getBoundingClientRect();
             // move to element
@@ -295,23 +294,38 @@ export class Sideex {
             if (isWindowMove) {
                 r = element.getBoundingClientRect();
             }
-            box.style.display = "block";
-            box.style.pointerEvents = "none";
-            box.style.position = "fixed";
-            box.style.boxShadow = "0 0 0 1px black";
-            box.style.outlineColor = "white";
-            box.style.outlineStyle = "dashed";
-            box.style.outlineOffset = "-1px";
-            box.style.outlineWidth = "1px";
-            box.style.backgroundColor = "rgba(250,250,128,0.4)";
-            box.style.zIndex = "2147483647";
-            box.style.top = String(r.top) + "px";
-            box.style.left = String(r.left) + "px";
-            box.style.width = String(r.width) + "px";
-            box.style.height = String(r.height) + "px";
-            box.id = "sideexShowElement";
-            document.body.appendChild(box);
-            return;
+            let boxElement = document.createElement("div");
+            //user config
+            if (customHtmlString) {
+                boxElement = undefined;
+                const parser = new DOMParser();
+                const wrapper = parser.parseFromString(customHtmlString, "text/html");
+                if (wrapper.getElementsByTagName('div')[0]) {
+                    boxElement = wrapper.getElementsByTagName('div')[0];
+                } else {
+                    throw new Error(`${customHtmlString} is not a valid htmlString`);
+                }
+            } else { //default css
+                boxElement.style.boxShadow = "0 0 0 1px black";
+                boxElement.style.outlineColor = "white";
+                boxElement.style.outlineStyle = "dashed";
+                boxElement.style.outlineOffset = "-1px";
+                boxElement.style.outlineWidth = "1px";
+                boxElement.style.backgroundColor = "rgba(250,250,128,0.4)";
+            }
+            //both must contain
+            boxElement.style.display = "block";
+            boxElement.style.pointerEvents = "none";
+            boxElement.style.position = "fixed";
+            boxElement.style.zIndex = "2147483647";
+            boxElement.style.top = String(r.top) + "px";
+            boxElement.style.left = String(r.left) + "px";
+            boxElement.style.width = String(r.width) + "px";
+            boxElement.style.height = String(r.height) + "px";
+            boxElement.id = "sideexShowElement";
+            document.body.appendChild(boxElement);
+
+            return ;
         } catch (e) {
             return { result: false };
         }
