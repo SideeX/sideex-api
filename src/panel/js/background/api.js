@@ -407,7 +407,7 @@ export default {
                     .catch((error) => { console.error(error); });
             }
         },
-        showElement: async (target) => {
+        showElement: async (target, htmlString) => {
             try {
                 // TODO: handle tac value
                 let tabs = await browser.tabs.query({
@@ -427,7 +427,8 @@ export default {
                         index: 0,
                         tabId: tabs[0].id,
                         frameIds: frameIds,
-                        targetValue: target
+                        targetValue: target,
+                        customHtml: htmlString
                     };
                     Panel.recorder.sendShowElementMessage(infos);
                 }
