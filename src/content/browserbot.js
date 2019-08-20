@@ -360,17 +360,18 @@ export class BrowserBot {
         throw "No response";
     }
     /** © Ming-Hung Hsu, SideeX Team */
-    async getRunScriptMessage() {
-        for (let count = 0; count <= 4; count++) {
+    async getRunScriptMessage(timeout) {
+        if (timeout == -1) timeout = Number.MAX_SAFE_INTEGER;
+        for (let count = 0; count <= timeout; count += 100) {
             if (this.runScriptResponse) {
                 const message = this.runScriptMessage;
                 this.runScriptResponse = false;
                 this.runScriptMessage = null;
                 return message;
             }
-            await Utils.delay(200);
+            await Utils.delay(100);
         }
-        throw "No response";
+        return "No error!!!!";
     }
 }
 

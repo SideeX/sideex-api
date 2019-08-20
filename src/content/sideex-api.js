@@ -320,6 +320,18 @@ Sideex.commands = {
         var element = this.browserBot.findElement(locator);
         this.browserBot.contextMenuOnElement(element);
     },
+    /** @author © Ming-Hung Hsu, SideeX Team */
+    async runScript(script, timeout = 1000) {
+        window.postMessage({
+            direction: "from-content-runscript",
+            script: script
+        }, "*");
+        const actualMessage = await this.browserBot.getRunScriptMessage(timeout);
+        if (actualMessage != "No error!!!!")
+            throw new Error(actualMessage);
+        else
+            return true;
+    },
     // © Ming-Hung Hsu, SideeX Team
     async verifyText(locator, value) {
         var element = this.browserBot.findElement(locator);
