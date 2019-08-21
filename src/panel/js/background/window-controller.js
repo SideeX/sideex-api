@@ -97,7 +97,7 @@ export class WindowController {
         }
         this.attached = true;
         browser.tabs.onUpdated.addListener(this.tabStatusHandler);
-        browser.runtime.onMessage.addListener(this.frameLocationMessageHandler);
+        MessageController.addListener(this.frameLocationMessageHandler);
         browser.webNavigation.onCreatedNavigationTarget.addListener(this.newTabHandler);
     }
 

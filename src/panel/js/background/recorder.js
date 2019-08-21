@@ -59,7 +59,7 @@ export class BackgroundRecorder {
         this.preRecorder = new PreRecorder(root, this);
 
         // Always listening
-        browser.runtime.onMessage.addListener(this.requestHandler);
+        MessageController.addListener(this.requestHandler);
     }
 
     /**
@@ -379,7 +379,7 @@ export class BackgroundRecorder {
         if (browser.runtime.onMessage.hasListener(this.targetHandler)) {
             return;
         }
-        browser.runtime.onMessage.addListener(this.targetHandler);
+        MessageController.addListener(this.targetHandler);
     }
 
     /**
@@ -430,7 +430,7 @@ export class BackgroundRecorder {
         browser.windows.onFocusChanged.addListener(this.windowSwitchHandler);
         browser.tabs.onRemoved.addListener(this.tabRemovalHandler);
         browser.webNavigation.onCreatedNavigationTarget.addListener(this.tabsCreatedHandler);
-        browser.runtime.onMessage.addListener(this.commandHandler);
+        MessageController.addListener(this.commandHandler);
         this.attachDOMRecorder();
     }
 
@@ -499,7 +499,7 @@ export class BackgroundRecorder {
             url: "<all_urls>"
         }).then(function (tabs) {
             for (let tab of tabs) {
-                MessageController.tabSendMessage({ action: "AttachRecorder" }, tab.id).catch(function (error) { console.error(error); });
+                MessageController.tabSendMessage({ action: "AttachRecorder" }, tab.id).catch(function () { });
             }
             return;
         }).catch(function (error) { console.error(error); });
@@ -514,7 +514,7 @@ export class BackgroundRecorder {
             url: "<all_urls>"
         }).then(function (tabs) {
             for (let tab of tabs) {
-                MessageController.tabSendMessage({ action: "DetachRecorder" }, tab.id).catch(function (error) { console.error(error); });
+                MessageController.tabSendMessage({ action: "DetachRecorder" }, tab.id).catch(function () { });
             }
             return;
         }).catch(function (error) { console.error(error); });

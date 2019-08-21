@@ -6,21 +6,15 @@ export class MessageController {
     // }
 
     static tabSendMessage(message, tabId, options) {
-        console.log("running MessageController.tabSendMessage()");
         if (this.isExtension) {
-            console.log(`Message ${message} sent to ${tabId}`);
-            console.log(browser.tabs);
-            return browser.tabs.sendMessage(tabId, message, options); // ask 這樣 沒有傳的參數就是 undefined??
+            return browser.tabs.sendMessage(tabId, message, options);
         } else {
             return window.postMessage(message);
         }
     }
 
     static runtimeSendMessage(message, extensionId, options) {
-        console.log("running MessageController.runtimeSendMessage()");
         if (this.isExtension) {
-            console.log(`Message ${message} sent to ${extensionId}`);
-            console.log(browser.runtime);
             return browser.runtime.sendMessage(extensionId, message, options);
         } else {
             return window.postMessage(message);

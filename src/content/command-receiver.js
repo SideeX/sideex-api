@@ -21,7 +21,7 @@ import "../common/utils";
 import { MessageController } from "../content/message-controller";
 
 var targetSelecter = null;
-browser.runtime.onMessage.addListener(async function doCommands(request) {
+MessageController.addListener(async function doCommands(request) {
     switch (request.action) {
         case "Wait": {
             await sideex.doAutoWait(request.command, request.value);
