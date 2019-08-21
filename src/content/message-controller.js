@@ -1,29 +1,33 @@
 import { browser } from "webextension-polyfill-ts";
 
 export class MessageController {
-    constructor(isExtension) {
-        this.isExtension = isExtension;
-    }
+    // constructor(isExtension = true) {
+    //     this.isExtension = isExtension;
+    // }
 
-    tabSendMessage(message, tabId, options) {
+    static tabSendMessage(message, tabId, options) {
+        console.log("running MessageController.tabSendMessage()");
         if (this.isExtension) {
             console.log(`Message ${message} sent to ${tabId}`);
+            console.log(browser.tabs);
             return browser.tabs.sendMessage(tabId, message, options); // ask 這樣 沒有傳的參數就是 undefined??
         } else {
             return window.postMessage(message);
         }
     }
 
-    runtimeSendMessage(message, extensionId, options) {
+    static runtimeSendMessage(message, extensionId, options) {
+        console.log("running MessageController.runtimeSendMessage()");
         if (this.isExtension) {
             console.log(`Message ${message} sent to ${extensionId}`);
+            console.log(browser.runtime);
             return browser.runtime.sendMessage(extensionId, message, options);
         } else {
             return window.postMessage(message);
         }
     }
 
-    addListener(callback) {
+    static addListener(callback) {
         if (this.isExtension) {
             return browser.runtime.onMessage.addListener(callback);
         } else {
@@ -31,3 +35,5 @@ export class MessageController {
         }
     }
 }
+
+MessageController.isExtension = true;

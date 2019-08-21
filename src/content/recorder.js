@@ -18,6 +18,7 @@ import { browser } from "webextension-polyfill-ts";
 import { Utils } from "../common/utils";
 import { LocatorBuilders } from "./locatorBuilders";
 import { recorderHandlersInit } from "./recorder-handlers";
+import { MessageController } from "../content/message-controller";
 
 export class Recorder {
     constructor(window) {
@@ -25,7 +26,7 @@ export class Recorder {
         this.attached = false;
         this.locatorBuilders = new LocatorBuilders(window);
         this.frameLocation = this.getFrameLocation();
-        browser.runtime.sendMessage({
+        MessageController.runtimeSendMessage({
             frameLocation: this.frameLocation
         }).catch(function () {
             // Failed silently if receiving end does not exist
@@ -197,7 +198,7 @@ export class Recorder {
         async function sendMessageToPanel(command, target, value, preWaitTime, insertBeforeLastCommand, actualFrameLocation) {
             try {
                 console.log(`-> Record: %c${command}`, "color: blue;");
-                await browser.runtime.sendMessage({
+                await MessageController.runtimeSendMessage({
                     command: command,
                     target: target,
                     value: value,

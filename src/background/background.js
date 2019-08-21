@@ -16,6 +16,7 @@
  */
 import { browser } from "webextension-polyfill-ts";
 import { Utils } from "../common/utils";
+import { MessageController } from "../content/message-controller";
 
 let master = {};
 let clickEnabled = true;
@@ -39,10 +40,10 @@ browser.tabs.onUpdated.addListener(async function (tabId, changeInfo, tabInfo) {
         for (const contentWindowId of Object.keys(master)) {
             if (master[contentWindowId] === tabInfo.windowId) {
                 try {
-                    const response = await browser.tabs.sendMessage(tabId, {
+                    const response = await MessageController.tabSendMessage({
                         selfWindowId: tabInfo.windowId,
                         commWindowId: Number(contentWindowId)
-                    });
+                    }, tabId);
                     return response.check;
                 } catch (error) {
                     console.error(error);

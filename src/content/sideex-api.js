@@ -21,6 +21,7 @@ import { PatternMatcher } from "../common/patternMatcher";
 import storage from "../common/storage";
 import { browser } from "webextension-polyfill-ts";
 import { escapeHTML } from "../common/escape.js";
+import { MessageController } from "../content/message-controller";
 
 export class Sideex {
     constructor(browserBot) {
@@ -542,11 +543,11 @@ Sideex.commands = {
     },
     // © Ming-Hung Hsu, SideeX Team
     async store(value, varName) {
-        browser.runtime.sendMessage({ "storeStr": value, "storeVar": varName, "isGlobal": false });
+        this.MessageController.runtimeSendMessage({ "storeStr": value, "storeVar": varName, "isGlobal": false });
     },
     // © Ming-Hung Hsu, SideeX Team
     async storeGlobalVars(value, varName) {
-        browser.runtime.sendMessage({ "storeStr": value, "storeVar": varName, "isGlobal": true });
+        this.MessageController.runtimeSendMessage({ "storeStr": value, "storeVar": varName, "isGlobal": true });
     },
     // © Ming-Hung Hsu, SideeX Team
     async storeText(locator, varName) {
@@ -554,18 +555,18 @@ Sideex.commands = {
         var text = Utils.getText(element);
         if (text === '')
             throw new Error("Error: This element does not have property 'Text'. Please change to use storeValue command.");
-        browser.runtime.sendMessage({ "storeStr": text, "storeVar": varName, "isGlobal": false });
+        this.MessageController.runtimeSendMessage({ "storeStr": text, "storeVar": varName, "isGlobal": false });
     },
     // © Ming-Hung Hsu, SideeX Team
     async storeTitle(value, varName) {
-        browser.runtime.sendMessage({ "storeStr": value, "storeVar": varName, "isGlobal": false });
+        this.MessageController.runtimeSendMessage({ "storeStr": value, "storeVar": varName, "isGlobal": false });
     },
     // © Ming-Hung Hsu, SideeX Team
     async storeValue(locator, varName) {
         var val = this.getValue(locator);
         if (typeof val === 'undefined')
             throw new Error("Error: This element does not have property 'value'. Please change to use storeText command.");
-        browser.runtime.sendMessage({ "storeStr": this.getValue(locator), "storeVar": varName, "isGlobal": false });
+        this.MessageController.runtimeSendMessage({ "storeStr": this.getValue(locator), "storeVar": varName, "isGlobal": false });
     },
     // © Ming-Hung Hsu, SideeX Team
     async echo(value) {
