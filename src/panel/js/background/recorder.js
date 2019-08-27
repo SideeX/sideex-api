@@ -24,6 +24,7 @@
  */
 import { browser } from "webextension-polyfill-ts";
 import { PreRecorder } from './preRecorder';
+import { boundMethod } from "autobind-decorator";
 
 
 export class BackgroundRecorder {
@@ -412,6 +413,7 @@ export class BackgroundRecorder {
         this.commandHandler = this.commandHandler.bind(this);
         this.targetHandler = this.targetHandler.bind(this);
         this.requestHandler = this.requestHandler.bind(this);
+        // this.contentWindowIdListener = this.contentWindowIdListener.bind(this);
     }
 
     /**
@@ -602,7 +604,8 @@ export class BackgroundRecorder {
             browser.notifications.clear(tempCount);
         }, 1500);
     }
-
+    
+    @boundMethod
     handleFormatCommand(message) {
         if (message.storeStr) {
             this.root.variables.localVars[message.storeVar] = message.storeStr;
@@ -610,16 +613,13 @@ export class BackgroundRecorder {
             this.root.log.pushLog("info", `echo: ${message.echoStr}`);
         }
     }
-
+    @boundMethod
     contentWindowIdListener(message, sender, response) {
-        console.log('here');
-        console.log("receive", message);
         if (message.selfWindowId != undefined && message.commWindowId != undefined) {
             console.log("sender: ", sender);
             response({check: true});
             this.selfWindowId = message.selfWindowId;
             this.contentWindowId = message.commWindowId;
-            console.log(`recorder.js: ${this.contentWindowId}`);
             this.root.playback.setContentWindowId(this.contentWindowId);
             this.addOpenedWindow(this.contentWindowId);
             this.setSelfWindowId(this.selfWindowId);

@@ -18,6 +18,7 @@ import { WindowController } from './window-controller';
 import { Preprocessor } from './preprocessor';
 import { Utils } from "../../../common/utils";
 
+
 export class Playback {
     constructor(root) {
         this.root = root;
@@ -66,7 +67,6 @@ export class Playback {
         if (!this.root.setting.get("periodical")) {
             return false;
         }
-
         this.timesOfPlay++;
         await Utils.delay(this.root.setting.get("period") * 60 * 1000);
         if (this.isStop) {

@@ -34,6 +34,7 @@ root.variables = new VariableController(root);
 root.uiTools = new UiTools(root);
 root.log = new Log(root);
 root.setting = new Setting(root);
+
 // export var recorder = new BackgroundRecorder();
 // export var playback = new Playback(true);
 // export var log = new Log();
@@ -41,7 +42,7 @@ root.setting = new Setting(root);
 
 // export var setting = new Setting(true);
 // export var uiTools = new UiTools();
-console.log(root);
+// console.log(root);
 
 browser.runtime.onMessage.addListener(root.recorder.contentWindowIdListener);
 browser.runtime.onMessage.addListener(root.recorder.handleFormatCommand);
