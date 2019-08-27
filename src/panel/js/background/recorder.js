@@ -25,6 +25,7 @@
 import { browser } from "webextension-polyfill-ts";
 import { PreRecorder } from './preRecorder';
 import { boundMethod } from "autobind-decorator";
+import * as EntryPoint from "../UI/entryPoint";
 
 
 export class BackgroundRecorder {
@@ -604,7 +605,7 @@ export class BackgroundRecorder {
             browser.notifications.clear(tempCount);
         }, 1500);
     }
-    
+
     @boundMethod
     handleFormatCommand(message) {
         if (message.storeStr) {

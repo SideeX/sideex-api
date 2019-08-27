@@ -15,6 +15,7 @@
  *
  */
 import cloneDeep from "lodash/cloneDeep";
+import * as EntryPoint from "../UI/entryPoint";
 
 export class FileController {
     constructor(root) {

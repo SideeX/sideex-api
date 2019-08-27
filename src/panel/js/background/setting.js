@@ -16,7 +16,7 @@ export class Setting {
             period: 0.1
         };
 
-        if (this.root.isDomBased) {
+        if (this.root.isDOMBased) {
             this.init();
         }
     }
@@ -40,7 +40,7 @@ export class Setting {
             this.params[key] = obj[key];
         }
 
-        if (this.root.isDomBased) {
+        if (this.root.isDOMBased) {
             this.syncStorage(obj);
         }
     }

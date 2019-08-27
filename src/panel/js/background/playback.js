@@ -17,7 +17,7 @@
 import { WindowController } from './window-controller';
 import { Preprocessor } from './preprocessor';
 import { Utils } from "../../../common/utils";
-
+import * as EntryPoint from "../UI/entryPoint";
 
 export class Playback {
     constructor(root) {

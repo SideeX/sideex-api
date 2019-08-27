@@ -19,7 +19,7 @@ export var setting = {
             root.setting[key] = obj[key];
         }
 
-        if (this.isDomBased) {
+        if (root.isDOMBased) {
             this.syncStorage(obj);
         }
     },
@@ -29,7 +29,7 @@ export var setting = {
         }
         return undefined;
     }
-}
+};
 
 export var recorder = {
     isRecord: false,

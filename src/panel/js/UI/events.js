@@ -1,5 +1,7 @@
 import { browser } from "webextension-polyfill-ts";
 import { root } from "../background/initial";
+import * as EntryPoint from "../UI/entryPoint";
+
 export default {
     toolBar: {
         clickPlayButton: function (mode) {

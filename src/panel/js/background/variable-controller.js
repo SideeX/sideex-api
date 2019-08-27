@@ -1,4 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
+import * as EntryPoint from "../UI/entryPoint";
 export class VariableController {
     constructor(root) {
         this.root = root;
