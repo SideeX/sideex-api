@@ -500,10 +500,19 @@ Sideex.commands = {
 
     async verifyVisibility(locator, value){
         var element = this.browserBot.findElement(locator);
-        console.log(window.getComputedStyle(element).height);
+        console.log(window.getComputedStyle(element).visibility);
+        console.log(window.getComputedStyle(element).opacity);
+        console.log(window.getComputedStyle(element).display);
         console.log(window.getComputedStyle(element).width);
-        if(window.getComputedStyle(element).visibility === "hidden"){
-            throw new Error("It is hidden");
+        console.log(window.getComputedStyle(element).height);
+        console.log(window.getComputedStyle(element).position.y);
+        if(window.getComputedStyle(element).visibility === "visible" ||
+            window.getComputedStyle(element).opacity === "1" ||
+            window.getComputedStyle(element).display === "inline-block" ||
+            window.getComputedStyle(element).width === "0px" || 
+            window.getComputedStyle(element).height === "0px"){
+                
+                throw new Error("I can't see!!");
         }
         
     },
