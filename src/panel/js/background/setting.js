@@ -1,7 +1,9 @@
 import { browser } from "webextension-polyfill-ts";
 
 export class Setting {
-    constructor(isDomBased) {
+    constructor(root) {
+        this.root = root;
+
         this.params = {
             // basic
             delay: 0,
@@ -13,9 +15,8 @@ export class Setting {
             isPeriodical: false,
             period: 0.1
         };
-        this.isDomBased = isDomBased;
 
-        if (isDomBased) {
+        if (this.root.isDomBased) {
             this.init();
         }
     }
@@ -39,7 +40,7 @@ export class Setting {
             this.params[key] = obj[key];
         }
 
-        if (this.isDomBased) {
+        if (this.root.isDomBased) {
             this.syncStorage(obj);
         }
     }

@@ -17,7 +17,9 @@
 import cloneDeep from "lodash/cloneDeep";
 
 export class FileController {
-    constructor(isDOMBased) {
+    constructor(root) {
+        this.root = root;
+
         this.selectedSuiteIdTexts = [];
         this.selectedCaseIdTexts = [];
         this.selectedRecordIdTexts = [];
@@ -265,8 +267,8 @@ export class FileController {
     getIncludeCaseIdText(includeTarget) {
         let temp = includeTarget.split(".");
         let suiteName = temp[0], caseName = temp[1];
-        let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
-        return Panel.fileController.getCaseKey(suiteIdText, caseName);
+        let suiteIdText = this.getSuiteKey(suiteName);
+        return this.getCaseKey(suiteIdText, caseName);
     }
 
     setSuiteTitle(suiteIdText, title) {
@@ -617,8 +619,8 @@ export class FileController {
     }
 
     isSuiteNameUsed(name) {
-        for (let key in Panel.fileController.testSuite.suites) {
-            if (Panel.fileController.testSuite.suites[key].title === name) {
+        for (let key in this.testSuite.suites) {
+            if (this.testSuite.suites[key].title === name) {
                 return true;
             }
         }
@@ -626,8 +628,8 @@ export class FileController {
     }
 
     isCaseNameUsed(name, suiteIdText) {
-        for (let key of Panel.fileController.testSuite.suites[suiteIdText].cases) {
-            if (Panel.fileController.testCase.cases[key].title === name) {
+        for (let key of this.testSuite.suites[suiteIdText].cases) {
+            if (this.testCase.cases[key].title === name) {
                 return true;
             }
         }

@@ -1,8 +1,10 @@
-// import { fileController, Panel.uiTools, reference } from '../background/initial';
+// import { fileController, this.root.uiTools, reference } from '../background/initial';
 import { browser } from "webextension-polyfill-ts";
 
 export class UiTools {
-    constructor() {
+    constructor(root) {
+        this.root = root;
+
         this.isOnWorkArea = false;
     }
 
@@ -13,7 +15,7 @@ export class UiTools {
     // --------- command_grid.js
     dblclickCommand(event) {
         var temp = event.target;
-        Panel.uiTools.cleanCommandToolBar();
+        this.cleanCommandToolBar();
         while (temp != null) {
             if (/records-(\d)+/.test(temp.id)) {
                 event.stopPropagation();
@@ -23,8 +25,8 @@ export class UiTools {
                 }
 
                 var index = temp.id.split("-")[1];
-                Panel.recorder.detach();
-                Panel.playback.playCommand(index);
+                this.root.recorder.detach();
+                this.root.playback.playCommand(index);
                 break;
             }
             temp = temp.parentElement;
@@ -52,7 +54,7 @@ export class UiTools {
         document.getElementById("command-target").value = "";
         document.getElementById("command-value").value = "";
         document.getElementById("records-count").value = "0";
-        Panel.fileController.setSelectedRecords([]);
+        this.root.fileController.setSelectedRecords([]);
     }
     // --------- initial.js
 
@@ -68,34 +70,34 @@ export class UiTools {
     }
 
     processShortCut(event, keyNum, ctrlKey, shiftKey) {
-        let caseIdText = Panel.fileController.getSelectedCases()[0];
+        let caseIdText = this.root.fileController.getSelectedCases()[0];
         // Hot keys
         switch (keyNum) {
             case 38: { // up arrow
-                let recordIdTexts = Panel.fileController.getSelectedRecords();
+                let recordIdTexts = this.root.fileController.getSelectedRecords();
                 let index = parseInt(recordIdTexts[0].split("-")[1]);
                 if (index > 0) {
                     index--;
-                    Panel.fileController.setSelectedRecords([`records-${index}`]);
+                    this.root.fileController.setSelectedRecords([`records-${index}`]);
                 }
                 break;
             }
             case 40: { // down arrow
-                let recordIdTexts = Panel.fileController.getSelectedRecords();
+                let recordIdTexts = this.root.fileController.getSelectedRecords();
                 let index = parseInt(recordIdTexts[recordIdTexts.length - 1].split("-")[1]);
-                if (Panel.fileController.getRecordNum(caseIdText) - 1 > index) {
+                if (this.root.fileController.getRecordNum(caseIdText) - 1 > index) {
                     index++;
-                    Panel.fileController.setSelectedRecords([`records-${index}`]);
+                    this.root.fileController.setSelectedRecords([`records-${index}`]);
                 }
                 break;
             }
             case 46: { // del
                 if (caseIdText) {
-                    let recordIdTexts = Panel.fileController.getSelectedRecords();
+                    let recordIdTexts = this.root.fileController.getSelectedRecords();
                     for (let i = recordIdTexts.length - 1; i >= 0; i--) {
-                        Panel.fileController.deleteRecord(caseIdText, parseInt(recordIdTexts[i].split("-")[1]));
+                        this.root.fileController.deleteRecord(caseIdText, parseInt(recordIdTexts[i].split("-")[1]));
                     }
-                    Panel.fileController.setSelectedRecords([]);
+                    this.root.fileController.setSelectedRecords([]);
                 }
                 break;
             }
@@ -103,37 +105,37 @@ export class UiTools {
 
         // Hot keys: Ctrl + [KEY]
         if (ctrlKey) {
-            // if (!Panel.uiTools.isOnWorkArea) return;
-            Panel.uiTools.stopNativeEvent(event);
+            // if (!this.isOnWorkArea) return;
+            this.stopNativeEvent(event);
 
             switch (keyNum) {
                 case 65: { // Ctrl + A
                     let temp = [];
-                    let records = Panel.fileController.getRecords(
-                        Panel.fileController.getSelectedCases()[0]
+                    let records = this.root.fileController.getRecords(
+                        this.root.fileController.getSelectedCases()[0]
                     );
                     for (let i = 0; i < records.length; i++) {
                         temp.push(`records-${i}`);
                     }
-                    Panel.fileController.setSelectedRecords(temp);
+                    this.root.fileController.setSelectedRecords(temp);
                     break;
                 }
                 case 66: // Ctrl + B
-                    Panel.fileController.toggleRecordBreakpoint(
-                        Panel.fileController.getSelectedCases()[0],
-                        parseInt(Panel.fileController.getSelectedRecord().split("-")[1])
+                    this.root.fileController.toggleRecordBreakpoint(
+                        this.root.fileController.getSelectedCases()[0],
+                        parseInt(this.root.fileController.getSelectedRecord().split("-")[1])
                     );
                     break;
                 case 67: // Ctrl + C
-                    Panel.fileController.copyCommands();
+                    this.root.fileController.copyCommands();
                     break;
                 case 73: { // Ctrl + I
-                    let info = Panel.fileController.insertCommand("after", "",
+                    let info = this.root.fileController.insertCommand("after", "",
                         { options: [{ type: "other", value: "" }] },
                         { options: [{ type: "other", value: "" }] },
                     );
-                    let recordInfo = Panel.fileController.getRecord(info.caseIdText, info.index);
-                    Panel.fileController.setSelectedRecords([`records-${info.index}`]);
+                    let recordInfo = this.root.fileController.getRecord(info.caseIdText, info.index);
+                    this.root.fileController.setSelectedRecords([`records-${info.index}`]);
 
                     EntryPoint.workArea.setEditBlock({
                         index: info.index, isOpen: true, isSelect: false,
@@ -156,15 +158,15 @@ export class UiTools {
                     document.querySelector("#play-button").click();
                     break;
                 case 83: { // Ctrl + S
-                    let suiteIdText = Panel.fileController.getSelectedSuites()[0];
-                    Panel.fileController.saveFile.downloadSuites([suiteIdText]);
+                    let suiteIdText = this.root.fileController.getSelectedSuites()[0];
+                    this.root.fileController.saveFile.downloadSuites([suiteIdText]);
                     break;
                 }
                 case 86: // Ctrl + V
-                    Panel.fileController.pasteCommands();
+                    this.root.fileController.pasteCommands();
                     break;
                 case 88: { // Ctrl + X
-                    Panel.fileController.cutCommands();
+                    this.root.fileController.cutCommands();
                     break;
                 }
                 default:

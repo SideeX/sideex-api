@@ -1,4 +1,5 @@
 import { toolBarState } from "../state.template";
+import { root } from "../../background/initial";
 
 export default function (state = { ...toolBarState }, action) {
     switch (action.type) {
@@ -6,12 +7,12 @@ export default function (state = { ...toolBarState }, action) {
             state = {
                 speed: {
                     isShow: false,
-                    value: Panel.playback.playSpeed
+                    value: root.playback.playSpeed
                 },
-                isRecord: Panel.recorder.isRecord,
-                isPlay: Panel.playback.isPlay,
-                isPause: Panel.playback.isPause,
-                isStop: Panel.playback.isStop
+                isRecord: root.recorder.isRecord,
+                isPlay: root.playback.isPlay,
+                isPause: root.playback.isPause,
+                isStop: root.playback.isStop
             };
             return state;
         }
@@ -24,7 +25,7 @@ export default function (state = { ...toolBarState }, action) {
             state = { ...state };
             let value = action.payload.speedValue;
             state.speed.value = value;
-            Panel.playback.playSpeed = value;
+            root.playback.playSpeed = value;
             return state;
         }
         default:

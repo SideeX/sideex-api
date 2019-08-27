@@ -1,6 +1,8 @@
 import { browser } from "webextension-polyfill-ts";
 export class VariableController {
-    constructor() {
+    constructor(root) {
+        this.root = root;
+
         this.keyBoard = ["KEY_ENTER", "KEY_DOWN", "KEY_UP", "KEY_LEFT", "KEY_RIGHT"];
         this.globalVars = {
             count: 0,
@@ -22,8 +24,8 @@ export class VariableController {
 
     makeCSVText() {
         let text = "";
-        for (let key in Panel.variables.globalVars.vars) {
-            let varObj = Panel.variables.globalVars.vars[key];
+        for (let key in this.root.globalVars.vars) {
+            let varObj = this.root.globalVars.vars[key];
             text += `${varObj.name}, ${varObj.value},\n`;
         }
 
@@ -32,31 +34,31 @@ export class VariableController {
 
     makeJSONText() {
         let temp = {};
-        for (let varObjKey in Panel.variables.globalVars.vars) {
-            let varObj = Panel.variables.globalVars.vars[varObjKey];
+        for (let varObjKey in this.root.globalVars.vars) {
+            let varObj = this.root.globalVars.vars[varObjKey];
             temp[varObj.name] = varObj.value;
         }
         return JSON.stringify(temp, null, "  ");
     }
 
     isVarExisted(name) {
-        if (Panel.variables.globalVars.varNames[name]) {
+        if (this.root.globalVars.varNames[name]) {
             return true;
         }
         return false;
     }
 
     getVarNum() {
-        return Panel.variables.globalVars.count;
+        return this.root.globalVars.count;
     }
 
     addVariable(name = "", value = "") {
-        Panel.variables.globalVars.count++;
-        let index = Panel.variables.globalVars.startNum++;
+        this.root.globalVars.count++;
+        let index = this.root.globalVars.startNum++;
         let varIdText = `var-${index}`;
-        if (name !== "") Panel.variables.globalVars.varNames[name] = true;
-        Panel.variables.globalVars[name] = value;
-        Panel.variables.globalVars.vars[varIdText] = {
+        if (name !== "") this.root.globalVars.varNames[name] = true;
+        this.root.globalVars[name] = value;
+        this.root.globalVars[name] = value;
             index: index,
             name: name,
             value: value
@@ -65,30 +67,30 @@ export class VariableController {
     }
 
     updateVarName(varIdText, name) {
-        if (Panel.variables.isVarExisted(name)) {
-            Panel.log.pushLog("error", "The variable is existed");
+        if (this.root.isVarExisted(name)) {
+            this.root.log.pushLog("error", "The variable is existed");
         }
-        let lastName = Panel.variables.globalVars.vars[varIdText].name;
-        delete Panel.variables.globalVars.varNames[lastName];
-        Panel.variables.globalVars.varNames[name] = true;
-        Panel.variables.globalVars.vars[varIdText].name = name;
+        let lastName = this.root.globalVars.vars[varIdText].name;
+        delete this.root.globalVars.varNames[lastName];
+        this.root.globalVars.varNames[name] = true;
+        this.root.globalVars.vars[varIdText].name = name;
     }
 
     updateVarValue(varIdText, value) {
-        Panel.variables.globalVars.vars[varIdText].value = value;
+        this.root.globalVars.vars[varIdText].value = value;
     }
 
     deleteVariable(varIdText) {
-        Panel.variables.globalVars.count--;
-        let name = Panel.variables.globalVars.vars[varIdText].name;
+        this.root.globalVars.count--;
+        let name = this.root.globalVars.vars[varIdText].name;
         if (name !== "") {
-            delete Panel.variables.globalVars.varNames[name];
+            delete this.root.globalVars.varNames[name];
         }
-        delete Panel.variables.globalVars.vars[varIdText];
+        delete this.root.globalVars.vars[varIdText];
     }
 
     clearVariables() {
-        Panel.variables.globalVars = {
+        this.root.globalVars = {
             count: 0,
             startNum: 0,
             varNames: {},
@@ -114,19 +116,19 @@ export class VariableController {
         reader.onload = function(event) {
             let variables;
             if (type === "csv") {
-                variables = Panel.variables.csvParser(event.target.result);
+                variables = this.root.csvParser(event.target.result);
             } else if (type === "json") {
-                variables = Panel.variables.jsonParser(event.target.result);
+                variables = this.root.jsonParser(event.target.result);
             } else {
-                Panel.log.pushLog("error", "Error on file type");
+                this.root.log.pushLog("error", "Error on file type");
                 return;
             }
 
             for (let variable of variables) {
-                if (Panel.variables.globalVars.varNames[variable[0]]) {
-                    Panel.log.pushLog("warn", "Duplicated variables");
+                if (this.root.globalVars.varNames[variable[0]]) {
+                    this.root.log.pushLog("warn", "Duplicated variables");
                 } else {
-                    Panel.variables.addVariable(variable[0], variable[1]);
+                    this.root.addVariable(variable[0], variable[1]);
                 }
             }
             EntryPoint.console.syncVariable();
@@ -139,15 +141,15 @@ export class VariableController {
         let text = "";
         switch (type) {
             case "json":
-                text = Panel.variables.makeJSONText();
+                text = this.root.makeJSONText();
                 break;
             case "csv":
-                text = Panel.variables.makeCSVText();
+                text = this.root.makeCSVText();
                 break;
         }
         let downloading = browser.downloads.download({
             filename: `Global Variables.${type}`,
-            url: Panel.fileController.saveFile.makeTextFile(text),
+            url: this.root.fileController.saveFile.makeTextFile(text),
             saveAs: true,
             conflictAction: 'overwrite'
         });

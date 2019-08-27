@@ -15,7 +15,9 @@
  *
  */
 export class Log {
-    constructor() {
+    constructor(root) {
+        this.root = root;
+
         this.logs = [];
         this.logTypeMap = {
             debug: [],
