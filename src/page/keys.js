@@ -22,8 +22,10 @@
         let charCode = (eventType == 'keypress') ? keySequence.charCode : 0;
         let keyCode = (eventType == 'keypress') ? keySequence.charCode : keySequence.keyCode;
         let which = (eventType == 'keypress') ? keySequence.charCode : keySequence.which;
-        let event = document.createEvent('Event');
-        event.initEvent(eventType, true, true);
+        let event = new Event(eventType, {
+            bubbles: true,
+            cancelable: true
+        });
         event.view = window;
         event.altKey = altKeyDown;
         event.ctrlKey = controlKeyDown;
@@ -33,7 +35,6 @@
         event.charCode = charCode;
         event.code = keySequence.code;
         event.key = keySequence.key;
-        event.bubbles = true;
         element.dispatchEvent(event);
     }
 
@@ -67,7 +68,7 @@
     window.addEventListener("message", function (event) {
         if (event.source == window && event.data && event.data.direction == "from-sendkeys") {
             let element = tempElement;
-            if (sendString) {
+            if (!sendString) {
                 element = findElement(event.data.element);
             }
             if (event.data.keys == "") {
@@ -79,8 +80,10 @@
 
             if ('string' == typeof event.data.keys) {
                 if (event.data.keys == "sendkeyEnd") {
-                    let evt = document.createEvent('Event');
-                    evt.initEvent('change', true, false);
+                    let evt = new Event("change", {
+                        bubbles: true,
+                        cancelable: false
+                    });
                     element.dispatchEvent(evt);
                     sendString = false;
                     tempElement = "";
