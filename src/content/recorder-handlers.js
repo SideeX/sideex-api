@@ -117,13 +117,13 @@ export function recorderHandlersInit() {
             this.mouseup = setTimeout(function() {
                 delete self.mousedown;
             }.bind(this), 200);
-    
+
             this.selectMouseup = setTimeout(function() {
                 self.selectMousedown = event;
             }.bind(this), 200);
         }
         this.mouseoverQ = [];
-    
+
         if (event.target.nodeName) {
             var tagName = event.target.nodeName.toLowerCase();
             if ('option' == tagName) {
@@ -138,14 +138,14 @@ export function recorderHandlersInit() {
         }
     }, true);
     // END
-    
+
     // © Shuo-Heng Shih, SideeX Team
     Recorder.addEventHandler('dragAndDrop', 'mouseup', function(event) {
         clearTimeout(this.selectMouseup);
         if (this.selectMousedown) {
-            var x = event.clientX - this.selectMousedown.clientX;
-            var y = event.clientY - this.selectMousedown.clientY;
-    
+            let x = event.clientX - this.selectMousedown.clientX;
+            let y = event.clientY - this.selectMousedown.clientY;
+
             function getSelectionText() {
                 var text = "";
                 var activeEl = window.document.activeElement;
@@ -157,7 +157,7 @@ export function recorderHandlersInit() {
                 }
                 return text.trim();
             }
-    
+
             if (this.selectMousedown && event.button === 0 && (x + y) && (event.clientX < window.document.documentElement.clientWidth && event.clientY < window.document.documentElement.clientHeight) && getSelectionText() === '') {
                 var sourceRelateX = this.selectMousedown.pageX - this.selectMousedown.target.getBoundingClientRect().left - window.scrollX;
                 var sourceRelateY = this.selectMousedown.pageY - this.selectMousedown.target.getBoundingClientRect().top - window.scrollY;
@@ -179,9 +179,9 @@ export function recorderHandlersInit() {
         } else {
             delete this.clickLocator;
             delete this.mouseup;
-            var x = event.clientX - this.mousedown.clientX;
-            var y = event.clientY - this.mousedown.clientY;
-    
+            let x = event.clientX - this.mousedown.clientX;
+            let y = event.clientY - this.mousedown.clientY;
+
             if (this.mousedown && this.mousedown.target !== event.target && !(x + y)) {
                 this.record("mouseDown", this.locatorBuilders.buildAll(this.mousedown.target), '');
                 this.record("mouseUp", this.locatorBuilders.buildAll(event.target), '');
@@ -193,12 +193,12 @@ export function recorderHandlersInit() {
                 //         this.record("click", target, '');
                 // }.bind(this), 100);
             }
-    
+
         }
         delete this.mousedown;
         delete this.selectMousedown;
         delete this.mouseoverQ;
-    
+
     }, true);
     // END
     //drop
@@ -288,16 +288,16 @@ export function recorderHandlersInit() {
                     }
                     if (this.typeTarget.tagName && !this.preventType && (this.typeLock = 1)) {
                         // END
-                        var tagName = this.typeTarget.tagName.toLowerCase();
-                        var type = this.typeTarget.type;
+                        let tagName = this.typeTarget.tagName.toLowerCase();
+                        let type = this.typeTarget.type;
                         if ('input' == tagName && Recorder.inputTypes.indexOf(type) >= 0) {
                             if (this.typeTarget.value.length > 0) {
                                 this.record("type", this.locatorBuilders.buildAll(this.typeTarget), this.typeTarget.value);
 
                                 // © Chen-Chieh Ping, SideeX Team
                                 if (this.enterTarget != null) {
-                                    var tempTarget = this.typeTarget.parentElement;
-                                    var formChk = tempTarget.tagName.toLowerCase();
+                                    let tempTarget = this.typeTarget.parentElement;
+                                    let formChk = tempTarget.tagName.toLowerCase();
                                     while (formChk != 'form' && formChk != 'body') {
                                         tempTarget = tempTarget.parentElement;
                                         formChk = tempTarget.tagName.toLowerCase();
@@ -454,17 +454,16 @@ export function recorderHandlersInit() {
         }
     });
     Recorder.addEventHandlerVar("getEle", null);
-    Recorder.addEventHandlerVar("checkFocus",0);
-    Recorder.addEventHandlerVar("contentTest","");
-    Recorder.addEventHandler('editContent','focus',function(event){
+    Recorder.addEventHandlerVar("checkFocus", 0);
+    Recorder.addEventHandlerVar("contentTest", "");
+    Recorder.addEventHandler('editContent', 'focus', function(event) {
         var editable = event.target.contentEditable;
         if (editable == 'true') {
             this.getEle = event.target;
             this.contentTest = this.getEle.innerHTML;
             this.checkFocus = 1;
         }
-
-    },true);
+    }, true);
     Recorder.addEventHandler('editContent', 'blur', function(event) {
         if (this.checkFocus == 1) {
             if (event.target == this.getEle) {
