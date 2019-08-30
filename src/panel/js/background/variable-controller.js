@@ -59,7 +59,7 @@ export class VariableController {
         let varIdText = `var-${index}`;
         if (name !== "") this.root.globalVars.varNames[name] = true;
         this.root.globalVars[name] = value;
-        this.root.globalVars[name] = value;
+        this.root.globalVars.vars[varIdText] = {
             index: index,
             name: name,
             value: value

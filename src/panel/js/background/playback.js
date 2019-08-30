@@ -464,8 +464,8 @@ export class Playback {
     }
 
     preprocessTargetValue(str) {
-        if (!str.includes("TAC_LOCATOR") && !Panel.variables.isKeyBoardVars(str)) {
-            return str.supplant(Panel.variables.localVars, Panel.variables.globalVars);
+        if (!str.includes("TAC_LOCATOR") && !this.root.variables.isKeyBoardVars(str)) {
+            return str.supplant(this.root.variables.localVars, this.root.variables.globalVars);
         }
         return str;
     }

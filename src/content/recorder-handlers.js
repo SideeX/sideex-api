@@ -110,15 +110,15 @@ export function recorderHandlersInit() {
             }
         }
     }, true);
-    Recorder.addEventHandler('dragAndDrop', 'mousedown', function(event) {
+    Recorder.addEventHandler('dragAndDrop', 'mousedown', function (event) {
         var self = this;
         if (event.clientX < window.document.documentElement.clientWidth && event.clientY < window.document.documentElement.clientHeight) {
             this.mousedown = event;
-            this.mouseup = setTimeout(function() {
+            this.mouseup = setTimeout(function () {
                 delete self.mousedown;
             }.bind(this), 200);
 
-            this.selectMouseup = setTimeout(function() {
+            this.selectMouseup = setTimeout(function () {
                 self.selectMousedown = event;
             }.bind(this), 200);
         }
@@ -140,7 +140,7 @@ export function recorderHandlersInit() {
     // END
 
     // © Shuo-Heng Shih, SideeX Team
-    Recorder.addEventHandler('dragAndDrop', 'mouseup', function(event) {
+    Recorder.addEventHandler('dragAndDrop', 'mouseup', function (event) {
         clearTimeout(this.selectMouseup);
         if (this.selectMousedown) {
             let x = event.clientX - this.selectMousedown.clientX;
@@ -456,15 +456,16 @@ export function recorderHandlersInit() {
     Recorder.addEventHandlerVar("getEle", null);
     Recorder.addEventHandlerVar("checkFocus", 0);
     Recorder.addEventHandlerVar("contentTest", "");
-    Recorder.addEventHandler('editContent', 'focus', function(event) {
+    Recorder.addEventHandler('editContent', 'focus', function (event) {
         var editable = event.target.contentEditable;
         if (editable == 'true') {
             this.getEle = event.target;
             this.contentTest = this.getEle.innerHTML;
             this.checkFocus = 1;
         }
+
     }, true);
-    Recorder.addEventHandler('editContent', 'blur', function(event) {
+    Recorder.addEventHandler('editContent', 'blur', function (event) {
         if (this.checkFocus == 1) {
             if (event.target == this.getEle) {
                 if (this.getEle.innerHTML != this.contentTest) {
