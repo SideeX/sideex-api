@@ -25,8 +25,8 @@ export class VariableController {
 
     makeCSVText() {
         let text = "";
-        for (let key in this.root.globalVars.vars) {
-            let varObj = this.root.globalVars.vars[key];
+        for (let key in this.globalVars.vars) {
+            let varObj = this.globalVars.vars[key];
             text += `${varObj.name}, ${varObj.value},\n`;
         }
 
@@ -35,31 +35,32 @@ export class VariableController {
 
     makeJSONText() {
         let temp = {};
-        for (let varObjKey in this.root.globalVars.vars) {
-            let varObj = this.root.globalVars.vars[varObjKey];
+        for (let varObjKey in this.globalVars.vars) {
+            let varObj = this.globalVars.vars[varObjKey];
             temp[varObj.name] = varObj.value;
         }
         return JSON.stringify(temp, null, "  ");
     }
 
     isVarExisted(name) {
-        if (this.root.globalVars.varNames[name]) {
+        if (this.globalVars.varNames[name]) {
             return true;
         }
         return false;
     }
 
     getVarNum() {
-        return this.root.globalVars.count;
+        return this.globalVars.count;
     }
 
     addVariable(name = "", value = "") {
-        this.root.globalVars.count++;
-        let index = this.root.globalVars.startNum++;
+        console.log(this.root);
+        this.globalVars.count++;
+        let index = this.globalVars.startNum++;
         let varIdText = `var-${index}`;
-        if (name !== "") this.root.globalVars.varNames[name] = true;
-        this.root.globalVars[name] = value;
-        this.root.globalVars.vars[varIdText] = {
+        if (name !== "") this.globalVars.varNames[name] = true;
+        this.globalVars[name] = value;
+        this.globalVars.vars[varIdText] = {
             index: index,
             name: name,
             value: value
@@ -68,30 +69,30 @@ export class VariableController {
     }
 
     updateVarName(varIdText, name) {
-        if (this.root.isVarExisted(name)) {
+        if (this.isVarExisted(name)) {
             this.root.log.pushLog("error", "The variable is existed");
         }
-        let lastName = this.root.globalVars.vars[varIdText].name;
-        delete this.root.globalVars.varNames[lastName];
-        this.root.globalVars.varNames[name] = true;
-        this.root.globalVars.vars[varIdText].name = name;
+        let lastName = this.globalVars.vars[varIdText].name;
+        delete this.globalVars.varNames[lastName];
+        this.globalVars.varNames[name] = true;
+        this.globalVars.vars[varIdText].name = name;
     }
 
     updateVarValue(varIdText, value) {
-        this.root.globalVars.vars[varIdText].value = value;
+        this.globalVars.vars[varIdText].value = value;
     }
 
     deleteVariable(varIdText) {
-        this.root.globalVars.count--;
-        let name = this.root.globalVars.vars[varIdText].name;
+        this.globalVars.count--;
+        let name = this.globalVars.vars[varIdText].name;
         if (name !== "") {
-            delete this.root.globalVars.varNames[name];
+            delete this.globalVars.varNames[name];
         }
-        delete this.root.globalVars.vars[varIdText];
+        delete this.globalVars.vars[varIdText];
     }
 
     clearVariables() {
-        this.root.globalVars = {
+        this.globalVars = {
             count: 0,
             startNum: 0,
             varNames: {},
@@ -117,19 +118,19 @@ export class VariableController {
         reader.onload = function(event) {
             let variables;
             if (type === "csv") {
-                variables = this.root.csvParser(event.target.result);
+                variables = this.csvParser(event.target.result);
             } else if (type === "json") {
-                variables = this.root.jsonParser(event.target.result);
+                variables = this.jsonParser(event.target.result);
             } else {
                 this.root.log.pushLog("error", "Error on file type");
                 return;
             }
 
             for (let variable of variables) {
-                if (this.root.globalVars.varNames[variable[0]]) {
+                if (this.globalVars.varNames[variable[0]]) {
                     this.root.log.pushLog("warn", "Duplicated variables");
                 } else {
-                    this.root.addVariable(variable[0], variable[1]);
+                    this.addVariable(variable[0], variable[1]);
                 }
             }
             EntryPoint.console.syncVariable();
@@ -142,10 +143,10 @@ export class VariableController {
         let text = "";
         switch (type) {
             case "json":
-                text = this.root.makeJSONText();
+                text = this.makeJSONText();
                 break;
             case "csv":
-                text = this.root.makeCSVText();
+                text = this.makeCSVText();
                 break;
         }
         let downloading = browser.downloads.download({

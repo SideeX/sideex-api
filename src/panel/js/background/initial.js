@@ -23,8 +23,9 @@ import { VariableController } from './variable-controller';
 import { UiTools } from '../UI/uiTools';
 import { Setting } from "./setting";
 import { Log } from './log';
-
+import { SideeX } from './api';
 export const root = { isDOMBased: true };
+
 
 root.fileController = new FileController(root);
 root.recorder = new BackgroundRecorder(root);
@@ -33,6 +34,7 @@ root.variables = new VariableController(root);
 root.uiTools = new UiTools(root);
 root.log = new Log(root);
 root.setting = new Setting(root);
+export const sideex = new SideeX(root);
 
 browser.runtime.onMessage.addListener(root.recorder.contentWindowIdListener);
 browser.runtime.onMessage.addListener(root.recorder.handleFormatCommand);
