@@ -1,7 +1,9 @@
 import { browser } from "webextension-polyfill-ts";
-
+import { boundMethod } from "autobind-decorator";
 export class Setting {
-    constructor(isDomBased) {
+    constructor(root) {
+        this.root = root;
+
         this.params = {
             // basic
             delay: 0,
@@ -13,15 +15,14 @@ export class Setting {
             isPeriodical: false,
             period: 0.1
         };
-        this.isDomBased = isDomBased;
 
-        if (isDomBased) {
+        if (this.root.isDOMBased) {
             this.init();
         }
     }
 
     async init() {
-        browser.storage.onChanged.addListener(this.syncHandler.bind(this));
+        browser.storage.onChanged.addListener(this.syncHandler);
         let results = await browser.storage.sync.get();
         this.params = { ...this.params, ...results };
     }
@@ -39,7 +40,7 @@ export class Setting {
             this.params[key] = obj[key];
         }
 
-        if (this.isDomBased) {
+        if (this.root.isDOMBased) {
             this.syncStorage(obj);
         }
     }
@@ -80,6 +81,7 @@ export class Setting {
      * A Handler for synchronizing with any changes in storage
      * @param {Object} changes All changes in a short interval
      */
+    @boundMethod
     syncHandler(changes) {
         for (let item in changes) {
             if ("newValue" in changes[item]) {

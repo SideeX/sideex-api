@@ -11,6 +11,7 @@ import events from "../../../events";
 import cls from "../style.scss";
 import cx from "classnames";
 import { browser } from "webextension-polyfill-ts";
+import * as EntryPoint from "../../../entryPoint";
 
 function mapStateToProps({toolBar: {speed}}, props) {
     const { value, isShow } = speed;

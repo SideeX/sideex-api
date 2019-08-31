@@ -23,18 +23,21 @@ import { VariableController } from './variable-controller';
 import { UiTools } from '../UI/uiTools';
 import { Setting } from "./setting";
 import { Log } from './log';
+import { SideeX } from './api';
+export const root = { isDOMBased: true };
 
-export var fileController = new FileController(true);
-export var recorder = new BackgroundRecorder();
-export var playback = new Playback(true);
-export var log = new Log();
-export var variables = new VariableController();
 
-export var setting = new Setting(true);
-export var uiTools = new UiTools();
+root.fileController = new FileController(root);
+root.recorder = new BackgroundRecorder(root);
+root.playback = new Playback(root);
+root.variables = new VariableController(root);
+root.uiTools = new UiTools(root);
+root.log = new Log(root);
+root.setting = new Setting(root);
+export const sideex = new SideeX(root);
 
-browser.runtime.onMessage.addListener(recorder.contentWindowIdListener);
-browser.runtime.onMessage.addListener(recorder.handleFormatCommand);
+browser.runtime.onMessage.addListener(root.recorder.contentWindowIdListener);
+browser.runtime.onMessage.addListener(root.recorder.handleFormatCommand);
 
 window.addEventListener("beforeunload", (event) => {
     (event || window.event).returnValue = false;

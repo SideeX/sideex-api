@@ -18,7 +18,10 @@ import { browser } from "webextension-polyfill-ts";
 
 export class WindowController {
 
-    constructor(playback = null) {
+    constructor(root, playback = null) {
+        this.root = root;
+        this.playback = playback;
+
         this.playingTabNames = {};
         this.playingTabIds = {};
         this.playingTabStatus = {};
@@ -26,7 +29,6 @@ export class WindowController {
         this.playingTabCount = 1;
         this.currentPlayingTabId = -1;
         this.contentWindowId = 0;
-        this.playback = playback;
         this.currentPlayingFrameLocation = 'root';
         this.waitInterval = WindowController.DEFAULT_WAIT_INTERVAL;
         this.waitTimes = WindowController.DEFAULT_WAIT_TIMES;
@@ -277,13 +279,18 @@ export class WindowController {
 
     async updateOrCreateTab() {
         let tabs = await browser.tabs.query({windowId: this.contentWindowId, active: true});
+        console.log('tabs->');
+        console.log(tabs);
         if (tabs.length === 0) {
             let window = await browser.windows.create({url: WindowController.DEFAULT_WEB_INIT_URL});
             this.playback.setContentWindowId(window.id);
             await this.setFirstTab(window.tabs[0]);
-            recorder.addOpenedWindow(window.id);
+            this.root.recorder.addOpenedWindow(window.id);
             let backgroundWindow = await browser.runtime.getBackgroundPage();
-            backgroundWindow.bind(window.id, recorder.getSelfWindowId());
+            console.log('backfround window:' );
+            console.log(backgroundWindow);
+
+            backgroundWindow.bind(window.id, this.root.recorder.getSelfWindowId());
         } else {
             let tab = await browser.tabs.update(tabs[0].id, {url: WindowController.DEFAULT_WEB_INIT_URL});
             await this.wait("No response", "playingTabStatus", tab.id);

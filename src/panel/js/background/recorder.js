@@ -24,6 +24,9 @@
  */
 import { browser } from "webextension-polyfill-ts";
 import { PreRecorder } from './preRecorder';
+import { boundMethod } from "autobind-decorator";
+import * as EntryPoint from "../UI/entryPoint";
+
 
 export class BackgroundRecorder {
 
@@ -31,7 +34,9 @@ export class BackgroundRecorder {
      * Initialize recording information and rebind event handlers to itself
      * @constructor
      */
-    constructor() {
+    constructor(root) {
+        this.root = root;
+
         this.isRecord = false;
         this.isSelecting = false;
         this.currentRecordingTabId = {};
@@ -50,7 +55,7 @@ export class BackgroundRecorder {
 
         this.notificationCount = 0;
 
-        this.preRecorder = new PreRecorder(this);
+        this.preRecorder = new PreRecorder(root, this);
 
         // Always listening
         browser.runtime.onMessage.addListener(this.requestHandler);
@@ -75,7 +80,7 @@ export class BackgroundRecorder {
      * @param {Object} activeInfo Information about newly active tab
      */
     tabSwitchHandler(activeInfo) {
-        let caseIdText = Panel.fileController.getSelectedCases()[0];
+        let caseIdText = this.root.fileController.getSelectedCases()[0];
         if (!caseIdText || !this.openedTabIds[caseIdText]) {
             return;
         }
@@ -91,7 +96,7 @@ export class BackgroundRecorder {
             }
             // If no commands have been recorded, do not add selectWindow command
             // until the user has selected a starting page to record the commands
-            if (Panel.fileController.getRecordNum(caseIdText) === 0) {
+            if (this.root.fileController.getRecordNum(caseIdText) === 0) {
                 return;
             }
             // Ignore all unknown tabs, the activated tab may not derived from
@@ -102,7 +107,7 @@ export class BackgroundRecorder {
             self.currentRecordingTabId[caseIdText] = activeInfo.tabId;
             self.currentRecordingWindowId[caseIdText] = activeInfo.windowId;
             self.currentRecordingFrameLocation[caseIdText] = "root";
-            Panel.fileController.insertCommand("after", "selectWindow",
+            this.root.fileController.insertCommand("after", "selectWindow",
                 { options: [{ type: "other", value: self.openedTabIds[caseIdText][activeInfo.tabId] }] },
                 { options: [{ type: "other", value: "" }] },
             );
@@ -114,7 +119,7 @@ export class BackgroundRecorder {
      * @param {Number} windowId
      */
     windowSwitchHandler(windowId) {
-        let caseIdText = Panel.fileController.getSelectedCases()[0];
+        let caseIdText = this.root.fileController.getSelectedCases()[0];
         if (!caseIdText || !this.openedTabIds[caseIdText]) {
             return;
         }
@@ -145,7 +150,7 @@ export class BackgroundRecorder {
             if (tabs[0].id !== self.currentRecordingTabId[caseIdText]) {
                 // If no commands have been recorded, do not add selectWindow command
                 // until the user has selected a starting page to record the commands
-                if (Panel.fileController.getRecordNum(caseIdText) === 0) {
+                if (this.root.fileController.getRecordNum(caseIdText) === 0) {
                     return;
                 }
 
@@ -158,7 +163,7 @@ export class BackgroundRecorder {
                 self.currentRecordingWindowId[caseIdText] = windowId;
                 self.currentRecordingTabId[caseIdText] = tabs[0].id;
                 self.currentRecordingFrameLocation[caseIdText] = "root";
-                Panel.fileController.insertCommand("after", "selectWindow",
+                this.root.fileController.insertCommand("after", "selectWindow",
                     { options: [{ type: "other", value: self.openedTabIds[caseIdText][tabs[0].id] }] },
                     { options: [{ type: "other", value: "" }] },
                 );
@@ -174,27 +179,27 @@ export class BackgroundRecorder {
      * @param {Number} tabId
      */
     tabRemovalHandler(tabId) {
-        let caseIdText = Panel.fileController.getSelectedCases()[0];
+        let caseIdText = this.root.fileController.getSelectedCases()[0];
         if (!caseIdText || !this.openedTabIds[caseIdText]) {
             return;
         }
 
         if (this.openedTabIds[caseIdText][tabId] !== undefined) {
             if (this.currentRecordingTabId[caseIdText] !== tabId) {
-                Panel.fileController.insertCommand("after", "selectWindow",
+                this.root.fileController.insertCommand("after", "selectWindow",
                     { options: [{ type: "other", value: this.openedTabIds[caseIdText][tabId] }] },
                     { options: [{ type: "other", value: "" }] }
                 );
-                Panel.fileController.insertCommand("after", "close",
+                this.root.fileController.insertCommand("after", "close",
                     { options: [{ type: "other", value: this.openedTabIds[caseIdText][tabId] }] },
                     { options: [{ type: "other", value: "" }] },
                 );
-                Panel.fileController.insertCommand("after", "selectWindow",
+                this.root.fileController.insertCommand("after", "selectWindow",
                     { options: [{ type: "other", value: this.openedTabIds[caseIdText][this.currentRecordingTabId[caseIdText]] }] },
                     { options: [{ type: "other", value: "" }] },
                 );
             } else {
-                Panel.fileController.insertCommand("after", "close",
+                this.root.fileController.insertCommand("after", "close",
                     { options: [{ type: "other", value: this.openedTabIds[caseIdText][tabId] }] },
                     { options: [{ type: "other", value: "" }] },
                 );
@@ -210,7 +215,7 @@ export class BackgroundRecorder {
      * @param {Object} details Details of newly created tab
      */
     tabsCreatedHandler(details) {
-        let caseIdText = Panel.fileController.getSelectedCases()[0];
+        let caseIdText = this.root.fileController.getSelectedCases()[0];
         if (!caseIdText)
             return;
 
@@ -236,12 +241,12 @@ export class BackgroundRecorder {
     }
 
     prepareRecord() {
-        if (Panel.fileController.getSelectedSuites().length === 0) {
-            Panel.fileController.addTestSuite();
+        if (this.root.fileController.getSelectedSuites().length === 0) {
+            this.root.fileController.addTestSuite();
         }
 
-        if (Panel.fileController.getSelectedCases().length === 0) {
-            Panel.fileController.addTestCase();
+        if (this.root.fileController.getSelectedCases().length === 0) {
+            this.root.fileController.addTestCase();
         }
     }
 
@@ -254,11 +259,11 @@ export class BackgroundRecorder {
         if (!message.command || this.openedWindowIds[sender.tab.windowId] === undefined)
             return;
 
-        let caseIdText = Panel.fileController.getSelectedCases()[0];
+        let caseIdText = this.root.fileController.getSelectedCases()[0];
 
-        if (!Panel.fileController.getNetworkSpeed()) {
-            let speed = Panel.setting.get("networkSpeed");
-            Panel.fileController.setNetworkSpeed(speed);
+        if (!this.root.fileController.getNetworkSpeed()) {
+            let speed = this.root.setting.get("networkSpeed");
+            this.root.fileController.setNetworkSpeed(speed);
         }
 
         if (!this.openedTabIds[caseIdText]) {
@@ -277,10 +282,10 @@ export class BackgroundRecorder {
             this.openedTabIds[caseIdText][sender.tab.id] = "win_ser_local";
         }
 
-        if (Panel.fileController.getRecordNum(caseIdText) === 0) {
-            Panel.fileController.insertCommand("after", "open",
-                { options: [{ type: "other", value: sender.tab.url }] },
-                { options: [{ type: "other", value: "" }] }
+        if (this.root.fileController.getRecordNum(caseIdText) === 0) {
+            this.root.fileController.insertCommand("after", "open",
+                { options: [{ type: "other", value: sender.tab.url }]},
+                { options: [{ type: "other", value: "" }]}
             );
         }
 
@@ -291,25 +296,25 @@ export class BackgroundRecorder {
             let newFrameLevels = message.frameLocation.split(':');
             let oldFrameLevels = this.currentRecordingFrameLocation[caseIdText].split(':');
             while (oldFrameLevels.length > newFrameLevels.length) {
-                Panel.fileController.insertCommand("after", "selectFrame",
-                    { options: [{ type: "other", value: "relative=parent" }] },
-                    { options: [{ type: "other", value: "" }] }
+                this.root.fileController.insertCommand("after", "selectFrame",
+                    { options: [{ type: "other", value: "relative=parent" }]},
+                    { options: [{ type: "other", value: "" }]}
                 );
                 oldFrameLevels.pop();
             }
             while (oldFrameLevels.length !== 0 &&
                 oldFrameLevels[oldFrameLevels.length - 1] != newFrameLevels[oldFrameLevels.length - 1]
             ) {
-                Panel.fileController.insertCommand("after", "selectFrame",
-                    { options: [{ type: "other", value: "relative=parent" }] },
-                    { options: [{ type: "other", value: "" }] }
+                this.root.fileController.insertCommand("after", "selectFrame",
+                    { options: [{ type: "other", value: "relative=parent" }]},
+                    { options: [{ type: "other", value: "" }]}
                 );
                 oldFrameLevels.pop();
             }
             while (oldFrameLevels.length < newFrameLevels.length) {
-                Panel.fileController.insertCommand("after", "selectFrame",
-                    { options: [{ type: "other", value: "index=" + newFrameLevels[oldFrameLevels.length] }] },
-                    { options: [{ type: "other", value: "" }] }
+                this.root.fileController.insertCommand("after", "selectFrame",
+                    { options: [{ type: "other", value: "index=" + newFrameLevels[oldFrameLevels.length] }]},
+                    { options: [{ type: "other", value: "" }]}
                 );
                 oldFrameLevels.push(newFrameLevels[oldFrameLevels.length]);
             }
@@ -323,16 +328,16 @@ export class BackgroundRecorder {
 
         // handle choose ok/cancel confirm
         if (message.insertBeforeLastCommand) {
-            Panel.fileController.addCommandBeforeLastCommand(message.command, message.target, message.value);
+            this.root.fileController.addCommandBeforeLastCommand(message.command, message.target, message.value);
         } else {
             this.notification(message.command, message.target.options[0].value, message.value.options[0].value);
-            let selectedCaseIdText = Panel.fileController.getSelectedCases()[0];
-            let index = Panel.fileController.getRecordNum(selectedCaseIdText);
+            let selectedCaseIdText = this.root.fileController.getSelectedCases()[0];
+            let index = this.root.fileController.getRecordNum(selectedCaseIdText);
             // console.log(message.preWaitTime);
             if (index > 0) {
-                Panel.fileController.setRecordPreWaitTime(selectedCaseIdText, index - 1, message.preWaitTime);
+                this.root.fileController.setRecordPreWaitTime(selectedCaseIdText, index - 1, message.preWaitTime);
             }
-            Panel.fileController.insertCommand("after", message.command, message.target, message.value);
+            this.root.fileController.insertCommand("after", message.command, message.target, message.value);
         }
     }
 
@@ -349,9 +354,9 @@ export class BackgroundRecorder {
                 value: message.target[0][0]
             };
 
-            let caseIdText = Panel.fileController.getSelectedCases()[0];
-            let index = parseInt(Panel.fileController.getSelectedRecord().split("-")[1]);
-            Panel.fileController.setRecordUsedTarget(caseIdText, index, target);
+            let caseIdText = this.root.fileController.getSelectedCases()[0];
+            let index = parseInt(this.root.fileController.getSelectedRecord().split("-")[1]);
+            this.root.fileController.setRecordUsedTarget(caseIdText, index, target);
 
             EntryPoint.workArea.syncEditBlock(caseIdText, index);
             EntryPoint.workArea.syncCommands();
@@ -359,8 +364,8 @@ export class BackgroundRecorder {
         }
 
         if (message.cancelSelectTarget) {
-            Panel.recorder.isSelecting = false;
-            browser.tabs.sendMessage(sender.tab.id, { action: "SelectElement", selecting: false });
+            this.isSelecting = false;
+            browser.tabs.sendMessage(sender.tab.id, {action: "SelectElement", selecting: false});
             EntryPoint.workArea.updateEditBlockSelect();
             return;
         }
@@ -409,6 +414,7 @@ export class BackgroundRecorder {
         this.commandHandler = this.commandHandler.bind(this);
         this.targetHandler = this.targetHandler.bind(this);
         this.requestHandler = this.requestHandler.bind(this);
+        // this.contentWindowIdListener = this.contentWindowIdListener.bind(this);
     }
 
     /**
@@ -554,21 +560,22 @@ export class BackgroundRecorder {
         try {
             let response = await browser.tabs.sendMessage(infos.tabId, {
                 action: "ShowElement",
-                targetValue: infos.targetValue
-            }, { frameId: infos.frameIds[infos.index] });
+                targetValue: infos.targetValue,
+                customHtml: infos.customHtml
+            }, { frameId: infos.frameIds[infos.index]});
             if (response) {
                 if (!response.result) {
-                    Panel.recorder.prepareSendNextFrame(infos);
+                    this.prepareSendNextFrame(infos);
                 } else {
                     let text = `Element is found in frame ${infos.index} (id).`;
-                    Panel.log.pushLog("info", text);
+                    this.root.log.pushLog("info", text);
                 }
             }
         } catch (error) {
             if (error.message == "Could not establish connection. Receiving end does not exist") {
-                Panel.recorder.prepareSendNextFrame(infos);
+                this.prepareSendNextFrame(infos);
             } else {
-                Panel.log.pushLog("error", "Unknown error");
+                this.root.log.pushLog("error", "Unknown error");
             }
         }
         EntryPoint.console.syncLog();
@@ -576,10 +583,10 @@ export class BackgroundRecorder {
 
     prepareSendNextFrame(infos) {
         if (infos.index === infos.frameIds.length) {
-            Panel.log.pushLog("error", "Element is not found");
+            this.root.log.pushLog("error", "Element is not found");
         } else {
             infos.index++;
-            Panel.recorder.sendShowElementMessage(infos);
+            this.sendShowElementMessage(infos);
         }
     }
 
@@ -599,29 +606,25 @@ export class BackgroundRecorder {
         }, 1500);
     }
 
+    @boundMethod
     handleFormatCommand(message) {
         if (message.storeStr) {
-            if (message.isGlobal) {
-                Panel.variables.addVariable(message.storeVar, message.storeStr);
-            } else {
-                Panel.variables.localVars[message.storeVar] = message.storeStr;
-            }
+            this.root.variables.localVars[message.storeVar] = message.storeStr;
         } else if (message.echoStr) {
-            Panel.log.pushLog("info", `echo: ${message.echoStr}`);
+            this.root.log.pushLog("info", `echo: ${message.echoStr}`);
         }
     }
-
+    @boundMethod
     contentWindowIdListener(message, sender, response) {
-        console.log("receive", message);
         if (message.selfWindowId != undefined && message.commWindowId != undefined) {
             console.log("sender: ", sender);
-            response({ check: true });
-            Panel.recorder.selfWindowId = message.selfWindowId;
-            Panel.recorder.contentWindowId = message.commWindowId;
-            Panel.playback.setContentWindowId(Panel.recorder.contentWindowId);
-            Panel.recorder.addOpenedWindow(Panel.recorder.contentWindowId);
-            Panel.recorder.setSelfWindowId(Panel.recorder.selfWindowId);
-            browser.runtime.onMessage.removeListener(Panel.recorder.contentWindowIdListener);
+            response({check: true});
+            this.selfWindowId = message.selfWindowId;
+            this.contentWindowId = message.commWindowId;
+            this.root.playback.setContentWindowId(this.contentWindowId);
+            this.addOpenedWindow(this.contentWindowId);
+            this.setSelfWindowId(this.selfWindowId);
+            browser.runtime.onMessage.removeListener(this.contentWindowIdListener);
         }
     }
 }

@@ -1,6 +1,5 @@
 import store from "../UI/index";
 
-
 export const toolBar = {
     updateSpeed: function (value) {
         store.dispatch({

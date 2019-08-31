@@ -17,13 +17,15 @@
 import { browser } from "webextension-polyfill-ts";
 
 export class PreRecorder {
-    constructor(bgRecorder) {
+    constructor(root, bgRecorder) {
+        this.root = root;
+        this.bgRecorder = bgRecorder;
+
         this.isNeedBuffer = false;
         this.isNeedReturn = false;
         this.buffer = [];
         this.bufferInsertBeforeLastCommand = [];
         this.bufferActualFrameLocation = [];
-        this.bgRecorder = bgRecorder;
     }
 
     /**
@@ -60,20 +62,20 @@ export class PreRecorder {
 
     appendCommand(command) {
         if (command.insertBeforeLastCommand) {
-            Panel.fileController.addCommandBeforeLastCommand(command.command, command.target, command.value);
+            this.root.fileController.addCommandBeforeLastCommand(command.command, command.target, command.value);
         } else {
             this.bgRecorder.notification(command.command, command.target.options[0].value, command.value.options[0].value);
-            Panel.fileController.insertCommand("after", command.command, command.target, command.value);
+            this.root.fileController.insertCommand("after", command.command, command.target, command.value);
         }
     }
 
     deleteCommandNum(command) {
-        let records = Panel.fileController.getRecords(Panel.fileController.getSelectedCases()[0]);
+        let records = this.root.fileController.getRecords(this.root.fileController.getSelectedCases()[0]);
         let length = records.length;
         let lastCommand = records[length - 1];
 
         if (command.command == "doubleClickAt") {
-            if (Panel.fileController.compareTwoCommand(Panel.fileController.getSelectedCases()[0], length - 1, length - 2, "ntv")) {
+            if (this.root.fileController.compareTwoCommand(this.root.fileController.getSelectedCases()[0], length - 1, length - 2, "ntv")) {
                 if (lastCommand.name === "clickAt" || records[length - 2].name === "clickAt") {
                     return 2;
                 }
@@ -88,17 +90,17 @@ export class PreRecorder {
 
         let deleteNum = this.deleteCommandNum(command);
         for (let i = 0; i < deleteNum; i++) {
-            Panel.fileController.deleteLastRecord(
-                Panel.fileController.getSelectedCases()[0]
+            this.root.fileController.deleteLastRecord(
+                this.root.fileController.getSelectedCases()[0]
             );
         }
 
 
         if (command.command.includes("Value") && command.value.options[0].value === undefined) {
-            Panel.log.pushLog("error", "Error: This element does not have property 'value'. Please change to use storeText command.");
+            this.root.log.pushLog("error", "Error: This element does not have property 'value'. Please change to use storeText command.");
             this.isNeedReturn = true;
         } else if (command.command.includes("Text") && command.value.options[0].value === '') {
-            Panel.log.pushLog("error", "Error: This element does not have property 'Text'. Please change to use storeValue command.");
+            this.root.log.pushLog("error", "Error: This element does not have property 'Text'. Please change to use storeValue command.");
             this.isNeedReturn = true;
         } else if (command.command.includes("store")) {
             command.value.options[0].value = await this.promptVarName(command, windowId);

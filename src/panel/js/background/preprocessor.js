@@ -1,5 +1,7 @@
 export class Preprocessor {
-    constructor() {
+    constructor(root) {
+        this.root = root;
+
         this.conditionStack = [];
         this.result = {
             isPassed: false,
@@ -10,22 +12,22 @@ export class Preprocessor {
     preprocess(playMode, testSuite) {
         let isPreprocessPassed = true;
         for (let suiteIdText of testSuite.order) {
-            let suiteTitle = Panel.fileController.getSuiteTitle(suiteIdText);
-            Panel.log.pushLog("info", `Checking test suite ${suiteTitle}`);
+            let suiteTitle = this.root.fileController.getSuiteTitle(suiteIdText);
+            this.root.log.pushLog("info", `Checking test suite ${suiteTitle}`);
 
             for (let caseIdText of testSuite.suites[suiteIdText].cases) {
-                let caseTitle = Panel.fileController.getCaseTitle(caseIdText);
-                Panel.log.pushLog("info", `Checking test case ${caseTitle}`);
+                let caseTitle = this.root.fileController.getCaseTitle(caseIdText);
+                this.root.log.pushLog("info", `Checking test case ${caseTitle}`);
 
                 let result = this.checkSyntax(caseIdText);
                 if (!result.isPassed) {
                     isPreprocessPassed = false;
-                    Panel.log.pushLog("error", `${
+                    this.root.log.pushLog("error", `${
                         result.message} in (suite) ${suiteTitle} - (case) ${caseTitle}`);
                 }
             }
         }
-        Panel.log.pushLog("info", "Preprocessing Done");
+        this.root.log.pushLog("info", "Preprocessing Done");
 
         let suiteResult = this.preparePlaySuites(testSuite);
 
@@ -36,16 +38,16 @@ export class Preprocessor {
         let playSuites = [];
         let caseNum = 0;
         for (let suiteIdText of testSuite.order) {
-            let suiteTitle = Panel.fileController.getSuiteTitle(suiteIdText);
+            let suiteTitle = this.root.fileController.getSuiteTitle(suiteIdText);
 
             let suite = { idText: suiteIdText, title: suiteTitle, cases: [] };
             playSuites.push(suite);
 
             for (let caseIdText of testSuite.suites[suiteIdText].cases) {
-                let caseTitle = Panel.fileController.getCaseTitle(caseIdText);
+                let caseTitle = this.root.fileController.getCaseTitle(caseIdText);
                 suite.cases.push({ idText: caseIdText, title: caseTitle,
                     records: this.preparePlayRecords(
-                        Panel.fileController.getRecords(caseIdText)
+                        this.root.fileController.getRecords(caseIdText)
                     )
                 });
                 caseNum++;
@@ -97,7 +99,7 @@ export class Preprocessor {
 
     checkSyntax(caseIdText) {
         let stack = [];
-        for (let record of Panel.fileController.getRecords(caseIdText)) {
+        for (let record of this.root.fileController.getRecords(caseIdText)) {
             let command = record.name;
             if (command === "INCLUDE") {
                 let caseIdText = this.preprocessIncludeRecords(record);
@@ -125,11 +127,11 @@ export class Preprocessor {
     }
 
     preprocessIncludeRecords(record) {
-        let caseIdText = Panel.fileController.getIncludeCaseIdText(
+        let caseIdText = this.root.fileController.getIncludeCaseIdText(
             record.target.options[record.target.usedIndex].value
         );
         record.caseIdText = caseIdText;
-        record.children = [Panel.fileController.getRecords(caseIdText)];
+        record.children = [this.root.fileController.getRecords(caseIdText)];
         return caseIdText;
     }
 

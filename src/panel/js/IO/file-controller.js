@@ -15,9 +15,12 @@
  *
  */
 import cloneDeep from "lodash/cloneDeep";
+import * as EntryPoint from "../UI/entryPoint";
 
 export class FileController {
-    constructor(isDOMBased) {
+    constructor(root) {
+        this.root = root;
+
         this.selectedSuiteIdTexts = [];
         this.selectedCaseIdTexts = [];
         this.selectedRecordIdTexts = [];
@@ -70,6 +73,7 @@ export class FileController {
         for (let caseIdText of suite.cases) {
             this.deleteCase(caseIdText);
         }
+        this.deleteNameMap(suiteIdText);
         let index = this.testSuite.order.indexOf(suiteIdText);
         index >= 0 && this.testSuite.order.splice(index, 1);
         delete this.testSuite.suites[suiteIdText];
@@ -102,7 +106,8 @@ export class FileController {
         return name;
     }
 
-    addTestSuite(title = this.newUntitledName("suite"), cases = []) {
+    addTestSuite(suiteData) {
+        let title = suiteData && suiteData.title ? suiteData.title : this.newUntitledName("suite");
         if (title.includes("Untitled Test Suite")) {
             this.testSuite.untitledCount++;
         }
@@ -111,18 +116,22 @@ export class FileController {
         this.testSuite.suites[idText] = {
             fileName: `${title}.html`,
             title: title,
-            cases: cases,
+            cases: [],
             modified: true,
-            status: "default"
+            status: "default",
+            copyCount: 0,
+            ...suiteData
         };
         this.testSuite.order.push(idText);
         this.testSuite.nameMap[title] = idText;
+        this.setSelectedCases([]);
         this.setSelectedSuites([idText]);
 
         return idText;
     }
 
-    addTestCase(title = this.newUntitledName("case"), records = []) {
+    addTestCase(caseData) {
+        let title = caseData && caseData.title ? caseData.title : this.newUntitledName("case");
         if (title.includes("Untitled Test Case")) {
             this.testCase.untitledCount++;
         }
@@ -132,10 +141,12 @@ export class FileController {
         let idText = `case-${this.testCase.count++}`;
         this.testCase.cases[idText] = {
             title: title,
-            records: records,
+            records: [],
             suiteIdText: suiteIdText,
             modified: true,
-            status: "default"
+            status: "default",
+            copyCount: 0,
+            ...caseData
         };
 
         this.setSelectedCases([idText]);
@@ -147,12 +158,20 @@ export class FileController {
         this.testSuite.suites[suiteIdText].cases.push(caseIdText);
     }
 
+    deleteCaseInSuite(suiteIdText, caseIdText) {
+        for (let [index, testCase] of this.testSuite.suites[suiteIdText].cases.entries()) {
+            if (testCase === caseIdText) {
+                this.testSuite.suites[suiteIdText].cases.splice(index, 1);
+            }
+        }
+    }
+
     setSelectedSuites(idTexts) {
         this.selectedSuiteIdTexts = idTexts;
     }
 
     setSelectedCases(idTexts) {
-        let suiteIdTexts = idTexts.length > 0 ? [this.testCase.cases[idTexts[0]].suiteIdText] : [];
+        let suiteIdTexts = idTexts.length > 0 ? [this.testCase.cases[idTexts].suiteIdText] : [];
         this.setSelectedSuites(suiteIdTexts);
         this.selectedCaseIdTexts = idTexts;
     }
@@ -250,20 +269,34 @@ export class FileController {
     getIncludeCaseIdText(includeTarget) {
         let temp = includeTarget.split(".");
         let suiteName = temp[0], caseName = temp[1];
-        let suiteIdText = Panel.fileController.getSuiteKey(suiteName);
-        return Panel.fileController.getCaseKey(suiteIdText, caseName);
+        let suiteIdText = this.getSuiteKey(suiteName);
+        return this.getCaseKey(suiteIdText, caseName);
     }
 
     setSuiteTitle(suiteIdText, title) {
-        console.log(suiteIdText, title);
+        this.updateNameMap(suiteIdText, title);
         this.testSuite.suites[suiteIdText].title = title;
         this.testSuite.suites[suiteIdText].fileName = `${title}.html`;
         this.setSuiteModified(suiteIdText, true, false);
     }
 
+    updateNameMap(suiteIdText, newTitle) {
+        this.deleteNameMap(suiteIdText);
+        this.testSuite.nameMap[newTitle] = suiteIdText;
+    }
+
+    deleteNameMap(suiteIdText) {
+        let title = this.testSuite.suites[suiteIdText].title;
+        delete this.testSuite.nameMap[title];
+    }
+
     setCaseTitle(caseIdText, title) {
         this.testCase.cases[caseIdText].title = title;
         this.setCaseModified(caseIdText, true, true);
+    }
+
+    setCaseSuiteIdText(caseIdText, suiteIdText) {
+        this.testCase.cases[caseIdText].suiteIdText = suiteIdText;
     }
 
     setSuiteModified(suiteIdText, modified, setCases = false) {
@@ -284,6 +317,60 @@ export class FileController {
 
     setRecordStatusByIndex(caseIdText, index, status) {
         this.testCase.cases[caseIdText].records[index].status = status;
+    }
+
+    copySuite(suiteIdText) {
+        let testSuite = this.getTestSuite(suiteIdText);
+        testSuite.copyCount++;
+        let newTitle = `${testSuite.title}-${testSuite.copyCount}`;
+        let newSuiteIdText = this.addTestSuite({title: newTitle});
+        this.copyCases(testSuite.cases, newSuiteIdText);
+        return newSuiteIdText;
+    }
+
+    copySuites(suiteIdTexts) {
+        suiteIdTexts = typeof(suiteIdTexts) === "string" ?
+            [suiteIdTexts] : suiteIdTexts;
+        for (let suiteIdText of suiteIdTexts) {
+            this.copySuite(suiteIdText);
+        }
+    }
+
+    copyCase(srcCaseIdText, dstSuiteIdText) {
+        let testCase = this.getTestCase(srcCaseIdText);
+        testCase.copyCount++;
+        let newTitle = srcCaseIdText === dstSuiteIdText ? testCase.title : `${testCase.title}-${testCase.copyCount}`;
+        let newTestCase = {
+            ...cloneDeep(testCase),
+            title: newTitle,
+            suiteIdText: dstSuiteIdText,
+            modified: true
+        };
+        return this.addTestCase(newTestCase);
+    }
+
+    copyCases(srcCaseIdTexts = [], dstSuiteIdText) {
+        srcCaseIdTexts = typeof(srcCaseIdTexts) === "string" ?
+            [srcCaseIdTexts] : srcCaseIdTexts;
+        for (let srcCaseIdText of srcCaseIdTexts) {
+            this.copyCase(srcCaseIdText, dstSuiteIdText);
+        }
+    }
+
+    cutCase(srcCaseIdText, dstSuiteIdText) {
+        let testCase = this.getTestCase(srcCaseIdText);
+        this.deleteCaseInSuite(testCase.suiteIdText, srcCaseIdText);
+        this.appendCaseInSuite(dstSuiteIdText, srcCaseIdText);
+        this.setCaseSuiteIdText(srcCaseIdText, dstSuiteIdText);
+        this.setCaseModified(srcCaseIdText, true, true);
+    }
+
+    cutCases(srcCaseIdTexts = [], dstSuiteIdText) {
+        srcCaseIdTexts = typeof(srcCaseIdTexts) === "string" ?
+            [srcCaseIdTexts] : srcCaseIdTexts;
+        for (let srcCaseIdText of srcCaseIdTexts) {
+            this.cutCase(srcCaseIdText, dstSuiteIdText);
+        }
     }
 
     setRecordStatus(recordRef, status) {
@@ -544,8 +631,8 @@ export class FileController {
     }
 
     isSuiteNameUsed(name) {
-        for (let key in Panel.fileController.testSuite.suites) {
-            if (Panel.fileController.testSuite.suites[key].title === name) {
+        for (let key in this.testSuite.suites) {
+            if (this.testSuite.suites[key].title === name) {
                 return true;
             }
         }
@@ -553,12 +640,20 @@ export class FileController {
     }
 
     isCaseNameUsed(name, suiteIdText) {
-        for (let key of Panel.fileController.testSuite.suites[suiteIdText].cases) {
-            if (Panel.fileController.testCase.cases[key].title === name) {
+        for (let key of this.testSuite.suites[suiteIdText].cases) {
+            if (this.testCase.cases[key].title === name) {
                 return true;
             }
         }
         return false;
+    }
+
+    isSuiteExist(suiteIdText) {
+        return this.testSuite.suites[suiteIdText] !== undefined ? true : false;
+    }
+
+    isCaseExist(caseIdText) {
+        return this.testSuite.cases[caseIdText] !== undefined ? true : false;
     }
 
     checkNameValid(name) {

@@ -17,10 +17,12 @@
 import { WindowController } from './window-controller';
 import { Preprocessor } from './preprocessor';
 import { Utils } from "../../../common/utils";
+import * as EntryPoint from "../UI/entryPoint";
 
 export class Playback {
-    constructor(isDOMBased) {
-        this.isDOMBased = isDOMBased;
+    constructor(root) {
+        this.root = root;
+
         this.shutdown = false;
         this.isPlay = false;
         this.isPause = false;
@@ -46,10 +48,10 @@ export class Playback {
         this.idOfTimeout;
         this.timeout = Playback.DEFAULT_TIMEOUT_VALUE;
 
-        if (isDOMBased) {
-            this.windowController = new WindowController(this);
+        if (this.root.isDOMBased) {
+            this.windowController = new WindowController(root, this);
         }
-        this.preprocessor = new Preprocessor();
+        this.preprocessor = new Preprocessor(root);
     }
 
     setContentWindowId(contentWindowId) {
@@ -62,12 +64,11 @@ export class Playback {
     }
 
     async periodPlay(playMode, optionPara) {
-        if (!Panel.setting.get("periodical")) {
+        if (!this.root.setting.get("periodical")) {
             return false;
         }
-
         this.timesOfPlay++;
-        await Utils.delay(Panel.setting.get("period") * 60 * 1000);
+        await Utils.delay(this.root.setting.get("period") * 60 * 1000);
         if (this.isStop) {
             return false;
         }
@@ -90,29 +91,29 @@ export class Playback {
     }
 
     addLog(type, message) {
-        Panel.log.pushLog(type, message);
-        Panel.fileController.appendLog(type, message);
+        this.root.log.pushLog(type, message);
+        this.root.fileController.appendLog(type, message);
     }
 
     setPlayCasesAndSuites(mode) {
         let testSuite = { order: [], suites: {} };
-        let selectedSuiteIdTexts = Panel.fileController.getSelectedSuites();
+        let selectedSuiteIdTexts = this.root.fileController.getSelectedSuites();
         switch (mode) {
             case Playback.PLAY_CASE:
                 testSuite.order.push(selectedSuiteIdTexts[0]);
                 testSuite.suites[selectedSuiteIdTexts[0]] = {
-                    cases: [Panel.fileController.getSelectedCases()[0]]
+                    cases: [this.root.fileController.getSelectedCases()[0]]
                 };
                 break;
             case Playback.PLAY_SUITE:
                 testSuite.order.push(selectedSuiteIdTexts[0]);
                 testSuite.suites[selectedSuiteIdTexts[0]] = {
-                    cases: Panel.fileController.getCaseIdTextsInSuite(selectedSuiteIdTexts[0])
+                    cases: this.root.fileController.getCaseIdTextsInSuite(selectedSuiteIdTexts[0])
                 };
                 break;
             case Playback.PLAY_ALL_SUITES:
-                testSuite.order = [...Panel.fileController.testSuite.order];
-                testSuite.suites = { ...Panel.fileController.testSuite.suites };
+                testSuite.order = [...this.root.fileController.testSuite.order];
+                testSuite.suites = { ...this.root.fileController.testSuite.suites };
                 break;
             default:
                 this.addLog("error", "play error code");
@@ -135,8 +136,8 @@ export class Playback {
         this.curPlayIndex = [];
         let preprocessResult = this.preprocessor.preprocess(playMode, testSuite);
         this.playSuites = [ ...preprocessResult.playSuites ];
-        Panel.variables.initLocalVars();
-        Panel.recorder.preRecorder.flushBuffer(false);
+        this.root.variables.initLocalVars();
+        this.root.recorder.preRecorder.flushBuffer(false);
         console.log(preprocessResult);
 
         EntryPoint.footer.setResultValue("run", preprocessResult.caseNum);
@@ -154,14 +155,14 @@ export class Playback {
         this.curPlayIndex.push({ direction: 0, index: -1 });
         for (let suite of playSuites) {
             this.curPlayIndex[this.curPlayIndex.length - 1].index++;
-            Panel.fileController.setSelectedSuites([suite.idText]);
+            this.root.fileController.setSelectedSuites([suite.idText]);
             this.addLog("info", `Playing test suite ${suite.title}`);
 
             this.curPlayIndex.push({ direction: 0, index: -1 });
             this.suiteFailed = false;
             for (let caseEle of suite.cases) {
                 this.curPlayIndex[this.curPlayIndex.length - 1].index++;
-                Panel.fileController.setSelectedCases([caseEle.idText]);
+                this.root.fileController.setSelectedCases([caseEle.idText]);
                 this.addLog("info", `Playing test case ${caseEle.title}`);
                 EntryPoint.fileList.syncFiles();
 
@@ -223,10 +224,10 @@ export class Playback {
             this.addLog("error", "Initialization failed.");
             return false;
         }
-        let records = Panel.fileController.getRecords(caseIdText);
-        // Panel.fileController.clearIncludedRecords(records);
-        Panel.fileController.clearRecordsStatus("snapshot", records, true);
-        Panel.fileController.clearRecordsStatus("status", records, true);
+        let records = this.root.fileController.getRecords(caseIdText);
+        // this.root.fileController.clearIncludedRecords(records);
+        this.root.fileController.clearRecordsStatus("snapshot", records, true);
+        this.root.fileController.clearRecordsStatus("status", records, true);
 
         EntryPoint.footer.setCondition(caseIdText, "is playing...");
         EntryPoint.workArea.syncCommands();
@@ -252,7 +253,7 @@ export class Playback {
             if (this.isStop) return i;
             if (this.isPause) await this.waitForResumption();
 
-            await Utils.delay(Panel.setting.get("delay"));
+            await Utils.delay(this.root.setting.get("delay"));
 
             let command = this.initCommand(record, false);
             if (command !== null) {
@@ -270,8 +271,8 @@ export class Playback {
                         this.curPlayIndex.push({ direction: 0, index: -1 });
                         do {
                             if (this.isStop) break;
-                            Panel.fileController.clearRecordsStatus("status", record.children[0], true);
-                            Panel.fileController.clearRecordsStatus("snapshot", record.children[0], true);
+                            this.root.fileController.clearRecordsStatus("status", record.children[0], true);
+                            this.root.fileController.clearRecordsStatus("snapshot", record.children[0], true);
                             await this.doCommands(0, record.children[0]);
                             this.curPlayIndex[this.curPlayIndex.length - 1].index = -1;
                         } while ((--record.limitTimes) > 0);
@@ -327,7 +328,7 @@ export class Playback {
         }
 
         if (!notExecute) {
-            Panel.fileController.setRecordStatus(record, "execute");
+            this.root.fileController.setRecordStatus(record, "execute");
             this.addLog("info", `Executing: | ${name} | ${selectTarget.value} | ${selectValue.value} |`);
             let index = 0;
             for (let temp of this.curPlayIndex) { index += temp.index; }
@@ -401,12 +402,12 @@ export class Playback {
 
     finishCommand(isFail, record) {
         let status = isFail ? "fail" : "success";
-        Panel.fileController.setRecordStatus(record, status);
+        this.root.fileController.setRecordStatus(record, status);
         EntryPoint.workArea.syncCommands();
     }
 
     async finishCommands(index, isFail, records) {
-        // await Panel.snapshot.createSnapshotVideo();
+        // await this.root.snapshot.createSnapshotVideo();
         this.addLog(`${isFail ? "error" : "info"}`, `Test case ${isFail ? "failed" : "passed"}`);
         this.cleanUp();
         this.curPlayIndex.pop();
@@ -420,8 +421,8 @@ export class Playback {
     }
 
     cleanUp() {
-        Panel.variables.clearLocalVars();
-        if (this.isDOMBased) {
+        this.root.variables.clearLocalVars();
+        if (this.root.isDOMBased) {
             this.windowController.clear();
         }
     }
@@ -431,7 +432,7 @@ export class Playback {
         this.isPause = false;
         this.setPlayFlag(false, this.playMode);
         this.addLog("info", "Stop executing");
-        // Panel.uiTools.setGridClick(false);
+        // this.root.uiTools.setGridClick(false);
         EntryPoint.footer.setCondition(this.curCaseIdText, "is stopped");
         EntryPoint.toolBar.syncButtonState();
         clearTimeout(this.idOfTimeout);
@@ -452,10 +453,10 @@ export class Playback {
             this.shutdown = false;
             this.setPlayFlag(true, this.playMode);
 
-            if (this.isDOMBased) {
+            if (this.root.isDOMBased) {
                 this.windowController.attach();
             }
-            // Panel.uiTools.setGridClick(true);
+            // this.root.uiTools.setGridClick(true);
             this.addLog("info", "Resuming");
             EntryPoint.toolBar.syncButtonState();
             EntryPoint.footer.setCondition(this.curCaseIdText, "is resuming");
@@ -463,15 +464,15 @@ export class Playback {
     }
 
     preprocessTargetValue(str) {
-        if (!str.includes("TAC_LOCATOR") && !Panel.variables.isKeyBoardVars(str)) {
-            return str.supplant(Panel.variables.localVars, Panel.variables.globalVars);
+        if (!str.includes("TAC_LOCATOR") && !this.root.variables.isKeyBoardVars(str)) {
+            return str.supplant(this.root.variables.localVars, this.root.variables.globalVars);
         }
         return str;
     }
 
     preprocessValue(str) {
         // if (!isKeyBoardVars(str)) {
-        //     return str.supplant(Panel.variables.localVars);
+        //     return str.supplant(this.root.variables.localVars);
         // }
         return str;
     }

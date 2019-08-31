@@ -74,5 +74,20 @@ module.exports = [
         devServer: {
             contentBase: path.join(__dirname, 'src/panel/js/UI/build')
         }
+    }),
+    merge(common, {
+        mode: 'development',
+        entry: {
+            sideex: ['./src/panel/js/background/api.js']
+        },
+        output: {
+            path: path.resolve(__dirname, 'src/panel/js/UI/build'),
+            library: 'SideeX',
+            libraryTarget: 'umd',
+            filename: '[name].bundle.js'
+        },
+        devServer: {
+            contentBase: path.join(__dirname, 'src/panel/js/UI/build')
+        }
     })
 ];

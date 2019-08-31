@@ -84,7 +84,7 @@ browser.runtime.onMessage.addListener(async function doCommands(request) {
         case "ShowElement": {
             try {
                 let element = browserBot.findElement(request.targetValue.value);
-                await sideex.doShowElement(element);
+                await sideex.doShowElement(element, request.customHtml);
                 await sideex.doConcealElement(500);
                 return { result: true };
             } catch (error) {
