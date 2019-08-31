@@ -73,6 +73,7 @@ export class FileController {
         for (let caseIdText of suite.cases) {
             this.deleteCase(caseIdText);
         }
+        this.deleteNameMap(suiteIdText);
         let index = this.testSuite.order.indexOf(suiteIdText);
         index >= 0 && this.testSuite.order.splice(index, 1);
         delete this.testSuite.suites[suiteIdText];
@@ -170,7 +171,7 @@ export class FileController {
     }
 
     setSelectedCases(idTexts) {
-        let suiteIdTexts = idTexts.length > 0 ? [this.testCase.cases[idTexts[0]].suiteIdText] : [];
+        let suiteIdTexts = idTexts.length > 0 ? [this.testCase.cases[idTexts].suiteIdText] : [];
         this.setSelectedSuites(suiteIdTexts);
         this.selectedCaseIdTexts = idTexts;
     }
@@ -273,10 +274,20 @@ export class FileController {
     }
 
     setSuiteTitle(suiteIdText, title) {
-        console.log(suiteIdText, title);
+        this.updateNameMap(suiteIdText, title);
         this.testSuite.suites[suiteIdText].title = title;
         this.testSuite.suites[suiteIdText].fileName = `${title}.html`;
         this.setSuiteModified(suiteIdText, true, false);
+    }
+
+    updateNameMap(suiteIdText, newTitle) {
+        this.deleteNameMap(suiteIdText);
+        this.testSuite.nameMap[newTitle] = suiteIdText;
+    }
+
+    deleteNameMap(suiteIdText) {
+        let title = this.testSuite.suites[suiteIdText].title;
+        delete this.testSuite.nameMap[title];
     }
 
     setCaseTitle(caseIdText, title) {

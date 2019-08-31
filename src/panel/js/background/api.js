@@ -134,7 +134,6 @@ export class SideeX {
                 },
                 remove: function (caseIdText) {
                     self.root.fileController.deleteCase(caseIdText);
-                    self.root.fileController.setCaseModified(caseIdText, true, true);
                 },
                 setSelected: function (caseIdTexts) {
                     self.root.fileController.setSelectedCases(caseIdTexts);
