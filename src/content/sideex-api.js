@@ -574,43 +574,24 @@ Sideex.commands = {
             element.removeAttribute("style");
         }
     },
-    async dragAndDrop(locator, movementsString, coordString) {
-        /** Drags an element a certain distance and then drops it
-         * @param locator an element locator
-         * @param movementsString offset in pixels from the current location to which the element should be moved, e.g., "+70,-300"
-         */
-        var element = this.browserBot.findElement(locator, coordString);
-        var clientStartXY = getClientXY(element);
-        var clientStartX = clientStartXY[0];
-        var clientStartY = clientStartXY[1];
-
-        var movements = movementsString.split(/,/);
-        var movementX = Number(movements[0]);
-        var movementY = Number(movements[1]);
-
-        var clientFinishX = ((clientStartX + movementX) < 0) ? 0 : (clientStartX + movementX);
-        var clientFinishY = ((clientStartY + movementY) < 0) ? 0 : (clientStartY + movementY);
-
-        var mouseSpeed = this.mouseSpeed;
-        var move = function (current, dest) {
-            if (current == dest) return current;
-            if (Math.abs(current - dest) < mouseSpeed) return dest;
-            return (current < dest) ? current + mouseSpeed : current - mouseSpeed;
-        };
-
-        this.browserBot.triggerMouseEvent(element, 'mousedown', true, clientStartX, clientStartY);
-        this.browserBot.triggerMouseEvent(element, 'mousemove', true, clientStartX, clientStartY);
-        var clientX = clientStartX;
-        var clientY = clientStartY;
-
-        while ((clientX != clientFinishX) || (clientY != clientFinishY)) {
-            clientX = move(clientX, clientFinishX);
-            clientY = move(clientY, clientFinishY);
-            this.browserBot.triggerMouseEvent(element, 'mousemove', true, clientX, clientY);
+    async dragAndDrop(locator, movementsString) {
+        var element = this.browserBot.findElement(locator);
+        var coordinateInfo = JSON.parse(movementsString);
+        let len = coordinateInfo.Movements.length;
+        let clientXY = this.getClientXY(element, coordinateInfo.StartPoint.X + "," + coordinateInfo.StartPoint.Y);
+        let startX = clientXY[0];
+        let startY = clientXY[1];
+        this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1]);
+        for (let i = 0; i < len; i++) {
+            await Utils.delay(Number(coordinateInfo.Movements[i].TD));
+            startX = startX + Number(coordinateInfo.Movements[i].OX);
+            startY = startY + Number(coordinateInfo.Movements[i].OY);
+            this.browserBot.fireMouseEvent(element, 'mousemove', true, startX, startY);
         }
-
-        this.browserBot.triggerMouseEvent(element, 'mousemove', true, clientFinishX, clientFinishY);
-        this.browserBot.triggerMouseEvent(element, 'mouseup', true, clientFinishX, clientFinishY);
+        startX = startX + Number(coordinateInfo.Movements[len - 1].OX);
+        startY = startY + Number(coordinateInfo.Movements[len - 1].OY);
+        this.browserBot.fireMouseEvent(element, 'mouseup', true, startX, startY);
+        this.browserBot.fireMouseEvent(element, 'click', true, startX, startY);
     },
 
     async dragAndDropToObject(locatorOfObjectToBeDragged, locatorOfDragDestinationObject) {
