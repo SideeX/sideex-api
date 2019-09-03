@@ -39,6 +39,7 @@ export class Sideex {
                 }
             }
         });
+        this.mouseMove = {};
     }
     hasCommand(command) {
         return Sideex.commands[command] != null;
@@ -408,6 +409,61 @@ Sideex.commands = {
          */
         var element = this.browserBot.findElement(locator);
         this.browserBot.contextMenuOnElement(element);
+    },
+    /**
+     * Simulates a user pressing the left mouse button (without releasing it yet) at
+     * the specified location.
+     *
+     * @param locator an <a href="#locators">element locator</a>
+     * @param coordString specifies the x,y position (i.e. - 10,20) of the mouse
+     *      event relative to the element returned by the locator.
+     */
+    async mouseDownAt(locator, coordString) {
+        var element = this.browserBot.findElement(locator);
+        var clientXY = this.getClientXY(element, coordString);
+        this.mouseMove.startX = Number(clientXY[0]);
+        this.mouseMove.startY = Number(clientXY[1]);
+        // console.log(startX);
+        // console.log(startY);
+        this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1]);
+    },
+    /**
+     * Simulates a user pressing the mouse button (without releasing it yet) on
+     * the specified element.
+     *
+     * @param locator an <a href="#locators">element locator</a>
+     * @param coordString specifies the x,y position (i.e. - 10,20) of the mouse
+     *      event relative to the element returned by the locator.
+     */
+    async mouseMoveAt(locator, coordString) {
+        var element = this.browserBot.findElement(locator);
+        var coordinateInfo = JSON.parse(coordString);
+        let ifUndefined = false;
+        if (this.mouseMove.startX == undefined && this.mouseMove.startY == undefined) {
+            var clientXY = this.getClientXY(element);
+            this.mouseMove.startX = clientXY[0];
+            this.mouseMove.startY = clientXY[1];
+            ifUndefined = true;
+        }
+        for (let i = 0; i < coordinateInfo.Movements.length; i++) {
+            this.mouseMove.startX = this.mouseMove.startX + Number(coordinateInfo.Movements[i].OX);
+            this.mouseMove.startY = this.mouseMove.startY + Number(coordinateInfo.Movements[i].OY);
+            await Utils.delay(Number(coordinateInfo.Movements[i].TD));
+            this.browserBot.fireMouseEvent(element, 'mousemove', true, this.mouseMove.startX, this.mouseMove.startY);
+        }
+        if (ifUndefined) {
+            delete this.mouseMove.startX;
+            delete this.mouseMove.startY;
+        }
+    },
+    async mouseUpAt(locator, coordString) {
+        var element = this.browserBot.findElement(locator);
+        var clientXY = this.getClientXY(element, coordString);
+        // console.log(clientXY[0]);
+        // console.log(clientXY[1]);
+        this.browserBot.fireMouseEvent(element, 'mouseup', true, clientXY[0], clientXY[1]);
+        delete this.mouseMove.startX;
+        delete this.mouseMove.startY;
     },
     /** @author © Ming-Hung Hsu, SideeX Team */
     async runScript(script, timeout = 1000) {

@@ -163,16 +163,16 @@ export function recorderHandlersInit() {
                 var sourceRelateY = this.selectMousedown.pageY - this.selectMousedown.target.getBoundingClientRect().top - window.scrollY;
                 var targetRelateX, targetRelateY;
                 if (!!this.mouseoverQ.length && this.mouseoverQ[1].relatedTarget == this.mouseoverQ[0].target && this.mouseoverQ[0].target == event.target) {
-                    targetRelateX = event.pageX - this.mouseoverQ[1].target.getBoundingClientRect().left - window.scrollX;
-                    targetRelateY = event.pageY - this.mouseoverQ[1].target.getBoundingClientRect().top - window.scrollY;
+                    targetRelateX = event.pageX - this.mouseoverQ[1].target.getBoundingClientRect().left - window.scrollX - sourceRelateX;
+                    targetRelateY = event.pageY - this.mouseoverQ[1].target.getBoundingClientRect().top - window.scrollY - sourceRelateY;
                     this.record("mouseDownAt", this.locatorBuilders.buildAll(this.selectMousedown.target), sourceRelateX + ',' + sourceRelateY);
-                    this.record("mouseMoveAt", this.locatorBuilders.buildAll(this.mouseoverQ[1].target), targetRelateX + ',' + targetRelateY);
+                    this.record("mouseMoveAt", this.locatorBuilders.buildAll(this.mouseoverQ[1].target), `{"Movements":[{"TD":0,"OX":${targetRelateX},"OY":${targetRelateY}}]}`);
                     this.record("mouseUpAt", this.locatorBuilders.buildAll(this.mouseoverQ[1].target), targetRelateX + ',' + targetRelateY);
                 } else {
                     targetRelateX = event.pageX - event.target.getBoundingClientRect().left - window.scrollX;
                     targetRelateY = event.pageY - event.target.getBoundingClientRect().top - window.scrollY;
                     this.record("mouseDownAt", this.locatorBuilders.buildAll(event.target), targetRelateX + ',' + targetRelateY);
-                    this.record("mouseMoveAt", this.locatorBuilders.buildAll(event.target), targetRelateX + ',' + targetRelateY);
+                    this.record("mouseMoveAt", this.locatorBuilders.buildAll(event.target), `{"Movements":[{"TD":0,"OX":${targetRelateX},"OY":${targetRelateY}}]}`);
                     this.record("mouseUpAt", this.locatorBuilders.buildAll(event.target), targetRelateX + ',' + targetRelateY);
                 }
             }
