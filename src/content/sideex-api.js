@@ -388,6 +388,16 @@ Sideex.commands = {
         // END
 
     },
+    /** @author © Ming-Hung Hsu, SideeX Team */
+    async rightClickAt(locator, coordString) {
+        var element = this.browserBot.findElement(locator);
+        var clientXY = this.getClientXY(element, coordString);
+        this.browserBot.fireMouseEvent(element, 'mouseover', true);
+        this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1], 2);
+        this.browserBot.triggerFocusEvent(element);
+        this.browserBot.fireMouseEvent(element, 'mouseup', true, clientXY[0], clientXY[1], 2);
+        this.browserBot.fireMouseEvent(element, 'contextmenu', true, clientXY[0], clientXY[1], 2);
+    },
 
     async doContextMenu(locator) {
         /**
