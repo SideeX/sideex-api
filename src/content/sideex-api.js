@@ -501,6 +501,13 @@ Sideex.commands = {
         var element = this.browserBot.findElement(locator);
         this.browserBot.fireMouseEvent(element, 'mouseout', true);
     },
+    async setCSS(locator, cssText) {
+        var element = this.browserBot.findElement(locator);
+        element.style = cssText;
+        if (element.style == "") {
+            element.removeAttribute("style");
+        }
+    },
     async dragAndDrop(locator, movementsString, coordString) {
         /** Drags an element a certain distance and then drops it
          * @param locator an element locator

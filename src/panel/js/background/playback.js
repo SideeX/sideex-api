@@ -578,6 +578,7 @@ export class Playback {
             case "assertConfirmation":
             case "assertAlert":
             case "waitForElementPresent":
+            case "setCSS":
                 return Playback.COMMAND_TYPE_CONTENT;
             case "close":
             case "pause":
