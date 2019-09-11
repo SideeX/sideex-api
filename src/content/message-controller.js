@@ -9,8 +9,8 @@ export class MessageController {
         if (this.isExtension) {
             return browser.tabs.sendMessage(tabId, message, options);
         } else {
-            console.log("ruunning tabSendMessage");
-            return window.postMessage(message);
+            window.postMessage(message);
+            return Promise.resolve('Success');
         }
     }
 
@@ -18,8 +18,8 @@ export class MessageController {
         if (this.isExtension) {
             return browser.runtime.sendMessage(extensionId, message, options);
         } else {
-            console.log("ruunning runtimeSendMessage");
-            return window.postMessage(message);
+            window.postMessage(message);
+            return Promise.resolve('Success');
         }
     }
 
@@ -27,7 +27,6 @@ export class MessageController {
         if (this.isExtension) {
             return browser.runtime.onMessage.addListener(callback);
         } else {
-            console.log("ruunning addListener");
             return window.addEventListener("message", callback);
         }
     }
