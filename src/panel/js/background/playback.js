@@ -594,6 +594,7 @@ export class Playback {
             case "verifyText":
             case "verifyTitle":
             case "verifyValue":
+            case "verifyVisibility":
             case "assertText":
             case "assertTitle":
             case "assertValue":

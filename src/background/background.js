@@ -24,6 +24,7 @@ const menuElements = [
     "verifyText",
     "verifyTitle",
     "verifyValue",
+    "verifyVisibility",
     "assertText",
     "assertTitle",
     "assertValue",

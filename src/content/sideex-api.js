@@ -497,6 +497,30 @@ Sideex.commands = {
             throw new Error("Actual value '" + this.getValue(locator) + "' did not match '" + value + "'");
         }
     },
+
+    async verifyVisibility(locator, value){
+        var element = this.browserBot.findElement(locator);
+        var locate = element.getBoundingClientRect();
+        var window_height = window.innerHeight;
+        var window_width = window.innerWidth;
+        //css
+        if(window.getComputedStyle(element).visibility === "hidden" ||
+            window.getComputedStyle(element).opacity === "0" ||
+            window.getComputedStyle(element).display === "none" ||
+            window.getComputedStyle(element).width === "0px" || 
+            window.getComputedStyle(element).height === "0px"){ 
+                throw new Error("I can't see!!");
+        }
+        //exceed the screen
+        if(locate.top > window_height ||
+            locate.bottom < 0 ||
+            locate.left > window_width ||
+            locate.right < 0){
+                throw new Error("I can't see!!");
+        }
+        
+    },
+
     // © Ming-Hung Hsu, SideeX Team
     async assertText(locator, value) {
         var element = this.browserBot.findElement(locator);
