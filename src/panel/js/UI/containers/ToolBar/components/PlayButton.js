@@ -21,17 +21,8 @@ function PlayButton({ mode, setPlay, toggleSetPlayMode, setPlayMode }) {
 
     const setPlayIcon = (mode) => {
         let icon;
-        switch (mode.toLowerCase()) {
-            case "play this case":
-                icon = playCaseIcon;
-                break;
-            case "play this suite":
-                icon = playSuiteIcon;
-                break;
-            case "play all suites":
-                icon = playSuitesIcon;
-                break;
-        }
+        icon = playCaseIcon;
+
         return icon ? (<img className={playIcon} src={browser.runtime.getURL ?
             browser.runtime.getURL(`panel/js/UI/build/${icon}`) : icon} />) :
             (<FontAwesomeIcon className={playIcon} icon={faPlay}/>);
@@ -41,17 +32,11 @@ function PlayButton({ mode, setPlay, toggleSetPlayMode, setPlayMode }) {
         <div className={buttonStyle}>
             <ButtonDropdown isOpen={setPlay.isOpen} toggle={toggleSetPlayMode}>
                 <Button className={cls.IconContainer} id="play-button"
-                    onClick={() => { events.toolBar.clickPlayButton(setPlay.mode); }}>
+                    onClick={() => { events.toolBar.clickPlayButton("Play all suites"); }}>
                     {setPlayIcon(setPlay.mode)}
                     <br />
-                    <span className={cls.textStyle}>{setPlay.mode}</span>
+                    <span className={cls.textStyle}>Play</span>
                 </Button>
-                <DropdownToggle caret className={cls.selectStyle}/>
-                <DropdownMenu right className={cls.padding0} style={{ minWidth: "100%" }}>
-                    <DropdownItem className={cls.playDropDownItem} onClick={setPlayMode}>Play this case</DropdownItem>
-                    <DropdownItem className={cls.playDropDownItem} onClick={setPlayMode}>Play this suite</DropdownItem>
-                    <DropdownItem className={cls.playDropDownItem} onClick={setPlayMode}>Play all suites</DropdownItem>
-                </DropdownMenu>
             </ButtonDropdown>
         </div>
     );
