@@ -89,15 +89,6 @@ class ToolBar extends React.Component {
                     <SpeedButton />
                 </Col>
                 <Col xs="2" className={cls.buttonCol}></Col>
-                <Col xs="1" className={cls.buttonCol} style={{ borderLeft: "solid 2px #364958", padding: "0" }}>
-                    <Container className={cls.padding0}>
-                        <Row className={cls.margin0}>
-                            <Col className={cls.padding0} title={"Setting"} onClick={() => { events.toolBar.clickSettingButton(); }}>
-                                <FontAwesomeIcon icon={faCog} className={cls.toolBarStyle}/>
-                            </Col>
-                        </Row>
-                    </Container>
-                </Col>
             </Row>
         );
     }
