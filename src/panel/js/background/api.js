@@ -1,11 +1,24 @@
 import { browser } from "webextension-polyfill-ts";
 import platform from "platform";
-import * as EntryPoint from "../UI/entryPoint";
+// import * as EntryPoint from "../UI/entryPoint";
+import { FileController } from '../IO/file-controller';
+import { BackgroundRecorder } from './recorder';
+import { Playback } from './playback';
+import { VariableController } from './variable-controller';
+import { Setting } from "./setting";
+import { Log } from './log';
 
 export class SideeX {
-    constructor(root) {
-        this.root = root;
+    constructor() {
+        this.root =  { isDOMBased: true };
+        this.root.api = true;
 
+        this.root.fileController = new FileController(this.root);
+        this.root.recorder = new BackgroundRecorder(this.root);
+        this.root.playback = new Playback(this.root);
+        this.root.variables = new VariableController(this.root);
+        this.root.log = new Log(this.root);
+        this.root.setting = new Setting(this.root);
         this.file;
         this.variables;
         this.setting;
@@ -293,6 +306,7 @@ export class SideeX {
             start: (caseIdText = this.root.fileController.getSelectedCases()[0]) => {
                 if (caseIdText === undefined) {
                     this.root.recorder.prepareRecord();
+                    console.log(123123);
                     caseIdText = this.root.fileController.getSelectedCases()[0];
                 }
                 if (this.root.fileController.getTestCase(caseIdText)) {
@@ -303,8 +317,8 @@ export class SideeX {
 
                     this.root.recorder.isRecord = true;
 
-                    EntryPoint.toolBar.syncButtonState();
-                    EntryPoint.fileList.syncFiles();
+                    //EntryPoint.toolBar.syncButtonState();
+                    //EntryPoint.fileList.syncFiles();
                 } else {
                     if (caseIdText)
                         throw new Error(`${caseIdText} doesen't exist`);
@@ -316,8 +330,8 @@ export class SideeX {
                 this.root.recorder.detach();
                 this.root.recorder.isRecord = false;
 
-                EntryPoint.toolBar.syncButtonState();
-                EntryPoint.fileList.syncFiles();
+                //EntryPoint.toolBar.syncButtonState();
+                //EntryPoint.fileList.syncFiles();
             }
         };
         this.setting = {
@@ -326,7 +340,7 @@ export class SideeX {
                     return this.root.log.pushLog('error', 'speed should be set from range 1 to 5');
                 } else {
                     this.root.setting.set({ delay: 500 * (5 - value) });
-                    EntryPoint.toolBar.updateSpeed(parseInt(value));
+                    //EntryPoint.toolBar.updateSpeed(parseInt(value));
                     return value;
                 }
             },
@@ -381,28 +395,28 @@ export class SideeX {
                         break;
                     }
                 }
-                EntryPoint.toolBar.syncButtonState();
+                //EntryPoint.toolBar.syncButtonState();
 
             },
             stop: () => {
                 this.root.playback.stop();
 
                 this.root.playback.isPlay = false;
-                EntryPoint.toolBar.syncButtonState();
+                //EntryPoint.toolBar.syncButtonState();
             },
             pause: () => {
                 this.root.playback.pause();
 
                 this.root.playback.isPlay = false;
                 this.root.playback.isPause = true;
-                EntryPoint.toolBar.syncButtonState();
+                //EntryPoint.toolBar.syncButtonState();
             },
             resume: () => {
                 this.root.playback.resume();
 
                 this.root.playback.isPlay = true;
                 this.root.playback.isPause = false;
-                EntryPoint.toolBar.syncButtonState();
+                //EntryPoint.toolBar.syncButtonState();
             }
         };
         this.others = {

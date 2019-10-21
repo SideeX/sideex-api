@@ -82,7 +82,6 @@ module.exports = [
         },
         output: {
             path: path.resolve(__dirname, 'src/panel/js/UI/build'),
-            library: 'SideeX',
             libraryTarget: 'umd',
             filename: '[name].bundle.js'
         },
