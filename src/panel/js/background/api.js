@@ -151,7 +151,12 @@ export class SideeX {
                     }
                 },
                 remove: function (caseIdText) {
+                    let suiteIdText = self.root.fileController.getTestCase(caseIdText).suiteIdText;
+                    let cases = self.root.fileController.testSuite.suites[suiteIdText].cases;
+                    let index = cases.indexOf(caseIdText);
                     self.root.fileController.deleteCase(caseIdText);
+                    self.root.fileController.setSelectedCases(index !== 0 ? [`case-${index - 1}`] : []);
+                    self.root.fileController.setSelectedSuites(suiteIdText);
                 },
                 setSelected: function (caseIdTexts) {
                     self.root.fileController.setSelectedCases(caseIdTexts);
