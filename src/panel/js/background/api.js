@@ -10,7 +10,7 @@ import { Log } from './log';
 
 export class SideeX {
     constructor() {
-        this.root =  { isDOMBased: true };
+        this.root = { isDOMBased: true };
         this.root.api = true;
 
         this.root.fileController = new FileController(this.root);
@@ -73,7 +73,12 @@ export class SideeX {
                         [suiteIdTexts] : suiteIdTexts;
                     if (suiteIdTexts.length > 0) {
                         for (let suiteIdText of suiteIdTexts) {
+                            let index = self.root.fileController.testSuite.order.indexOf(suiteIdText);
                             self.root.fileController.deleteSuite(suiteIdText);
+                            console.log(index);
+                            let casesLength = self.root.fileController.testSuite.suites[`suite-${index - 1}`].cases.length;
+                            self.root.fileController.setSelectedCases(casesLength !== 0 ? [self.root.fileController.testSuite.suites[`suite-${index - 1}`].cases[0]] : []);
+                            self.root.fileController.setSelectedSuites(index !== 0 ? [`suite-${index - 1}`] : []);
                         }
                     }
                 },

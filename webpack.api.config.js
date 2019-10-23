@@ -3,8 +3,6 @@ var merge = require('webpack-merge');
 const webpack = require('webpack');
 var common = require('./webpack.common.js');
 module.exports = merge(common, {
-    mode: 'development',
-    devtool:false,
     entry: {
         sideex: ['./src/panel/js/background/api.js']
     },

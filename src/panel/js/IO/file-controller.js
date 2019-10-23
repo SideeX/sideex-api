@@ -44,7 +44,7 @@ export class FileController {
 
     deleteRecord(caseIdText, index) {
         this.testCase.cases[caseIdText].records.splice(index, 1);
-        this.setSelectedRecords([]);
+        this.setSelectedRecords(index !== 0 ? [`records-${index - 1}`] : []);
         this.setCaseModified(caseIdText, true, true);
     }
 
@@ -64,7 +64,7 @@ export class FileController {
         let index = cases.indexOf(caseIdText);
         index >= 0 && cases.splice(index, 1);
         delete this.testCase.cases[caseIdText];
-        this.testCase.count--;
+        // this.testCase.count--;
         this.setSelectedCases([]);
     }
 
@@ -77,7 +77,7 @@ export class FileController {
         let index = this.testSuite.order.indexOf(suiteIdText);
         index >= 0 && this.testSuite.order.splice(index, 1);
         delete this.testSuite.suites[suiteIdText];
-        this.testSuite.count--;
+        // this.testSuite.count--;
         this.setSelectedCases([]);
         this.setSelectedSuites([]);
     }
