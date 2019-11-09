@@ -30,14 +30,12 @@ function PlayButton({ mode, setPlay, toggleSetPlayMode, setPlayMode }) {
 
     return (
         <div className={buttonStyle}>
-            <ButtonDropdown isOpen={setPlay.isOpen} toggle={toggleSetPlayMode}>
-                <Button className={cls.IconContainer} id="play-button"
-                    onClick={() => { events.toolBar.clickPlayButton("Play all suites"); }}>
-                    {setPlayIcon(setPlay.mode)}
-                    <br />
-                    <span className={cls.textStyle}>Play</span>
-                </Button>
-            </ButtonDropdown>
+            <Button className={cls.IconContainer} id="play-button"
+                onClick={() => { events.toolBar.clickPlayButton("Play all suites"); }}>
+                {setPlayIcon(setPlay.mode)}
+                <br />
+                <span className={cls.textStyle}>Play</span>
+            </Button>
         </div>
     );
 }
