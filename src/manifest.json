@@ -26,7 +26,7 @@
                 "<all_urls>"
             ],
             "js": [
-                "build/document_end.js"
+                "document_end.js"
             ],
             "match_about_blank": true,
             "all_frames": true,
@@ -37,7 +37,7 @@
                 "<all_urls>"
             ],
             "js": [
-                "build/document_start.js"
+                "document_start.js"
             ],
             "match_about_blank": true,
             "all_frames": true,
@@ -46,7 +46,7 @@
     ],
     "background": {
         "scripts": [
-            "build/background_script.js"
+            "background_script.js"
         ]
     },
     "browser_action": {
@@ -55,7 +55,7 @@
     },
     "web_accessible_resources": [
         "page/prompt.js",
-        "build/page_script.js",
+        "page_script.js",
         "panel/js/UI/build/assets/*"
     ],
     "options_ui": {

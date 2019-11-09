@@ -7,12 +7,12 @@ module.exports = merge(common, {
         sideex: ['./src/panel/js/background/api.js']
     },
     output: {
-        path: path.resolve(__dirname, 'src/panel/js/UI/build'),
+        path: path.resolve(__dirname, 'dist/api'),
         libraryTarget: 'umd',
         filename: '[name].bundle.js'
     },
     devServer: {
-        contentBase: path.join(__dirname, 'src/panel/js/UI/build')
+        contentBase: path.join(__dirname, 'dist/api')
     },
     plugins: [
         new webpack.NormalModuleReplacementPlugin(/entryPoint\.js$/, path.resolve("./src/panel/js/UI/entryPoint-empty.js"))

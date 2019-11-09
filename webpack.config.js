@@ -3,11 +3,11 @@ var HtmlWebPackPlugin = require('html-webpack-plugin');
 var merge = require('webpack-merge');
 var common = require('./webpack.common.js');
 const TerserPlugin = require('terser-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 var cache = {};
 module.exports = [
     merge(common, {
         entry: {
-            "options": ["./src/option/js/options.js"],
             "background_script": ["./src/background/storage-initialization.js", "./src/background/background.js"],
             "document_start": ["./src/content/pageScript-injecter.js"],
             "document_end": ["./src/content/command-receiver.js", "./src/content/prompt-injecter.js", "./src/content/content-initialization.js"],
@@ -15,7 +15,7 @@ module.exports = [
         },
         output: {
             filename: '[name].js',
-            path: path.resolve(__dirname, './src/build'),
+            path: path.resolve(__dirname, './dist/extension'),
             libraryTarget: 'umd'
         },
         optimization: {
@@ -34,7 +34,34 @@ module.exports = [
                     }
                 })
             ]
-        }
+        },
+        plugins: [
+            new CopyPlugin([
+                {
+                    from: './src/manifest.json',
+                    to: path.resolve("./dist/extension")
+                },
+                {
+                    from: 'README.md',
+                    to: path.resolve("./dist/extension")
+                },
+                {
+                    from: 'icons/*',
+                    context: './src',
+                    to: path.resolve("./dist/extension")
+                },
+                {
+                    from: 'option/**/*',
+                    context: './src',
+                    to: path.resolve("./dist/extension")
+                },
+                {
+                    from: 'page/prompt.js',
+                    context: './src',
+                    to: path.resolve("./dist/extension/page")
+                }
+            ])
+        ]
     }),
     merge(common, {
         mode: 'development',
@@ -45,18 +72,18 @@ module.exports = [
             ]
         },
         output: {
-            path: path.resolve(__dirname, 'src/panel/js/UI/build'),
+            path: path.resolve(__dirname, 'dist/extension/panel/js/UI/build'),
             library: 'Panel',
             libraryTarget: 'umd',
             filename: '[name].bundle.js'
         },
         devServer: {
-            contentBase: path.join(__dirname, 'src/panel/js/UI/build')
+            contentBase: path.join(__dirname, 'dist/extension/panel/js/UI/build')
         },
         plugins: [
             new HtmlWebPackPlugin({
                 template: "./src/panel/index_react.html",
-                filename: "index_react.html"
+                filename: "../../../index.html"
             })
         ]
     }),
@@ -66,27 +93,13 @@ module.exports = [
             entryPoint: ['./src/panel/js/UI/entryPoint.js']
         },
         output: {
-            path: path.resolve(__dirname, 'src/panel/js/UI/build'),
+            path: path.resolve(__dirname, 'dist/extension/panel/js/UI/build'),
             library: 'EntryPoint',
             libraryTarget: 'umd',
             filename: '[name].bundle.js'
         },
         devServer: {
-            contentBase: path.join(__dirname, 'src/panel/js/UI/build')
-        }
-    }),
-    merge(common, {
-        mode: 'development',
-        entry: {
-            sideex: ['./src/panel/js/background/api.js']
-        },
-        output: {
-            path: path.resolve(__dirname, 'src/panel/js/UI/build'),
-            libraryTarget: 'umd',
-            filename: '[name].bundle.js'
-        },
-        devServer: {
-            contentBase: path.join(__dirname, 'src/panel/js/UI/build')
+            contentBase: path.join(__dirname, 'dist/extension/panel/js/UI/build')
         }
     })
 ];

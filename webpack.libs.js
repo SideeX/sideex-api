@@ -8,7 +8,7 @@ module.exports = [merge(common, {
         entryPoint: ['./src/panel/js/UI/entryPoint.js'],
     },
     output: {
-        path: path.resolve(__dirname, 'src/panel/js/UI/build'),
+        path: path.resolve(__dirname, 'dist/extension/panel/js/UI/build'),
         library: 'EntryPoint',
         libraryTarget: 'umd',
         filename: '[name].bundle.js'

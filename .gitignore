@@ -70,6 +70,7 @@ typings/
 # build files
 build/
 builds/
+dist/
 
 #source map
 *.js.map
