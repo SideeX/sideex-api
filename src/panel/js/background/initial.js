@@ -16,6 +16,7 @@
  */
 import { browser } from "webextension-polyfill-ts";
 
+import { MessageController } from '../../../content/message-controller';
 import { FileController } from '../IO/file-controller';
 import { BackgroundRecorder } from './recorder';
 import { Playback } from './playback';
@@ -24,9 +25,10 @@ import { UiTools } from '../UI/uiTools';
 import { Setting } from "./setting";
 import { Log } from './log';
 // export { SideeX } from './api';
-export const root = { isDOMBased: true };
+export const root = { isDOMBased: true, isExt: true };
 
 
+root.messageController = new MessageController(root);
 root.fileController = new FileController(root);
 root.recorder = new BackgroundRecorder(root);
 root.playback = new Playback(root);
@@ -36,8 +38,8 @@ root.log = new Log(root);
 root.setting = new Setting(root);
 // export const sideex = new SideeX(root);
 
-browser.runtime.onMessage.addListener(root.recorder.contentWindowIdListener);
-browser.runtime.onMessage.addListener(root.recorder.handleFormatCommand);
+messageController.addListener(root.recorder.contentWindowIdListener);
+messageController.addListener(root.recorder.handleFormatCommand);
 
 window.addEventListener("beforeunload", (event) => {
     (event || window.event).returnValue = false;

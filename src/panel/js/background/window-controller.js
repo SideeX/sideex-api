@@ -15,6 +15,7 @@
  *
  */
 import { browser } from "webextension-polyfill-ts";
+import { MessageController } from "../../../content/message-controller";
 
 export class WindowController {
 
@@ -96,7 +97,7 @@ export class WindowController {
         }
         this.attached = true;
         browser.tabs.onUpdated.addListener(this.tabStatusHandler);
-        browser.runtime.onMessage.addListener(this.frameLocationMessageHandler);
+        MessageController.addListener(this.frameLocationMessageHandler);
         browser.webNavigation.onCreatedNavigationTarget.addListener(this.newTabHandler);
     }
 
@@ -151,13 +152,13 @@ export class WindowController {
         let tabId = this.getCurrentPlayingTabId();
         let frameId = this.getCurrentPlayingFrameId();
         let action = ("waitSeries" === command ) ? "Wait" : "Command";
-        return await browser.tabs.sendMessage(tabId, {
+        return await MessageController.tabSendMessage({
             action: action,
             command: command,
             target: target,
             value: value,
             index: index
-        }, { frameId: top ? 0 : frameId });
+        }, tabId, { frameId: top ? 0 : frameId });
     }
 
     setLoading(tabId) {

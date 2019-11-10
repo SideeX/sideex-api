@@ -16,6 +16,7 @@
 import { browser } from "webextension-polyfill-ts";
 import { Recorder } from "./recorder";
 import { Utils } from "../common/utils";
+import { MessageController } from "../content/message-controller";
 
 export function recorderHandlersInit() {
     Recorder.addEventHandlerVar("preventClick", false);
@@ -408,7 +409,7 @@ export function recorderHandlersInit() {
         }
     };
 
-    browser.runtime.sendMessage({
+    MessageController.runtimeSendMessage({
         attachRecorderRequest: true
     }).catch(() => {
         // Failed silently if receiving end does not exist

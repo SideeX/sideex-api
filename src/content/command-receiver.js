@@ -18,9 +18,10 @@ import TargetSelecter from "./targetSelecter";
 import { browser } from "webextension-polyfill-ts";
 import { sideex, locatorBuilders, browserBot } from "./content-initialization";
 import "../common/utils";
+import { MessageController } from "../content/message-controller";
 
 var targetSelecter = null;
-browser.runtime.onMessage.addListener(async function doCommands(request) {
+MessageController.addListener(async function doCommands(request) {
     switch (request.action) {
         case "Wait": {
             await sideex.doAutoWait(request.command, request.value);
@@ -57,7 +58,7 @@ browser.runtime.onMessage.addListener(async function doCommands(request) {
                         if (target != null && target instanceof Array) {
                             if (target) {
                                 //self.editor.treeView.updateCurrentCommand('targetCandidates', target);
-                                browser.runtime.sendMessage({
+                                MessageController.runtimeSendMessage({
                                     selectTarget: true,
                                     target: target
                                 });
@@ -68,7 +69,7 @@ browser.runtime.onMessage.addListener(async function doCommands(request) {
                     }
                     targetSelecter = null;
                 }, async function () {
-                    await browser.runtime.sendMessage({
+                    await MessageController.runtimeSendMessage({
                         cancelSelectTarget: true
                     });
                 });
