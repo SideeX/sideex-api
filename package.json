@@ -14,6 +14,7 @@
         "build-webdriver": "webpack --config webpack.webdriver.config.js",
         "build-api": "webpack --config webpack.api.config.js",
         "dev": "concurrently --kill-others \"npm run build\" \"npm run build-webdriver\"",
+        "dev:api": "webpack-dev-server --config webpack.api.config.js",
         "dev:ui": "concurrently --kill-others \"npm run build-libs\" \"npm run start\""
     },
     "repository": {

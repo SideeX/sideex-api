@@ -82,7 +82,7 @@ module.exports = [
         },
         plugins: [
             new HtmlWebPackPlugin({
-                template: "./src/panel/index_react.html",
+                template: "./src/panel/index.html",
                 filename: "../../../index.html"
             })
         ]
