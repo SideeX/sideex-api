@@ -101,20 +101,5 @@ module.exports = [
         devServer: {
             contentBase: path.join(__dirname, 'dist/extension/panel/js/UI/build')
         }
-    }),
-    merge(common, {
-        mode: 'development',
-        entry: {
-            test: ['./src/panel/js/background/test.js']
-        },
-        output: {
-            path: path.resolve(__dirname, 'src/panel/js/UI/build'),
-            library: 'Test',
-            libraryTarget: 'umd',
-            filename: '[name].bundle.js'
-        },
-        devServer: {
-            contentBase: path.join(__dirname, 'src/panel/js/UI/build')
-        }
     })
 ];

@@ -6,12 +6,14 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = merge(common, {
     entry: {
-        index: ['./src/sideex-api/index.js']
+        index: ['./src/sideex-api/index.js'],
+        test: ['./src/sideex-api/test.js']
     },
     output: {
         path: path.resolve(__dirname, 'dist/api'),
+        library: 'SideeX',
         libraryTarget: 'umd',
-        filename: 'sideex.api.js'
+        filename: '[name].bundle.js'
     },
     devServer: {
         host: 'localhost',

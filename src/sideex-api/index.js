@@ -539,5 +539,3 @@ export class SideeX {
         };
     }
 }
-
-export const sideex = new SideeX();
