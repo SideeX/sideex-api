@@ -205,10 +205,10 @@ class EditBlock extends React.Component {
                             </ButtonDropdown>
                         </Col>
 
-                        <Col xs="auto" className={cls.editBlockIconStyle} title={"Select target"}
+                        {/* <Col xs="auto" className={cls.editBlockIconStyle} title={"Select target"}
                             onClick={events.editBlock.clickSelectElementButton}>
                             {this.selectTargetIcon(this.props.editBlock.isSelect)}
-                        </Col>
+                        </Col> */}
                         <Col xs="auto" className={cls.editBlockIconStyle} title={"Show element"}
                             onClick={(event) => {
                                 let editBlock = this.props.editBlock;
