@@ -1,8 +1,7 @@
 import React from "react";
 import { Row, Col, Button } from "reactstrap";
-import { boundMethod } from "autobind-decorator";
-import cx from "classnames";
 import cls from "../style.scss";
+import cx from "classnames";
 import events from "../../../events";
 
 class TestCase extends React.Component {
@@ -11,8 +10,10 @@ class TestCase extends React.Component {
         this.state = {
             dropdownOpen: false
         };
+
+        this.toggle = this.toggle.bind(this);
     }
-    @boundMethod
+
     toggle() {
         this.setState(prevState => ({
             dropdownOpen: !prevState.dropdownOpen

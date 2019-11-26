@@ -44,7 +44,7 @@ class FileList extends React.Component {
         return (
             <Col xs="auto" className={fileListColStyle} id="fileList-col" >
                 <FileListModal modal={this.props.fileList.modal}/>
-                <input id="open-files" type="file" multiple accept="text/html,application/json"
+                <input id="open-files" type="file" multiple accept="text/html"
                     style={{display: "none"}} onChange={events.fileList.changeOpenFile}
                 />
                 <Container className={cls.fileListContainerHeaderStyle}>
