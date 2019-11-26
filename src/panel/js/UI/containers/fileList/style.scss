@@ -1,0 +1,166 @@
+@import '../../variable';
+
+.fileListCol {
+  //@include scrollbars(#888,#555,$third-color);
+  @include scrollbars($first-color, $first-color, $first-color);
+  height: calc(60vh - 12px - 15px);
+  width: 33%;
+  min-width: 165px;
+  position: fixed;
+  z-index: 1;
+  top: calc(10vh + 7px + 15px);
+  left: 0;
+  overflow-x: hidden;
+  padding: 0 5px;
+  transition: 0.6s;
+  transition-timing-function: ease-in-out;
+  &.hide {
+    width: 0;
+    min-width: 0;
+    padding: 0;
+  }
+  &.hover {
+    @include scrollbars(#888, #555, $third-color);
+  }
+}
+
+.fileListIcon {
+  &:hover {
+    filter: brightness(90%);
+  }
+}
+
+.colStyle {
+  background-color: $second-color;
+  box-shadow: 0px 1px 3px #000000;
+  height: 4vh;
+  max-height: 40px;
+  font-size: 15px;
+}
+
+.defaultText {
+  color: #2d5c88;
+  display: inline-block;
+  width: calc((33vw - 10px) * 0.9 - 30px);
+}
+
+.headerTextStyleCol {
+  margin: auto;
+  padding: 0 5px;
+  user-select: none;
+}
+
+.headerTextStyle {
+  color: white;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.fileListContainerHeaderStyle {
+  background-color: $first-color;
+}
+
+.containerStyle {
+  @include scrollbars($third-color, $third-color, $third-color);
+  background-color: $first-color;
+  margin: 10px 0 0 0;
+  padding: 0 5%;
+  height: calc(56vh - 12px - 10px - 15px);
+  overflow-x: hidden;
+  overflow-y: overlay;
+  &:hover {
+    @include scrollbars(#888, #555, $third-color);
+    cursor: pointer;
+    filter: brightness(98%);
+  }
+}
+
+// test case
+.caseStyle {
+  @include scrollbars($third-color, $third-color, $third-color);
+  background-color: $third-color;
+  display: block;
+  padding: 0 0 3px 25px;
+  overflow-y: hidden;
+  overflow-x: overlay;
+  white-space: nowrap;
+  &:hover {
+    @include scrollbars(#888, #555, $third-color);
+    cursor: pointer;
+    filter: brightness(90%);
+  }
+}
+
+.testCaseContainerStyle {
+  padding: 8px 0 5px 0;
+  background-color: $third-color;
+}
+
+.caseNameStyle {
+  font-size: 15px;
+  position: relative;
+  color: white;
+  padding: 0px;
+  &.selected {
+    text-decoration: underline;
+  }
+  &.success {
+    color: rgba(0, 203, 179, 0.8);
+  }
+  &.fail {
+    color: rgb(232, 59, 59);
+  }
+}
+
+.suiteContentStyle {
+  background-color: $first-color;
+  margin: 0px 0px 10px 0px;
+}
+
+.suiteHeaderStyle {
+  margin: 0;
+  z-index: 2;
+  position: relative;
+  font-size: 15px;
+  height: 30px;
+  max-height: 40px;
+  background-color: $second-color;
+  box-shadow: 0px 1px 3px #000000;
+  &.selected {
+    border-left: 3px solid #1d8ed4;
+  }
+}
+
+.suiteNameStyle {
+  @include scrollbars($second-color, $second-color, $second-color);
+  margin: auto;
+  padding: 0 0 0 10px;
+  color: white;
+  overflow: overlay;
+  white-space: nowrap;
+  &:hover {
+    @include scrollbars(#888, #555, $second-color);
+  }
+}
+
+.modified {
+  border-right: 3px solid orange;
+}
+.caretButton {
+  background-color: transparent;
+  border:none;
+  &:focus {
+    outline:none;
+  }
+}
+.plusIconStyle,.caretIconStyle {
+  color: white;
+  &:hover {
+    filter: brightness(90%);
+  }
+}
+.iconPosition {
+  padding: 0;
+  margin: auto;
+  text-align: center;
+}
