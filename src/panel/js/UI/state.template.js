@@ -419,3 +419,32 @@ export const fileListState = {
         params: {}
     }
 };
+export const workAreaState = {
+    ...files,
+    autoScroll: {
+        isUsed: false,
+        idText: ""
+    },
+    snapshotModal: {
+        isOpen: false,
+        type: "",
+        url: "",
+        title: "",
+        subtitle: ""
+    },
+    selectedVideos: [""],
+    editBlock: {
+        index: 0,
+        isOpen: false,
+        isSelect: false,
+        usedIndex: {
+            target: 0,
+            value: 0
+        },
+        value: {
+            name: "",
+            targets: [],
+            values: []
+        }
+    }
+};

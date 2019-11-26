@@ -1,6 +1,7 @@
 import { browser } from "webextension-polyfill-ts";
 import { root } from "../background/initial";
 import * as EntryPoint from "../UI/entryPoint";
+import { toolBar, workArea} from "./entryPoint";
 
 export default {
     toolBar: {

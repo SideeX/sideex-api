@@ -1,0 +1,28 @@
+@import "../variable.scss";
+
+body {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 50vw;
+    height: 100vh;
+}
+
+.middleSectionStyle {
+    height: calc(60vh - 15px);
+}
+
+.bottomSectionStyle {
+    height: calc(30vh);
+}
+
+.loginFrameStyle {
+    height: 98vh;
+    width: 100vw;
+    border: 0;
+}
+
+.backgroundStyle {
+    background-color: rgb(33, 54, 71);
+    margin: 0px;
+    min-width: 500px;
+}
