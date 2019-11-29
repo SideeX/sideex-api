@@ -29,5 +29,23 @@ module.exports = merge(common, {
             template: "./src/sideex-api/index.html",
             filename: "index.html"
         })
-    ]
+    ],
+    module: {
+        rules: [
+            {
+                test: /\.[jt]sx?$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: "webpack-preprocessor-loader",
+                        options: {
+                            params: {
+                                isExt: false
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
 });

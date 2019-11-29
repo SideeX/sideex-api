@@ -38,8 +38,8 @@ root.log = new Log(root);
 root.setting = new Setting(root);
 // export const sideex = new SideeX(root);
 
-messageController.addListener(root.recorder.contentWindowIdListener);
-messageController.addListener(root.recorder.handleFormatCommand);
+MessageController.addListener(root.recorder.contentWindowIdListener);
+MessageController.addListener(root.recorder.handleFormatCommand);
 
 window.addEventListener("beforeunload", (event) => {
     (event || window.event).returnValue = false;

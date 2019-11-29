@@ -42,10 +42,6 @@ module.exports = [
                     to: path.resolve("./dist/extension")
                 },
                 {
-                    from: 'README.md',
-                    to: path.resolve("./dist/extension")
-                },
-                {
                     from: 'icons/*',
                     context: './src',
                     to: path.resolve("./dist/extension")
