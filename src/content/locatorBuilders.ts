@@ -268,7 +268,7 @@ LocatorBuilders.builderMap = {
         if (element.tagName == 'A') {
             const text = element.textContent;
             if (!text.match(/^\s*$/)) {
-                return this.preciseXPath("//" + this.xpathHtmlElement("a") + "[contains(text(),'" + text.replace(/^\s+/, '').replace(/\s+$/, '') + "')]", element);
+                return this.preciseXPath(`//${this.xpathHtmlElement('a')}[contains(text(),'${text.trim()}')]`, element);
             }
         }
         return null;
@@ -277,11 +277,11 @@ LocatorBuilders.builderMap = {
         if (element.tagName == 'IMG') {
             const e = element as HTMLImageElement
             if (e.alt != '') {
-                return this.preciseXPath("//" + this.xpathHtmlElement("img") + "[@alt=" + this.attributeValue(e.alt) + "]", e);
+                return this.preciseXPath(`//${this.xpathHtmlElement('img')}[@alt='${this.attributeValue(e.alt)}']`, e);
             } else if (e.title != '') {
-                return this.preciseXPath("//" + this.xpathHtmlElement("img") + "[@title=" + this.attributeValue(e.title) + "]", e);
+                return this.preciseXPath(`//${this.xpathHtmlElement('img')}[@title='${this.attributeValue(e.title)}']`, e);
             } else if (e.src != '') {
-                return this.preciseXPath("//" + this.xpathHtmlElement("img") + "[contains(@src," + this.attributeValue(e.src) + ")]", e);
+                return this.preciseXPath(`//${this.xpathHtmlElement('img')}[contains(@src,'${this.attributeValue(e.src)}')]`, e);
             }
         }
         return null;
@@ -323,10 +323,9 @@ LocatorBuilders.builderMap = {
         let path = '';
         for (let current = element; current.parentElement != null; current = current.parentElement) {
             path = this.relativeXPathFromParent(current) + path;
-            if (current.parentElement.hasAttribute("id")) {
-                return this.preciseXPath("//" + this.xpathHtmlElement(current.parentElement.tagName.toLowerCase()) +
-                    "[@id=" + this.attributeValue(current.parentElement.getAttribute('id')) + "]" +
-                    path, element);
+            const parent = current.parentElement;
+            if (parent.hasAttribute("id")) {
+                return this.preciseXPath(`//${this.xpathHtmlElement(parent.tagName.toLowerCase())}[@id='${this.attributeValue(parent.getAttribute('id'))}']${path}`, element);
             }
         }
         return null;
@@ -335,10 +334,10 @@ LocatorBuilders.builderMap = {
         if (element.attributes && element.hasAttribute("href")) {
             const href = element.getAttribute("href");
             if (href.search(/^http?:\/\//)) {
-                return this.preciseXPath("//" + this.xpathHtmlElement("a") + "[@href=" + this.attributeValue(href) + "]", element);
+                return this.preciseXPath(`//${this.xpathHtmlElement('a')}[@href='${this.attributeValue(href)}']`, element);
             } else {
                 // use contains(), because in IE getAttribute("href") will return absolute path
-                return this.preciseXPath("//" + this.xpathHtmlElement("a") + "[contains(@href, " + this.attributeValue(href) + ")]", element);
+                return this.preciseXPath(`//${this.xpathHtmlElement('a')}[contains(@href,'${this.attributeValue(href)}']`, element);
             }
         }
         return null;
