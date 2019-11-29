@@ -15,6 +15,7 @@
  *
  */
 import cloneDeep from "lodash/cloneDeep";
+import { compareTwoArray } from "../lib/utils";
 import * as EntryPoint from "../UI/entryPoint";
 
 export class FileController {
