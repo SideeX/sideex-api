@@ -60,7 +60,7 @@ export class LocatorBuilders {
     }
     buildAll(element: Element, dom?: Document) {
         const locators: [string, string][] = [];
-        const coreLocatorStrategies = this.pageBot.locationStrategies;
+        const coreLocatorStrategies = BrowserBot.locationStrategies;
         for (const builder of LocatorBuilders.order) {
             try {
                 const locator = this.buildWith(builder, element, dom);

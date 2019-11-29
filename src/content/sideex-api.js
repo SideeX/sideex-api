@@ -92,6 +92,8 @@ export class Sideex {
         }
         try {
             let element = this.browserBot.findElement(commandInfo.target);
+            await this.doShowElement(element);
+            await this.doConcealElement(500);
             return Utils.xpathGenerator(element);
         } catch (e) {
             return commandInfo.target;
@@ -268,9 +270,7 @@ export class Sideex {
     async doShowElement(element, customHtmlString) {
         try {
             if (document.getElementById("sideexShowElement")) {
-                if (!Utils.isWebdriver()) {
-                    await this.doConcealElement(0);
-                }
+                await this.doConcealElement(0);
             }
 
             let isWindowMove = false;
@@ -336,8 +336,10 @@ export class Sideex {
         try {
             await Utils.delay(delay);
             const box = document.getElementById("sideexShowElement");
-            box && document.body.removeChild(box);
-            return;
+            if (box) {
+                document.body.removeChild(box);
+            }
+            return { result: true };
         } catch (e) {
             return { result: false };
         }
