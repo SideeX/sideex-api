@@ -84,7 +84,7 @@
 .rowStyle {
     text-align: center;
     background-color: $second-color;
-    height: 100vh;
+    height: calc(20vh + 15px);
 }
 
 .toolBarStyle {

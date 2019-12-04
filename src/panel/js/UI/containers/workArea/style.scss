@@ -237,12 +237,12 @@
     background-color: $third-color;
     padding: 0;
     user-select: none;
-    height: calc(56vh - 17px - 15px);
+    height: calc(74vh - 17px - 15px);
     overflow-x: hidden;
     overflow-y: overlay;
 
     &.showEditBlock {
-        height: calc(56vh - 17px - 140px - 15px);
+        height: calc(74vh - 17px - 140px - 15px);
     }
 
     &:hover {
