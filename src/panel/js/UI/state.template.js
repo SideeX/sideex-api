@@ -391,7 +391,7 @@ const files = {
         untitledCount: 0,
         cases: {}
     },
-    ...testFilesData
+    //...testFilesData
 };
 
 export const toolBarState = {

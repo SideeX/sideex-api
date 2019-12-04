@@ -83,8 +83,8 @@ browser.browserAction.onClicked.addListener(async function focusOrCreatePanel(ta
         const panelWindowInfo = await browser.windows.create({
             url: browser.runtime.getURL("panel/index.html"),
             type: "popup",
-            height: 150 + 22,
-            width: 600
+            height: 150 + 541 + 22,
+            width: 600 + 344
         });
         bind(contentWindowId, panelWindowInfo.id);
     } catch (error) {
