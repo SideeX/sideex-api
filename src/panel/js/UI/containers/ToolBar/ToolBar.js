@@ -81,13 +81,13 @@ class ToolBar extends React.Component {
                         setPlayMode={this.setPlayMode} />
                     <StopButton mode={this.state.mode} />
                 </Col>
-                <Col xs="2" className={cls.buttonCol}>
+                {/* <Col xs="2" className={cls.buttonCol}>
                     <PauseButton mode={this.state.mode} />
                     <ResumeButton mode={this.state.mode} />
                 </Col>
                 <Col xs="2" className={cls.buttonCol}>
                     <SpeedButton />
-                </Col>
+                </Col> */}
                 <Col xs="2" className={cls.buttonCol}></Col>
             </Row>
         );

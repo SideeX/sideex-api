@@ -84,7 +84,7 @@ browser.browserAction.onClicked.addListener(async function focusOrCreatePanel(ta
             url: browser.runtime.getURL("panel/index.html"),
             type: "popup",
             height: 150 + 441 + 22,
-            width: 400 + 344
+            width: 200 + 344
         });
         bind(contentWindowId, panelWindowInfo.id);
     } catch (error) {
