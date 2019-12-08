@@ -93,7 +93,7 @@
 
 // play case grid
 .testCaseGridHeaderStyle {
-    background-color: $second-color;
+    background-color: #7796ca;
     height: 4vh;
     max-height: 40px;
 }
@@ -234,7 +234,7 @@
 .recordContainer {
     @include scrollbars($third-color,$third-color,$third-color);
     margin: 5px 0 5px 0;
-    background-color: $third-color;
+    background-color: #6d96dd;
     padding: 0;
     user-select: none;
     height: calc(74vh - 17px - 15px);

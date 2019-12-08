@@ -50,7 +50,7 @@ class FileList extends React.Component {
                 <Container className={cls.fileListContainerHeaderStyle}>
                     <Row className={cls.colStyle}>
                         <Col xs="2" style={{ padding: "0", textAlign: "center", margin: "auto" }}>
-                            <Button style={{ padding: "0 5px", backgroundColor: "rgb(23, 39, 54)", border: "rgb(23, 39, 54)" }}
+                            <Button style={{ padding: "0 5px", backgroundColor: "#7796ca", border: "rgb(23, 39, 54)" }}
                                 onClick={(event) => {
                                     event.preventDefault();
                                     app.setContextMenu({
@@ -66,7 +66,7 @@ class FileList extends React.Component {
                             <span className={cls.headerTextStyle}>Test Suites</span>
                         </Col>
                         <Col xs="2" style={{ padding: "0", textAlign: "center", margin: "auto" }} title="hide test suites">
-                            <Button style={{ padding: "0 5px", backgroundColor: "rgb(23, 39, 54)", border: "rgb(23, 39, 54)" }}
+                            <Button style={{ padding: "0 5px", backgroundColor: "#7796ca", border: "rgb(23, 39, 54)" }}
                                 onClick={() => { this.props.toggleFileList(); }}
                             >
                                 <FontAwesomeIcon className={cx("faIcon", cls.fileListIcon)} icon={faCaretLeft} />

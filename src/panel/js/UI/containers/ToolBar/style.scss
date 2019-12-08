@@ -22,7 +22,7 @@
     padding: 0;
     display: block;
     pointer-events: unset;
-    background-color: $second-color;
+    background-color: #5672ba;
     border: none;
 
     &.disabled {
@@ -77,13 +77,13 @@
 
 .IconContainer {
     padding: 0 1em;
-    background-color: $second-color;
-    border-color: $second-color;
+    background-color: #5672ba;
+    border-color: #5672ba;
 }
 
 .rowStyle {
     text-align: center;
-    background-color: $second-color;
+    background-color: #5672ba;
     height: calc(20vh + 15px);
     margin-left: 33%;
     width: 67%;

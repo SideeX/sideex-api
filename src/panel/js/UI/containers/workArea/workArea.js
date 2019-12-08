@@ -68,13 +68,13 @@ class WorkArea extends React.Component {
                                         <FontAwesomeIcon icon={faExclamationCircle} title="report error" className={videoIconStyle} />
                                     </Col> */}
                                     <Col xs="auto" className={cx(cls.colDivision, cls.header, cls.name)}><span className={cls.textStyle}>Command</span></Col>
-                                    <Col xs="auto" className={cx(cls.colDivision, cls.header, cls.target)}><span className={cls.textStyle}>Target</span></Col>
+                                    {/* <Col xs="auto" className={cx(cls.colDivision, cls.header, cls.target)}><span className={cls.textStyle}>Target</span></Col>
                                     <Col xs="auto" className={cx(cls.colDivision, cls.header, cls.value)}><span className={cls.textStyle}>Value</span></Col>
                                     <Col xs="auto" className={cx(cls.colDivision, cls.header, cls.snapshot)} title={"Video"}
                                         onClick={events.workArea.clickSnapshotVideo}
                                     >
                                         <FontAwesomeIcon icon={faVideo} className={videoIconStyle} />
-                                    </Col>
+                                    </Col> */}
                                 </Row>
                             </Container>
                             <Container fluid={true} className={recordContainer}
