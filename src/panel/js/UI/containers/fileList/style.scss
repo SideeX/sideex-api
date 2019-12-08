@@ -93,6 +93,9 @@
 
 .testCaseContainerStyle {
     padding: 8px 0 5px 0;
+    background-color: $third-color;   
+    width: 150px;
+    left: -15px;
     background-color: #5672ba;
 }
 
@@ -124,7 +127,7 @@
     font-size: 15px;
     height: 30px;
     max-height: 40px;
-    background-color: #5672ba;
+    background-color: $second-color;
     box-shadow: 0px 1px 3px #000000;
     &.selected {
         border-left: 3px solid #1D8ED4;
