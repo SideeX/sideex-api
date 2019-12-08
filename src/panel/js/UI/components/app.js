@@ -29,11 +29,12 @@ class App extends React.Component {
         return (
             <div>
                 <Container style={this.backGroundStyle} fluid={true}>
-                    <ToolBar />
                     <FileList isFileListHide={this.state.isFileListHide}
-                            toggleFileList={this.toggleFileList}/>
-                    <WorkArea workAreaAppend={this.state.isFileListHide}
-                            toggleFileList={this.toggleFileList}/>
+                        toggleFileList={this.toggleFileList}/>
+                    <Col className={cls.rightSectionSTyle} toggleFileList={this.toggleFileList} workAreaAppend={this.state.isFileListHide}> 
+                        <ToolBar />
+                        <WorkArea/>
+                    </Col>
                 </Container>
             </div>
         );
