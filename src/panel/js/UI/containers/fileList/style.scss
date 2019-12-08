@@ -55,7 +55,7 @@
 }
 
 .fileListContainerHeaderStyle {
-    background-color: $first-color;
+    background-color: #5672ba;
 }
 
 .containerStyle {
@@ -77,7 +77,7 @@
 // test case
 .caseStyle {
     @include scrollbars($third-color,$third-color,$third-color);
-    background-color: $third-color;
+    background-color: #5672ba;
     display: block;
     padding: 0 0 3px 5px;
     overflow-y: hidden; 
@@ -93,7 +93,7 @@
 
 .testCaseContainerStyle {
     padding: 8px 0 5px 0;
-    background-color: $third-color;
+    background-color: #5672ba;
 }
 
 .caseNameStyle {
@@ -113,7 +113,7 @@
 }
 
 .suiteContentStyle {
-    background-color: $first-color;
+    background-color: #5672ba;
     margin: 0px 0px 10px 0px;
 }
 
@@ -124,7 +124,7 @@
     font-size: 15px;
     height: 30px;
     max-height: 40px;
-    background-color: $second-color;
+    background-color: #5672ba;
     box-shadow: 0px 1px 3px #000000;
     &.selected {
         border-left: 3px solid #1D8ED4;
