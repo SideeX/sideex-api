@@ -49,7 +49,7 @@ class FileList extends React.Component {
                 />
                 <Container className={cls.fileListContainerHeaderStyle}>
                     <Row className={cls.colStyle}>
-                        <Col xs="2" style={{ padding: "0", textAlign: "center", margin: "auto" }}>
+                        {/* <Col xs="2" style={{ padding: "0", textAlign: "center", margin: "auto" }}>
                             <Button style={{ padding: "0 5px", backgroundColor: "#7796ca", border: "rgb(23, 39, 54)" }}
                                 onClick={(event) => {
                                     event.preventDefault();
@@ -61,17 +61,17 @@ class FileList extends React.Component {
                             >
                                 <FontAwesomeIcon className={cx("faIcon", cls.fileListIcon)} icon={faBars} />
                             </Button>
-                        </Col>
+                        </Col> */}
                         <Col xs="8" className={cls.headerTextStyleCol}>
                             <span className={cls.headerTextStyle}>Test Suites</span>
                         </Col>
-                        <Col xs="2" style={{ padding: "0", textAlign: "center", margin: "auto" }} title="hide test suites">
+                        {/* <Col xs="2" style={{ padding: "0", textAlign: "center", margin: "auto" }} title="hide test suites">
                             <Button style={{ padding: "0 5px", backgroundColor: "#7796ca", border: "rgb(23, 39, 54)" }}
                                 onClick={() => { this.props.toggleFileList(); }}
                             >
                                 <FontAwesomeIcon className={cx("faIcon", cls.fileListIcon)} icon={faCaretLeft} />
                             </Button>
-                        </Col>
+                        </Col> */}
                     </Row>
                 </Container>
                 <Container className={cls.containerStyle}

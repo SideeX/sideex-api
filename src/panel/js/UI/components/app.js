@@ -13,7 +13,7 @@ class App extends React.Component {
         this.toggleFileList = this.toggleFileList.bind(this);
         
         this.backGroundStyle = {
-            backgroundColor: '#5672ba',
+            backgroundColor: '#173581',
             margin: "0px",
             minWidth: "500px"
         };
