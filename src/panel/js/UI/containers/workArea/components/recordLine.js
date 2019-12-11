@@ -123,7 +123,7 @@ class RecordLine extends React.Component {
                 <Col xs="auto" className={cx(cls.colDivision, cls.name)}>
                     <span className={cls.gridLineTextStyle}>{recordInfo.name}</span>
                 </Col>
-                <Col xs="auto" className={cx(cls.colDivision, cls.target)}>
+                {/* <Col xs="auto" className={cx(cls.colDivision, cls.target)}>
                     <span className={cls.gridLineTextStyle}>{recordInfo.target.options[recordInfo.target.usedIndex].value}</span>
                 </Col>
                 <Col xs="auto" className={cx(cls.colDivision, cls.value)}>
@@ -131,7 +131,7 @@ class RecordLine extends React.Component {
                 </Col>
                 <Col xs="auto" className={cx(cls.colDivision, cls.snapshot)} title={"Screen shot"}>
                     {this.createSnapshotIcon(recordInfo)}
-                </Col>
+                </Col> */}
                 {includeRecords}
             </Row>
         );

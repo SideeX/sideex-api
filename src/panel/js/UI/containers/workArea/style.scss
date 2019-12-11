@@ -28,6 +28,7 @@
     margin-left: 33%;
     width: 67%;
     padding: 0 5px;
+    height: calc(100vh - 108px);
     &.append{
         width: 100%;
         margin-left:0;
@@ -237,13 +238,14 @@
     margin: 5px 0 5px 0;
     background-color: #6d96dd;
     padding: 0;
+    width: 320px;
     user-select: none;
-    height: calc(70vh - 12px - 15px);
+    height: calc(80vh - 12px - 15px - 10px);
     overflow-x: hidden;
     overflow-y: overlay;
 
     &.showEditBlock {
-        height: calc(74vh - 17px - 140px - 15px);
+        height: calc(80vh - 17px - 140px - 15px);
     }
 
     &:hover {

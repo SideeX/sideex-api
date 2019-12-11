@@ -70,7 +70,7 @@ class TestSuite extends React.Component {
                             <Col xs="2" className={cls.iconPosition} title={"Add a case"}>
                                 <FontAwesomeIcon icon={faPlus} className={plusIconStyle}
                                     onClick={(event) => {
-                                        events.others.setSelectedSuites([this.props.suiteIdText]);
+                                        //events.others.setSelectedSuites([this.props.suiteIdText]);
                                         events.fileList.clickAddTestCase(event);
                                     }}
                                 />
