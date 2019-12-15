@@ -70,7 +70,7 @@ class RecordLine extends React.Component {
             { [cls.execute]: recordInfo.status === "execute" },
         );
 
-        let includeRecords, clickLineHandler, contextMenuHandler, clickBreakpointHandler;
+        let includeRecords, clickLineHandler, contextMenuHandler, clickBreakpointHandler, selectBar;
         if (recordInfo.name === "INCLUDE" &&
             (recordInfo.children && recordInfo.children[0].length > 0)) {
             let includeCommands = cx(cls.includeCommands,
@@ -80,6 +80,19 @@ class RecordLine extends React.Component {
                 <Container className={includeCommands}>
                     {this.includeRecord(recordInfo)}
                 </Container>
+            );
+        }
+        if(recordInfo.name === "clickAt"){
+            selectBar = (
+                <Col xs="auto" style={{ width: "4%"}}>
+                        <div>
+                            <select id="selectBar" >
+                                <option value="0">clickAt</option>
+                                <option value="1">highLight</option>
+                                <option value="2">focus</option>
+                            </select> 
+                        </div>
+                </Col>
             );
         }
         if (!this.props.isInclude) {
@@ -123,6 +136,7 @@ class RecordLine extends React.Component {
                 <Col xs="auto" className={cx(cls.colDivision, cls.name)}>
                     <span className={cls.gridLineTextStyle}>{recordInfo.name}</span>
                 </Col>
+                {selectBar}
                 {/* <Col xs="auto" className={cx(cls.colDivision, cls.target)}>
                     <span className={cls.gridLineTextStyle}>{recordInfo.target.options[recordInfo.target.usedIndex].value}</span>
                 </Col>
