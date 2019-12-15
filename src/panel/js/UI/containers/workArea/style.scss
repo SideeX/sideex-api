@@ -27,7 +27,7 @@
 .workAreaCol {
     margin-left: 33%;
     width: 67%;
-    padding: 0 5px;
+    padding: 0 0px 0 30px;
     height: calc(100vh - 108px);
     &.append{
         width: 100%;
@@ -238,9 +238,9 @@
     margin: 5px 0 5px 0;
     background-color: #6d96dd;
     padding: 0;
-    width: 320px;
+    width: 100%;
     user-select: none;
-    height: calc(80vh - 12px - 15px - 10px);
+    height: calc(80vh - 12px - 15px - 16px);
     overflow-x: hidden;
     overflow-y: overlay;
 

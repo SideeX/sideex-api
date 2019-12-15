@@ -3,6 +3,7 @@ import { ToolBar } from '../containers';
 import cls from "./style.scss";
 import WorkArea from '../containers/workArea/workArea';
 import FileList from '../containers/fileList/fileList';
+import ContextMenu from '../containers/ContextMenu/ContexMenu';
 import { Container, Row, Col } from "reactstrap";
 class App extends React.Component {
     constructor(props) {
@@ -29,6 +30,7 @@ class App extends React.Component {
         return (
             <div>
                 <Container style={this.backGroundStyle} fluid={true}>
+                    <ContextMenu />
                     <FileList isFileListHide={this.state.isFileListHide}
                         toggleFileList={this.toggleFileList}/>
                     <Col className={cls.rightSectionSTyle} toggleFileList={this.toggleFileList} workAreaAppend={this.state.isFileListHide}> 

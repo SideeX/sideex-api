@@ -57,8 +57,8 @@ class TestSuite extends React.Component {
                     events.others.setSelectedSuites([this.props.suiteIdText]);
                 }}
             >
-                <Col className={cls.padding0}>
-                    <Container className={cls.padding0}>
+                <Col className={cls.padding0} style={{paddingLeft: "0px", paddingRight: "0px"}}>
+                    <Container className={cls.padding0} style={{paddingLeft: "0px", paddingRight: "0px"}}>
                         <Row id={`suite-header-${this.props.suiteIdText}`} className={suiteHeaderStyle}
                             onContextMenu={(event) => {
                                 events.others.setSelectedSuites([this.props.suiteIdText]);
@@ -76,7 +76,7 @@ class TestSuite extends React.Component {
                                 />
                             </Col>
                         </Row>
-                        <Row><Col><Container className={cls.testCaseContainerStyle}>
+                        <Row style={{marginLeft: "0px", marginRight: "0px"}}><Col><Container className={cls.testCaseContainerStyle}>
                             {this.testCaseDiv(this.props.testCase, this.props.suiteIdText, this.props.suite)}
                         </Container></Col></Row>
                     </Container>

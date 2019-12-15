@@ -1,7 +1,7 @@
 import { browser } from "webextension-polyfill-ts";
 import { root } from "../background/initial";
 import * as EntryPoint from "../UI/entryPoint";
-import { toolBar, workArea, fileList} from "./entryPoint";
+import { toolBar, workArea, fileList, app} from "./entryPoint";
 
 export default {
     toolBar: {
@@ -377,5 +377,132 @@ export default {
             root.uiTools.setIsOnWorkArea(true);
         }
     },
+    app: {
+        openContextMenu: function (event, type) {
+            event.stopPropagation(); event.preventDefault();
+            if (root.playback.isPlay || root.playback.isPause) return;
+
+            app.setContextMenu({
+                isOpen: true, type: type,
+                clientX: event.clientX,
+                clientY: event.clientY
+            });
+        }
+    },
+
+    others: {
+        setSelectedSuites: function (idTexts) {
+            console.log(idTexts);
+            root.fileController.setSelectedSuites(idTexts);
+            fileList.syncFiles();
+        },
+        setSelectedCases: function (suiteIdTexts, caseIdTexts) {
+            console.log(suiteIdTexts, caseIdTexts);
+            root.fileController.setSelectedSuites(suiteIdTexts);
+            root.fileController.setSelectedCases(caseIdTexts);
+            fileList.syncFiles();
+        },
+        setSelectedRecords: function (idTexts, ctrlKey, shiftKey) {
+            let selectedIdTexts;
+            if (shiftKey) {
+                let idText = idTexts[0];
+                selectedIdTexts = root.fileController.getSelectedRecords();
+                let index = parseInt(idText.split("-")[1]);
+                let length = selectedIdTexts.length;
+                if (length > 0) {
+                    let head = parseInt(selectedIdTexts[0].split("-")[1]);
+                    let tail = parseInt(selectedIdTexts[length - 1].split("-")[1]);
+                    if (index <= head) head = index;
+                    else if (index >= tail) tail = index;
+                    else tail = index;
+                    selectedIdTexts = [];
+                    for (let i = head; i <= tail; i++) {
+                        selectedIdTexts.push(`records-${i}`);
+                    }
+                }
+            } else if (ctrlKey) {
+                let idText = idTexts[0];
+                selectedIdTexts = root.fileController.getSelectedRecords();
+                let index = selectedIdTexts.indexOf(idText);
+                index >= 0 ?
+                    selectedIdTexts.splice(index, 1) : selectedIdTexts.push(idText);
+            } else {
+                selectedIdTexts = idTexts;
+            }
+
+            selectedIdTexts.sort((a, b) => { return parseInt(a.split("-")[1]) - parseInt(b.split("-")[1]); });
+
+            root.fileController.setSelectedRecords(selectedIdTexts);
+            workArea.syncCommands();
+        },
+        setIsOnWorkArea: function (bool) {
+            root.uiTools.setIsOnWorkArea(bool);
+        },
+        shortCutEvents: function (event) {
+            try {
+                if (root.playback.isPlay) {
+                    root.uiTools.stopNativeEvent(event);
+                    return;
+                }
+                if (root.setting.get("token").length === 0) return;
+            } catch (e) { }
+
+            let keyNum;
+            let ctrlKey = event.ctrlKey;
+            if (window.event) { // IE
+                keyNum = event.keyCode;
+            } else if (event.which) { // Netscape/Firefox/Opera
+                keyNum = event.which;
+            }
+
+            if (keyNum == 116 || keyNum == 123) { // 123: F12, 116: F5
+                // root.uiTools.stopNativeEvent(event);
+            }
+
+            if (event.target.tagName.toLowerCase() === "input") { // to avoid typing in input
+                if (keyNum == 46) return; // enable del
+                if (ctrlKey) { // enable Ctrl + A, C, V, X
+                    if (keyNum == 65 || keyNum == 67 || keyNum == 86 || keyNum == 88) return;
+                    root.uiTools.stopNativeEvent(event);
+                } else {
+                    return;
+                }
+            }
+            root.uiTools.processShortCut(event, keyNum, event.ctrlKey, event.shiftKey);
+
+            let recordIdText = root.fileController.getSelectedRecord();
+            workArea.syncCommands();
+            recordIdText &&
+                workArea.syncEditBlock(root.fileController.getSelectedCases()[0],
+                    parseInt(recordIdText.split("-")[1]));
+        },
+        clickApp: function (event) {
+            event.stopPropagation();
+            root.uiTools.setIsOnWorkArea(false);
+        },
+        clickLogout: async function () {
+            app.setModal({
+                isOpen: true, type: "confirm",
+                title: "Warning",
+                content: `Are you sure to logout?`,
+                params: { subtype: "logout" }
+            });
+        },
+        clickLogoutEnter: async function () {
+            app.setModal({ isOpen: false, type: "default" });
+            let res = await api.logout(root.setting.get("token"));
+            // console.log(res);
+            if (res.status === 200) {
+                root.setting.set({
+                    account: "",
+                    avatar: "",
+                    loginTime: "",
+                    token: "",
+                    paidLevel: ""
+                }, true);
+            }
+            refreshUI();
+        }
+    }
     
 };

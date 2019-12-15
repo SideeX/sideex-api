@@ -448,4 +448,17 @@ export const workAreaState = {
         }
     }
 };
+export const app = {
+    contextMenu: {
+        isOpen: false,
+        type: "default",
+        clientX: 0,
+        clientY: 0
+    },
+    modal: {
+        isOpen: false,
+        type: "default",
+        params: {}
+    }
+};
 

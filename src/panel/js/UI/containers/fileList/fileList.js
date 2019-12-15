@@ -29,11 +29,11 @@ class FileList extends React.Component {
             />);
         }
 
-        if (suiteList.length === 0) {
-            suiteList = (<Row style={{ height: "100%", margin: "0" }}><Col style={{ margin: "auto", textAlign: "center" }}>
-                <span className={cls.defaultText}>{"Add/open a suite or click record button to start"}</span>
-            </Col></Row>);
-        }
+        // if (suiteList.length === 0) {
+        //     suiteList = (<Row style={{ height: "100%", margin: "0" }}><Col style={{ margin: "auto", textAlign: "center" }}>
+        //         <span className={cls.defaultText}>{"Add/open a suite or click record button to start"}</span>
+        //     </Col></Row>);
+        // }
         return suiteList;
     }
 

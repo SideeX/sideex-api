@@ -15,3 +15,5 @@ render();
 store.subscribe(render);
 
 export default store;
+import * as EntryPoint from "./entryPoint";
+export { EntryPoint };
