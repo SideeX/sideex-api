@@ -28,6 +28,8 @@ export class Playback {
         this.isPause = false;
         this.isStop = false;
 
+        this.selectValue = 0;
+
         this.playMode = 0;
         this.playSuites = [];
         this.showCase = [];

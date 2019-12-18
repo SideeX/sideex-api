@@ -259,6 +259,11 @@ export default {
     },
 
     workArea: {
+        selectForm: function(){
+            var select = document.getElementById("selectBar");
+            root.playback.selectValue = select.value;
+            console.log(select.value);
+        },
         clickAddCommand: function (event) {
             event.stopPropagation();
             root.uiTools.setIsOnWorkArea(true);

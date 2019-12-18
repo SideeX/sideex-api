@@ -86,7 +86,9 @@ class RecordLine extends React.Component {
             selectBar = (
                 <Col xs="auto" style={{ width: "4%"}}>
                         <div>
-                            <select id="selectBar" >
+                            <select id="selectBar" onChange={() => {
+                            events.workArea.selectForm();
+                        }}>
                                 <option value="0">clickAt</option>
                                 <option value="1">highLight</option>
                                 <option value="2">focus</option>
