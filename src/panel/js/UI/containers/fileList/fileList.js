@@ -63,7 +63,7 @@ class FileList extends React.Component {
                             </Button>
                         </Col> */}
                         <Col xs="8" className={cls.headerTextStyleCol}>
-                            <span className={cls.headerTextStyle}>Test Suites</span>
+                            <span className={cls.headerTextStyle}>Test Suite</span>
                         </Col>
                         {/* <Col xs="2" style={{ padding: "0", textAlign: "center", margin: "auto" }} title="hide test suites">
                             <Button style={{ padding: "0 5px", backgroundColor: "#7796ca", border: "rgb(23, 39, 54)" }}

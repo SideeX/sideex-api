@@ -71,7 +71,7 @@ class ToolBar extends React.Component {
         this.setMode(this.state, this.props.toolBar);
         return (
             <Row className={cls.rowStyle}>
-                <Col xs="2" className={cls.buttonCol}>
+                <Col xs="3" className={cls.buttonCol}>
                     <RecordButton mode={this.state.mode} />
                     <StopRecordButton mode={this.state.mode} />
                 </Col>
@@ -84,11 +84,13 @@ class ToolBar extends React.Component {
                 {/* <Col xs="2" className={cls.buttonCol}>
                     <PauseButton mode={this.state.mode} />
                     <ResumeButton mode={this.state.mode} />
-                </Col>
-                <Col xs="2" className={cls.buttonCol}>
+                </Col> */}
+                {/* <Col xs="2" className={cls.buttonCol}>
                     <SpeedButton />
                 </Col> */}
-                <Col xs="2" className={cls.buttonCol}></Col>
+                <Col xs="3" className={cls.buttonCol}>
+                    <SpeedButton />
+                </Col>
             </Row>
         );
     }
