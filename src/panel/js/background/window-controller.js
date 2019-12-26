@@ -148,7 +148,7 @@ export class WindowController {
         return tabs[0];
     }
 
-    async sendCommand(command, target, value, index, top) {
+    async sendCommand(command, target, value, index, selectValue, top) {
         let tabId = this.getCurrentPlayingTabId();
         let frameId = this.getCurrentPlayingFrameId();
         let action = ("waitSeries" === command ) ? "Wait" : "Command";
@@ -157,7 +157,8 @@ export class WindowController {
             command: command,
             target: target,
             value: value,
-            index: index
+            index: index,
+            selectValue: selectValue,
         }, tabId, { frameId: top ? 0 : frameId });
     }
 

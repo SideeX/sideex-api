@@ -45,8 +45,8 @@ export class Sideex {
     hasCommand(command) {
         return Sideex.commands[command] != null;
     }
-    async doCommand(command, target, value) {
-        return await Sideex.commands[command].call(this, target, value);
+    async doCommand(command, target, value, selectValue) {
+        return await Sideex.commands[command].call(this, target, value, selectValue);
     }
     async doAutoWait(type, value) {
         console.log(type);
@@ -358,14 +358,23 @@ Sideex.commands = {
      *      event relative to the element returned by the locator.
      *
      */
-    async clickAt(locator, coordString) {
+    async clickAt(locator, coordString, selectValue) {
         var element = this.browserBot.findElement(locator);
         var clientXY = this.getClientXY(element, coordString);
-        this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
-        this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1]);
-        this.browserBot.triggerFocusEvent(element);
-        this.browserBot.fireMouseEvent(element, 'mouseup', true, clientXY[0], clientXY[1]);
-        this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
+        if(selectValue === "clickAt"){
+            this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
+            this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1]);
+            this.browserBot.triggerFocusEvent(element);
+            this.browserBot.fireMouseEvent(element, 'mouseup', true, clientXY[0], clientXY[1]);
+            this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
+        }else if(selectValue === "highLight"){
+            element.style.backgroundColor = "yellow";
+            this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
+            this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1]);
+            this.browserBot.triggerFocusEvent(element);
+            this.browserBot.fireMouseEvent(element, 'mouseup', true, clientXY[0], clientXY[1]);
+            this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
+        }
         // END
     },
     /**
@@ -377,7 +386,6 @@ Sideex.commands = {
          *
          */
     async doubleClickAt(locator, coordString) {
-
         var element = this.browserBot.findElement(locator);
         var clientXY = this.getClientXY(element, coordString);
         this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);

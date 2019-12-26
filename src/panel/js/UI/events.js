@@ -259,10 +259,9 @@ export default {
     },
 
     workArea: {
-        selectForm: function(){
-            var select = document.getElementById("selectBar");
-            root.playback.selectValue = select.value;
-            console.log(select.value);
+        selectForm: function(value){
+            root.fileController.getTestCase("case-0").records[1].value.selectvalue = value;
+            console.log(root.fileController.getTestCase("case-0").records[1].value.selectvalue);
         },
         clickAddCommand: function (event) {
             event.stopPropagation();

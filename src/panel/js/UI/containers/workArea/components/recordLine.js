@@ -7,6 +7,7 @@ import cls from "../style.scss";
 import events from "../../../events";
 import { workArea } from "../../../entryPoint";
 
+//filecontroller events sideex-api
 class RecordLine extends React.Component {
     constructor(props) {
         super(props);
@@ -86,12 +87,12 @@ class RecordLine extends React.Component {
             selectBar = (
                 <Col xs="auto" style={{ width: "4%"}}>
                         <div>
-                            <select id="selectBar" onChange={() => {
-                            events.workArea.selectForm();
+                            <select id="selectBar" onChange={(event) => {
+                            events.workArea.selectForm(event.target.value);
                         }}>
-                                <option value="0">clickAt</option>
-                                <option value="1">highLight</option>
-                                <option value="2">focus</option>
+                                <option value="clickAt" selected>clickAt</option>
+                                <option value="highLight">highLight</option>
+                                <option value="focus">focus</option>
                             </select> 
                         </div>
                 </Col>

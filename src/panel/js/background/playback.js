@@ -27,9 +27,7 @@ export class Playback {
         this.isPlay = false;
         this.isPause = false;
         this.isStop = false;
-
-        this.selectValue = 0;
-
+        
         this.playMode = 0;
         this.playSuites = [];
         this.showCase = [];
@@ -498,11 +496,11 @@ export class Playback {
     async dispatchCommand(index, command) {
         let result;
         let name = command.name, target = command.target, value = command.value;
-        
+        let selectValue = this.root.fileController.getTestCase("case-0").records[1].value.selectvalue;
         switch (this.determineCommandType(name)) {
             case Playback.COMMAND_TYPE_CONTENT:
             case Playback.COMMAND_TYPE_CONTEXTMENU: {
-                result = await this.windowController.sendCommand(name, target, value, index);
+                result = await this.windowController.sendCommand(name, target, value, index, selectValue);
                 console.log(result);
                 return this.handleCommandResult(result);
             }
