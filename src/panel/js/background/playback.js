@@ -496,7 +496,14 @@ export class Playback {
     async dispatchCommand(index, command) {
         let result;
         let name = command.name, target = command.target, value = command.value;
-        let selectValue = this.root.fileController.getTestCase("case-0").records[1].value.selectvalue;
+        let recordNum = index.split("index")[3][2];
+        let caseIdText = this.root.fileController.getSelectedCases()[0];
+        let record = this.root.fileController.getRecord(caseIdText, recordNum);
+        let selectValue = record.value.selectValue;
+        if(selectValue === "showText"){
+            value = record.value.value;
+        }
+        console.log(value);
         switch (this.determineCommandType(name)) {
             case Playback.COMMAND_TYPE_CONTENT:
             case Playback.COMMAND_TYPE_CONTEXTMENU: {

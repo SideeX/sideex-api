@@ -22,6 +22,7 @@ import storage from "../common/storage";
 import { browser } from "webextension-polyfill-ts";
 import { escapeHTML } from "../common/escape.js";
 import { MessageController } from "../content/message-controller";
+import { NavbarText } from "reactstrap";
 
 export class Sideex {
     constructor(browserBot) {
@@ -344,7 +345,6 @@ export class Sideex {
             return { result: false };
         }
     }
-
 }
 
 Sideex.commands = {
@@ -358,22 +358,69 @@ Sideex.commands = {
      *      event relative to the element returned by the locator.
      *
      */
-    async clickAt(locator, coordString, selectValue) {
+    async clickAt(locator, coordString, selectValue){
         var element = this.browserBot.findElement(locator);
         var clientXY = this.getClientXY(element, coordString);
-        if(selectValue === "clickAt"){
-            this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
-            this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1]);
-            this.browserBot.triggerFocusEvent(element);
-            this.browserBot.fireMouseEvent(element, 'mouseup', true, clientXY[0], clientXY[1]);
-            this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
-        }else if(selectValue === "highLight"){
-            element.style.backgroundColor = "yellow";
-            this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
-            this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1]);
-            this.browserBot.triggerFocusEvent(element);
-            this.browserBot.fireMouseEvent(element, 'mouseup', true, clientXY[0], clientXY[1]);
-            this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
+        var body = document.getElementsByTagName("body");
+        var originalzIndex = element.style.zIndex;
+        if(selectValue === "clickAnimation"){
+            var newDiv = document.createElement("img");
+            newDiv.src = "https://pngimg.com/uploads/cursor/cursor_PNG102.png";
+            newDiv.style.position = "absolute";
+            newDiv.style.height = 5 + "vh";
+            newDiv.style.width = 5 + "vh";
+            newDiv.style.left = this.getElementPositionLeft(locator) + element.offsetWidth;
+            newDiv.style.top = this.getElementPositionTop(locator) + element.offsetHeight;
+            newDiv.style.zIndex = 9998;
+            body[0].appendChild(newDiv);
+            element.addEventListener("click", ()=>{
+                body[0].removeChild(newDiv);
+            })
+        }else if(selectValue === "focus"){
+            var newDiv = document.createElement("div");
+            newDiv.style.position = "absolute";
+            newDiv.style.height = element.offsetHeight;
+            newDiv.style.width = element.offsetWidth;
+            newDiv.style.top = this.getElementPositionTop(locator);
+            newDiv.style.left = this.getElementPositionLeft(locator);
+            newDiv.style.boxShadow = " 0 0 0 99999px rgba(0, 0, 0, .8)";
+            newDiv.style.zIndex = 9998;
+            element.style.zIndex = 9999;
+            body[0].appendChild(newDiv);
+        }else if(selectValue === "showText"){
+            var newDiv = document.createElement("div");
+            newDiv.style.borderWidth = 3 + "px";
+            newDiv.style.borderStyle = "solid";
+            newDiv.style.borderColor = "#173581";
+            newDiv.style.position = "fixed";
+            newDiv.style.bottom = 0;
+            newDiv.style.left = 0;
+            newDiv.style.backgroundColor = "#6d96dd";
+            newDiv.style.height = 10 + "vh";
+            newDiv.style.width = 100 + "vw";
+            newDiv.style.zIndex = 9999;
+            newDiv.style.fontSize = 3 + "vh";
+            newDiv.textContent = coordString;
+            body[0].appendChild(newDiv);
+        }
+        if(selectValue === "focus" || selectValue === "showText"){
+            var nextbtn = document.createElement("button");
+            nextbtn.style.position = "absolute"
+            nextbtn.style.left = this.getElementPositionLeft(locator) + element.offsetWidth;
+            nextbtn.style.top = this.getElementPositionTop(locator) + element.offsetHeight;
+            nextbtn.style.height = 5 + "vh";
+            nextbtn.style.width = 5 + "vw";
+            nextbtn.style.zIndex = 9999;
+            nextbtn.innerHTML = "next";
+            nextbtn.style.fontSize = 3 + "vh";
+            body[0].appendChild(nextbtn);
+            nextbtn.addEventListener("click", function(){
+                if(newDiv) {
+                    body[0].removeChild(newDiv);
+                }
+                body[0].removeChild(nextbtn);
+                element.style.zIndex = originalzIndex;
+            });
         }
         // END
     },

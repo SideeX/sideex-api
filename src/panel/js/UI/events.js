@@ -259,9 +259,15 @@ export default {
     },
 
     workArea: {
-        selectForm: function(value){
-            root.fileController.getTestCase("case-0").records[1].value.selectvalue = value;
-            console.log(root.fileController.getTestCase("case-0").records[1].value.selectvalue);
+        selectForm: function(event, recordNum){
+            let caseIdText = root.fileController.getSelectedCases()[0];
+            let record = root.fileController.getRecord(caseIdText, recordNum);
+            record.value.selectValue = event.target.value;
+            if(event.target.value === "showText"){
+                let text = prompt("enter the text");
+                record.value.value = text;    
+                console.log(record.value);
+            }
         },
         clickAddCommand: function (event) {
             event.stopPropagation();

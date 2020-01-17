@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "reactstrap";
+import { Container, ButtonDropdown, Row, Col } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faCircle } from "@fortawesome/free-solid-svg-icons";
 import cx from "classnames";
@@ -88,11 +88,12 @@ class RecordLine extends React.Component {
                 <Col xs="auto" style={{ width: "4%"}}>
                         <div>
                             <select id="selectBar" onChange={(event) => {
-                            events.workArea.selectForm(event.target.value);
+                            let recordNum = recordInfo.id.split('-')[1];
+                            events.workArea.selectForm(event, recordNum);
                         }}>
-                                <option value="clickAt" selected>clickAt</option>
-                                <option value="highLight">highLight</option>
+                                <option value="clickAnimation" selected="selected">clickAnimation</option>
                                 <option value="focus">focus</option>
+                                <option value="showText">showText</option>
                             </select> 
                         </div>
                 </Col>

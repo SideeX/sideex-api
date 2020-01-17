@@ -549,7 +549,7 @@ export class FileController {
                 usedIndex: 0,
                 options: [],
                 tac: "",
-                selectvalue: "clickAt",
+                selectValue: "clickAnimation",
                 ...value
             },
             preWaitTime: {
