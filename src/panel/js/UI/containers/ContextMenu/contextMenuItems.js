@@ -8,11 +8,11 @@ export default {
         //     shortCut: "",
         //     onClick: events.fileList.clickAddTestSuite
         // },
-        // {
-        //     title: "Open suite",
-        //     shortCut: "ctrl+o",
-        //     onClick: events.fileList.clickOpenTestSuite
-        // },
+        {
+            title: "Open suite",
+            shortCut: "ctrl+o",
+            onClick: events.fileList.clickOpenTestSuite
+        },
         {
             title: "Close all suites",
             shortCut: "",
@@ -52,11 +52,11 @@ export default {
             shortCut: "",
             onClick: events.fileList.clickRenameTestSuite
         },
-        // {
-        //     title: "Save suite",
-        //     shortCut: "ctrl+s",
-        //     onClick: events.fileList.clickSaveTestSuite
-        // }
+        {
+            title: "Save suite",
+            shortCut: "ctrl+s",
+            onClick: events.fileList.clickSaveTestSuite
+        }
     ],
     "case": [
         {
