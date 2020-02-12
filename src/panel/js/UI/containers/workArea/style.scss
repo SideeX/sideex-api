@@ -261,6 +261,47 @@
     padding-left: 10px;
 }
 
+//clickRecoedLine
+.clickRecoedLineTextStyle {
+    margin: auto;
+}
+
+.clickRecoedLineInputCol {
+    margin: auto 0;
+}
+
+.clickRecoedLineDropDown {
+    padding: 0 !important;
+    border: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-radius: 0 !important;
+    width: 100% !important;
+
+    input {
+        border: 0 !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+}
+
+.clickRecoedLineButtonDropDown {
+    width:  120% !important;
+}
+
+.clickRecoedLineDropDownMenu {
+    max-height: 30vh;
+    margin: 0;
+    padding: 0;
+    width: 75%;
+    overflow: overlay;
+}
+
+.clickRecoedLineDropDownToggle {
+    background-color: white !important;
+    border: 0 !important;
+    color: black !important;
+}
+
 // edit block
 .editBlockTextStyle {
     margin: auto;

@@ -22,6 +22,7 @@ import storage from "../common/storage";
 import { browser } from "webextension-polyfill-ts";
 import { escapeHTML } from "../common/escape.js";
 import { MessageController } from "../content/message-controller";
+import { NavbarText } from "reactstrap";
 
 export class Sideex {
     constructor(browserBot) {
@@ -45,8 +46,8 @@ export class Sideex {
     hasCommand(command) {
         return Sideex.commands[command] != null;
     }
-    async doCommand(command, target, value) {
-        return await Sideex.commands[command].call(this, target, value);
+    async doCommand(command, target, value, selectValue) {
+        return await Sideex.commands[command].call(this, target, value, selectValue);
     }
     async doAutoWait(type, value) {
         console.log(type);
@@ -345,6 +346,23 @@ export class Sideex {
         }
     }
 
+    async commandWait(target) {
+        var element = this.browserBot.findElement(target);
+        while(!element.doClick){
+            await Utils.delay(10);
+        }
+        if(element.doClick){
+            return;
+        }
+    }
+
+    addcss(css){
+        var head = document.getElementsByTagName('head')[0];
+        var s = document.createElement('style');
+        s.setAttribute('type', 'text/css');
+        s.appendChild(document.createTextNode(css));
+        head.appendChild(s);
+    }
 }
 
 Sideex.commands = {
@@ -358,14 +376,81 @@ Sideex.commands = {
      *      event relative to the element returned by the locator.
      *
      */
-    async clickAt(locator, coordString) {
+    async clickAt(locator, coordString, selectValue){
         var element = this.browserBot.findElement(locator);
         var clientXY = this.getClientXY(element, coordString);
-        this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
-        this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1]);
-        this.browserBot.triggerFocusEvent(element);
-        this.browserBot.fireMouseEvent(element, 'mouseup', true, clientXY[0], clientXY[1]);
-        this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
+        var body = document.getElementsByTagName("body");
+        var originalzIndex = element.style.zIndex;
+        element.doClick = 0;
+        if(selectValue === "clickAnimation"){
+            var newDiv = document.createElement("img");
+            newDiv.id = "newDiv";
+            this.addcss("#newDiv {animation: flash 5s;} @keyframes flash {from,50%,to {opacity: 1;}25%,75% {opacity: 0;}");
+            newDiv.src = "https://pngimg.com/uploads/cursor/cursor_PNG102.png";
+            newDiv.style.position = "absolute";
+            newDiv.style.height = 7 + "vh";
+            newDiv.style.width = 5 + "vh";
+            newDiv.style.left = this.getElementPositionLeft(locator) + element.offsetWidth;
+            newDiv.style.top = this.getElementPositionTop(locator) + element.offsetHeight;
+            newDiv.style.zIndex = 9999;
+            body[0].appendChild(newDiv);
+            if((newDiv.offsetWidth + newDiv.offsetLeft) > window.innerWidth){
+                newDiv.style.left = null;
+                newDiv.style.right = 0 + "px";
+            }
+            element.addEventListener("click", ()=>{
+                body[0].removeChild(newDiv);
+                element.doClick ++;
+            })
+        }else if(selectValue === "focus"){
+            var newDiv = document.createElement("div");
+            newDiv.style.position = "absolute";
+            newDiv.style.height = element.offsetHeight;
+            newDiv.style.width = element.offsetWidth;
+            newDiv.style.left = this.getElementPositionLeft(locator);
+            newDiv.style.top = this.getElementPositionTop(locator);
+            newDiv.style.boxShadow = " 0 0 0 99999px rgba(0, 0, 0, .8)";
+            newDiv.style.zIndex = 9998;
+            element.style.zIndex = 9999;
+            body[0].appendChild(newDiv);
+        }else if(selectValue === "showText"){
+            var newDiv = document.createElement("div");
+            newDiv.style.backgroundColor = "#6d96dd";
+            newDiv.style.border = "3px #173581 solid";
+            newDiv.style.position = "fixed";
+            newDiv.style.height = 10 + "vh";
+            newDiv.style.width = 100 + "vw";
+            newDiv.style.fontSize = 3 + "vh";
+            newDiv.style.bottom = 0;
+            newDiv.style.left = 0;
+            newDiv.style.zIndex = 9999;
+            newDiv.textContent = coordString;
+            body[0].appendChild(newDiv);
+        }
+        if(selectValue === "focus" || selectValue === "showText"){
+            var nextbtn = document.createElement("button");
+            nextbtn.innerHTML = "next";
+            nextbtn.style.position = "absolute";
+            nextbtn.style.height = 5 + "vh";
+            nextbtn.style.width = 5 + "vw";
+            nextbtn.style.fontSize = 3 + "vh";
+            nextbtn.style.left = this.getElementPositionLeft(locator) + element.offsetWidth;
+            nextbtn.style.top = this.getElementPositionTop(locator) + element.offsetHeight;
+            nextbtn.style.zIndex = 9999;
+            body[0].appendChild(nextbtn);
+            if((nextbtn.offsetWidth + nextbtn.offsetLeft) > window.innerWidth){
+                nextbtn.style.left = null;
+                nextbtn.style.right = 0 + "px";
+            }
+            nextbtn.addEventListener("click", function(){
+                if(newDiv) {
+                    body[0].removeChild(newDiv);
+                }
+                body[0].removeChild(nextbtn);
+                element.doClick ++;
+                element.style.zIndex = originalzIndex;
+            });
+        }
         // END
     },
     /**
@@ -377,7 +462,6 @@ Sideex.commands = {
          *
          */
     async doubleClickAt(locator, coordString) {
-
         var element = this.browserBot.findElement(locator);
         var clientXY = this.getClientXY(element, coordString);
         this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);

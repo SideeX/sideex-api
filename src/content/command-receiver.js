@@ -31,14 +31,19 @@ MessageController.addListener(async function doCommands(request) {
             console.log("command", request.command);
             let command = request.command;
             let value = request.value;
+            let selectValue = request.selectValue;
+            console.log(command, value, selectValue);
             if (sideex.hasCommand(command)) {
                 document.documentElement.setAttribute("SideeXPlayingFlag", true);
                 let target = await sideex.doVerifyLocator(request);
                 try {
-                    await sideex.doCommand(command, target, value);
+                    await sideex.doCommand(command, target, value, selectValue);
+                    if(command == "clickAt"){
+                        await sideex.commandWait(target);
+                    }
                 } catch (e) {
-                    console.error(command + " failed\n", e.stack);
-                    document.documentElement.removeAttribute("SideeXPlayingFlag");
+                    console.error(bcommand + " failed\n", e.stack);
+                    document.documentElement.removeAttriute("SideeXPlayingFlag");
                     return { status: false, message: e.message };
                 }
             } else {

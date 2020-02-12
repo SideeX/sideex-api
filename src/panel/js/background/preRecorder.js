@@ -86,6 +86,7 @@ export class PreRecorder {
     }
 
     async preProcess(command, windowId) {
+        console.log(command);
         this.isNeedReturn = false;
 
         let deleteNum = this.deleteCommandNum(command);

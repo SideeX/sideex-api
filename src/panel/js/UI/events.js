@@ -259,6 +259,17 @@ export default {
     },
 
     workArea: {
+        selectForm: function(event, recordNum){
+            let caseIdText = root.fileController.getSelectedCases()[0];
+            let record = root.fileController.getRecord(caseIdText, recordNum);
+            record.value.selectValue = event.target.value;
+            console.log(event.target.value);
+            if(event.target.value === "showText"){
+                let text = prompt("enter the text");
+                record.value.value = text;    
+                console.log(record.value);
+            }
+        },
         clickAddCommand: function (event) {
             event.stopPropagation();
             root.uiTools.setIsOnWorkArea(true);
