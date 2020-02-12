@@ -38,6 +38,9 @@ MessageController.addListener(async function doCommands(request) {
                 let target = await sideex.doVerifyLocator(request);
                 try {
                     await sideex.doCommand(command, target, value, selectValue);
+                    if(command == "clickAt"){
+                        await sideex.commandWait(target);
+                    }
                 } catch (e) {
                     console.error(bcommand + " failed\n", e.stack);
                     document.documentElement.removeAttriute("SideeXPlayingFlag");

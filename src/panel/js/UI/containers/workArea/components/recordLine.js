@@ -1,5 +1,6 @@
 import React from "react";
-import { Container, ButtonDropdown, Row, Col } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
+import { Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faCircle } from "@fortawesome/free-solid-svg-icons";
 import cx from "classnames";
@@ -12,6 +13,42 @@ class RecordLine extends React.Component {
     constructor(props) {
         super(props);
         this.recordElement;
+        this.isOpen = {
+            name: false,
+            target: false,
+            value: false
+        };
+        this.toggle = this.toggle.bind(this);
+        this.toggleName = this.toggleName.bind(this);
+        this.toggleTarget = this.toggleTarget.bind(this);
+        this.toggleValue = this.toggleValue.bind(this);
+    }
+    toggle() {
+        this.props.editBlock.isOpen = !this.props.editBlock.isOpen;
+    }
+
+    toggleName() {
+        this.isOpen = {
+            ...this.isOpen,
+            name: !this.isOpen.name
+        };
+        this.setState(this.isOpen);
+    }
+
+    toggleTarget() {
+        this.isOpen = {
+            ...this.isOpen,
+            target: !this.isOpen.target
+        };
+        this.setState(this.isOpen);
+    }
+
+    toggleValue() {
+        this.isOpen = {
+            ...this.isOpen,
+            value: !this.isOpen.value
+        };
+        this.setState(this.isOpen);
     }
 
     createSnapshotIcon(recordInfo) {
@@ -85,17 +122,28 @@ class RecordLine extends React.Component {
         }
         if(recordInfo.name === "clickAt"){
             selectBar = (
-                <Col xs="auto" style={{ width: "4%"}}>
-                        <div>
-                            <select id="selectBar" onChange={(event) => {
+                <Col xs="auto" className={cls.clickRecoedLineInputCol} style={{ paddingRight: "5px", width: "45%", height: "5%"}}>
+                    <ButtonDropdown isOpen={this.isOpen.target} toggle={this.toggleTarget} className={cls.clickRecoedLineButtonDropDown}>
+                        <Button className={cls.clickRecoedLineDropDown}>
+                            Dropdown
+                        </Button>
+                        <DropdownToggle className={cls.clickRecoedLineDropDownToggle}>
+                        </DropdownToggle>
+                        <DropdownMenu className={cls.clickRecoedLineDropDownMenu}>
+                            <DropdownItem value = "clickAnimation" onClick={(event) => {
                             let recordNum = recordInfo.id.split('-')[1];
                             events.workArea.selectForm(event, recordNum);
-                        }}>
-                                <option value="clickAnimation" selected="selected">clickAnimation</option>
-                                <option value="focus">focus</option>
-                                <option value="showText">showText</option>
-                            </select> 
-                        </div>
+                        }}>clickAnimation</DropdownItem>
+                            <DropdownItem value="focus" onClick={(event) => {
+                            let recordNum = recordInfo.id.split('-')[1];
+                            events.workArea.selectForm(event, recordNum);
+                        }}>focus</DropdownItem>
+                            <DropdownItem value="showText" onClick={(event) => {
+                            let recordNum = recordInfo.id.split('-')[1];
+                            events.workArea.selectForm(event, recordNum);
+                        }}>showText</DropdownItem>
+                        </DropdownMenu>
+                    </ButtonDropdown>
                 </Col>
             );
         }

@@ -263,6 +263,7 @@ export default {
             let caseIdText = root.fileController.getSelectedCases()[0];
             let record = root.fileController.getRecord(caseIdText, recordNum);
             record.value.selectValue = event.target.value;
+            console.log(event.target.value);
             if(event.target.value === "showText"){
                 let text = prompt("enter the text");
                 record.value.value = text;    
