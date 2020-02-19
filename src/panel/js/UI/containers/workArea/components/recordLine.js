@@ -1,56 +1,53 @@
 import React from "react";
-import { Container, Row, Col } from "reactstrap";
-import { Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Container, Row, Col, ButtonToggle } from "reactstrap";
+import { Button, ButtonToolbar, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faCircle } from "@fortawesome/free-solid-svg-icons";
 import cx from "classnames";
 import cls from "../style.scss";
 import events from "../../../events";
 import { workArea } from "../../../entryPoint";
+import MultiSelect from "react-multiselect-button-dropdown"
 
 //filecontroller events sideex-api
 class RecordLine extends React.Component {
     constructor(props) {
         super(props);
         this.recordElement;
-        this.isOpen = {
-            name: false,
-            target: false,
-            value: false
-        };
-        this.toggle = this.toggle.bind(this);
-        this.toggleName = this.toggleName.bind(this);
-        this.toggleTarget = this.toggleTarget.bind(this);
-        this.toggleValue = this.toggleValue.bind(this);
-    }
-    toggle() {
-        this.props.editBlock.isOpen = !this.props.editBlock.isOpen;
+        this.state = {
+            clickAnimation: "green",
+            focus: "gray",
+            showText: "gray"
+        }
     }
 
-    toggleName() {
-        this.isOpen = {
-            ...this.isOpen,
-            name: !this.isOpen.name
-        };
-        this.setState(this.isOpen);
+    isClick(e) {
+        if(e.target.value == "clickAnimation"){
+            if(this.state.clickAnimation == "gray"){
+                this.setState({clickAnimation: "green"});
+            }else{
+                if(this.state.focus != "gray" || this.state.showText != "gray"){
+                    this.setState({clickAnimation: "gray"});
+                }
+            }
+        }else if(e.target.value == "focus"){
+            if(this.state.focus == "gray"){
+                this.setState({focus: "yellow"});
+            }else{
+                if(this.state.clickAnimation != "gray" || this.state.showText != "gray"){
+                    this.setState({focus: "gray"});
+                }
+            }
+        }else if(e.target.value == "showText"){
+            if(this.state.showText == "gray"){
+                this.setState({showText: "red"});
+            }else{
+                if(this.state.clickAnimation != "gray" || this.state.focus != "gray"){
+                    this.setState({showText: "gray"});
+                }
+            }
+        } 
     }
-
-    toggleTarget() {
-        this.isOpen = {
-            ...this.isOpen,
-            target: !this.isOpen.target
-        };
-        this.setState(this.isOpen);
-    }
-
-    toggleValue() {
-        this.isOpen = {
-            ...this.isOpen,
-            value: !this.isOpen.value
-        };
-        this.setState(this.isOpen);
-    }
-
     createSnapshotIcon(recordInfo) {
         let snapshotIdText = recordInfo.screenshot;
         if (snapshotIdText != "") {
@@ -123,27 +120,23 @@ class RecordLine extends React.Component {
         if(recordInfo.name === "clickAt"){
             selectBar = (
                 <Col xs="auto" className={cls.clickRecoedLineInputCol} style={{ paddingRight: "5px", width: "45%", height: "5%"}}>
-                    <ButtonDropdown isOpen={this.isOpen.target} toggle={this.toggleTarget} className={cls.clickRecoedLineButtonDropDown}>
-                        <Button className={cls.clickRecoedLineDropDown}>
-                            Dropdown
-                        </Button>
-                        <DropdownToggle className={cls.clickRecoedLineDropDownToggle}>
-                        </DropdownToggle>
-                        <DropdownMenu className={cls.clickRecoedLineDropDownMenu}>
-                            <DropdownItem value = "clickAnimation" onClick={(event) => {
-                            let recordNum = recordInfo.id.split('-')[1];
-                            events.workArea.selectForm(event, recordNum);
-                        }}>clickAnimation</DropdownItem>
-                            <DropdownItem value="focus" onClick={(event) => {
-                            let recordNum = recordInfo.id.split('-')[1];
-                            events.workArea.selectForm(event, recordNum);
-                        }}>focus</DropdownItem>
-                            <DropdownItem value="showText" onClick={(event) => {
-                            let recordNum = recordInfo.id.split('-')[1];
-                            events.workArea.selectForm(event, recordNum);
-                        }}>showText</DropdownItem>
-                        </DropdownMenu>
-                    </ButtonDropdown>
+                    <ButtonToolbar>
+                        <Button size="sm" style={{backgroundColor: this.state.clickAnimation}} className={cls.buttonabc} value = "clickAnimation" onClick={(event) => {
+                                let recordNum = recordInfo.id.split('-')[1];
+                                events.workArea.selectForm(event, recordNum);
+                                this.isClick(event);
+                            }}>C</Button>
+                        <Button size="sm" style={{backgroundColor: this.state.focus}} className={cls.buttonabc} value="focus" onClick={(event) => {
+                                let recordNum = recordInfo.id.split('-')[1];
+                                events.workArea.selectForm(event, recordNum);
+                                this.isClick(event);
+                            }}>F</Button>
+                        <Button size="sm" style={{backgroundColor: this.state.showText}} className={cls.buttonabc} value="showText" onClick={(event) => {
+                                let recordNum = recordInfo.id.split('-')[1];
+                                events.workArea.selectForm(event, recordNum);
+                                this.isClick(event);
+                            }}>S</Button>
+                    </ButtonToolbar>
                 </Col>
             );
         }

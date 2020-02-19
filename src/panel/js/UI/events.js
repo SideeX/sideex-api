@@ -262,8 +262,8 @@ export default {
         selectForm: function(event, recordNum){
             let caseIdText = root.fileController.getSelectedCases()[0];
             let record = root.fileController.getRecord(caseIdText, recordNum);
-            record.value.selectValue = event.target.value;
-            console.log(event.target.value);
+            record.value.selectValue.push(event.target.value);
+            console.log(record.value.selectValue);
             if(event.target.value === "showText"){
                 let text = prompt("enter the text");
                 record.value.value = text;    
