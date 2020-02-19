@@ -363,16 +363,7 @@ export class Sideex {
         s.appendChild(document.createTextNode(css));
         head.appendChild(s);
     }
-    
-    isSelect(selectValue, str){
-        var i;
-        for(i = 0; i < selectValue.length; i++){
-            if(selectValue[i] == str){
-                return 1;
-            }
-        }
-        return 0;
-    }
+
 }
 
 Sideex.commands = {
@@ -392,60 +383,54 @@ Sideex.commands = {
         var body = document.getElementsByTagName("body");
         var originalzIndex = element.style.zIndex;
         element.doClick = 0;
-        var newDiv = [];
-        if(this.isSelect(selectValue, "clickAnimation")){
-            newDiv[0] = document.createElement("img");
-            newDiv[0].id = "newDiv";
+        if(selectValue.indexOf("clickAnimation") != -1){
+            var newDiv = document.createElement("img");
+            newDiv.id = "newDiv";
             this.addcss("#newDiv {animation: flash 5s;} @keyframes flash {from,50%,to {opacity: 1;}25%,75% {opacity: 0;}");
-            newDiv[0].src = "https://pngimg.com/uploads/cursor/cursor_PNG102.png";
-            newDiv[0].style.position = "absolute";
-            newDiv[0].style.height = 7 + "vh";
-            newDiv[0].style.width = 5 + "vh";
-            newDiv[0].style.left = this.getElementPositionLeft(locator) + element.offsetWidth;
-            newDiv[0].style.top = this.getElementPositionTop(locator) + element.offsetHeight;
-            newDiv[0].style.zIndex = 9999;
-            body[0].appendChild(newDiv[0]);
-            if((newDiv[0].offsetWidth + newDiv[0].offsetLeft) > window.innerWidth){
-                newDiv[0].style.left = null;
-                newDiv[0].style.right = 0 + "px";
+            newDiv.src = "https://pngimg.com/uploads/cursor/cursor_PNG102.png";
+            newDiv.style.position = "absolute";
+            newDiv.style.height = 7 + "vh";
+            newDiv.style.width = 5 + "vh";
+            newDiv.style.left = this.getElementPositionLeft(locator) + element.offsetWidth;
+            newDiv.style.top = this.getElementPositionTop(locator) + element.offsetHeight;
+            newDiv.style.zIndex = 9999;
+            body[0].appendChild(newDiv);
+            if((newDiv.offsetWidth + newDiv.offsetLeft) > window.innerWidth){
+                newDiv.style.left = null;
+                newDiv.style.right = 0 + "px";
             }
-        }
-        if(this.isSelect(selectValue, "focus")){
-            newDiv[1] = document.createElement("div");
-            newDiv[1].style.position = "absolute";
-            newDiv[1].style.height = element.offsetHeight;
-            newDiv[1].style.width = element.offsetWidth;
-            newDiv[1].style.left = this.getElementPositionLeft(locator);
-            newDiv[1].style.top = this.getElementPositionTop(locator);
-            newDiv[1].style.boxShadow = " 0 0 0 99999px rgba(0, 0, 0, .8)";
-            newDiv[1].style.zIndex = 9998;
-            element.style.zIndex = 9999;
-            body[0].appendChild(newDiv[1]);
-        }
-        if(this.isSelect(selectValue, "showText")){
-            newDiv[2] = document.createElement("div");
-            newDiv[2].style.backgroundColor = "#6d96dd";
-            newDiv[2].style.border = "3px #173581 solid";
-            newDiv[2].style.position = "fixed";
-            newDiv[2].style.height = 10 + "vh";
-            newDiv[2].style.width = 100 + "vw";
-            newDiv[2].style.fontSize = 3 + "vh";
-            newDiv[2].style.bottom = 0;
-            newDiv[2].style.left = 0;
-            newDiv[2].style.zIndex = 9998;
-            newDiv[2].textContent = coordString;
-            body[0].appendChild(newDiv[2]);
-        }
-        if(this.isSelect(selectValue, "clickAnimation")){
-            element.addEventListener("click", ()=>{
-                for(let i = 0; i < newDiv.length; i++){
-                    if(newDiv[i]){
-                        body[0].removeChild(newDiv[i]);
-                    }
-                }
+            element.addEventListener("click", function(){
+                body[0].removeChild(newDiv);
                 element.doClick ++;
             })
-        }else if(this.isSelect(selectValue, "focus") || this.isSelect(selectValue, "showText")){
+        }
+        if(selectValue.indexOf("focus") != -1){
+            var newDiv = document.createElement("div");
+            newDiv.style.position = "absolute";
+            newDiv.style.height = element.offsetHeight;
+            newDiv.style.width = element.offsetWidth;
+            newDiv.style.left = this.getElementPositionLeft(locator);
+            newDiv.style.top = this.getElementPositionTop(locator);
+            newDiv.style.boxShadow = " 0 0 0 99999px rgba(0, 0, 0, .8)";
+            newDiv.style.zIndex = 9998;
+            element.style.zIndex = 9999;
+            body[0].appendChild(newDiv);
+        }
+        if(selectValue.indexOf("showText") != -1){
+            var newDiv = document.createElement("div");
+            newDiv.style.backgroundColor = "#6d96dd";
+            newDiv.style.border = "3px #173581 solid";
+            newDiv.style.position = "fixed";
+            newDiv.style.height = 10 + "vh";
+            newDiv.style.width = 100 + "vw";
+            newDiv.style.fontSize = 3 + "vh";
+            newDiv.style.bottom = 0;
+            newDiv.style.left = 0;
+            newDiv.style.zIndex = 9999;
+            newDiv.textContent = coordString;
+            body[0].appendChild(newDiv);
+        }
+        if((selectValue.indexOf("focus") != -1) || (selectValue.indexOf("showText") != -1)){
             var nextbtn = document.createElement("button");
             nextbtn.innerHTML = "next";
             nextbtn.style.position = "absolute";

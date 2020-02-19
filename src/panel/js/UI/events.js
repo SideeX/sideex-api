@@ -262,7 +262,15 @@ export default {
         selectForm: function(event, recordNum){
             let caseIdText = root.fileController.getSelectedCases()[0];
             let record = root.fileController.getRecord(caseIdText, recordNum);
-            record.value.selectValue.push(event.target.value);
+            if((record.value.selectValue.indexOf(event.target.value) != -1)){
+                if(record.value.selectValue.indexOf(",") == -1){
+                    return;
+                }
+                record.value.selectValue = record.value.selectValue.replace(",", "");
+                record.value.selectValue = record.value.selectValue.replace(event.target.value, "");
+            }else{
+                record.value.selectValue = record.value.selectValue.concat(",", event.target.value);
+            }
             console.log(record.value.selectValue);
             if(event.target.value === "showText"){
                 let text = prompt("enter the text");
