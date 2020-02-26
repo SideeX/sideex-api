@@ -390,8 +390,8 @@ Sideex.commands = {
             newDiv1.style.position = "absolute";
             newDiv1.style.height = 7 + "vh";
             newDiv1.style.width = 5 + "vh";
-            newDiv1.style.left = this.getElementPositionLeft(locator) + element.offsetWidth;
-            newDiv1.style.top = this.getElementPositionTop(locator) + element.offsetHeight;
+            newDiv1.style.left = this.getElementPositionLeft(locator) + element.offsetWidth + "px";
+            newDiv1.style.top = this.getElementPositionTop(locator) + element.offsetHeight + "px";
             newDiv1.style.zIndex = 9999;
             element.style.zIndex = 9999;
             body[0].appendChild(newDiv1);
@@ -403,10 +403,10 @@ Sideex.commands = {
         if(selectValue.indexOf("focus") != -1){
             var newDiv2 = document.createElement("div");
             newDiv2.style.position = "absolute";
-            newDiv2.style.height = element.offsetHeight;
-            newDiv2.style.width = element.offsetWidth;
-            newDiv2.style.left = this.getElementPositionLeft(locator);
-            newDiv2.style.top = this.getElementPositionTop(locator);
+            newDiv2.style.height = element.offsetHeight + "px";
+            newDiv2.style.width = element.offsetWidth + "px";
+            newDiv2.style.left = this.getElementPositionLeft(locator) + "px";
+            newDiv2.style.top = this.getElementPositionTop(locator) + "px";
             newDiv2.style.boxShadow = " 0 0 0 99999px rgba(0, 0, 0, .8)";
             newDiv2.style.zIndex = 9998;
             element.style.zIndex = 9999;
@@ -443,7 +443,9 @@ Sideex.commands = {
             })
             if(newDiv2){
                 newDiv2.addEventListener("click", function(e){
-                    element.click()
+                    element.dispatchEvent(e);
+                    console.log(e);
+                    // element.click();
                 })
             }
         }else{
@@ -453,8 +455,8 @@ Sideex.commands = {
             nextbtn.style.height = 5 + "vh";
             nextbtn.style.width = 5 + "vw";
             nextbtn.style.fontSize = 3 + "vh";
-            nextbtn.style.left = this.getElementPositionLeft(locator) + element.offsetWidth;
-            nextbtn.style.top = this.getElementPositionTop(locator) + element.offsetHeight;
+            nextbtn.style.left = this.getElementPositionLeft(locator) + element.offsetWidth + "px";
+            nextbtn.style.top = this.getElementPositionTop(locator) + element.offsetHeight + "px";
             nextbtn.style.zIndex = 9999;
             body[0].appendChild(nextbtn);
             if((nextbtn.offsetWidth + nextbtn.offsetLeft) > window.innerWidth){

@@ -1,6 +1,5 @@
 import { doEscape } from '../../../common/escape';
 import { Utils } from "../../../utils/utils.common";
-import pretty from 'pretty';
 import { browser } from "webextension-polyfill-ts";
 import { cloneDeep } from "lodash";
 import { fileList } from "../UI/entryPoint";
