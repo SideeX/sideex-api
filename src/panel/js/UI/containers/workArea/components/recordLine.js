@@ -13,39 +13,10 @@ class RecordLine extends React.Component {
     constructor(props) {
         super(props);
         this.recordElement;
-        this.state = {
-            clickAnimation: "green",
-            focus: "gray",
-            showText: "gray"
-        }
     }
 
-    isClick(e) {
-        if(e.target.value == "clickAnimation"){
-            if(this.state.clickAnimation == "gray"){
-                this.setState({clickAnimation: "green"});
-            }else{
-                if(this.state.focus != "gray" || this.state.showText != "gray"){
-                    this.setState({clickAnimation: "gray"});
-                }
-            }
-        }else if(e.target.value == "focus"){
-            if(this.state.focus == "gray"){
-                this.setState({focus: "yellow"});
-            }else{
-                if(this.state.clickAnimation != "gray" || this.state.showText != "gray"){
-                    this.setState({focus: "gray"});
-                }
-            }
-        }else if(e.target.value == "showText"){
-            if(this.state.showText == "gray"){
-                this.setState({showText: "red"});
-            }else{
-                if(this.state.clickAnimation != "gray" || this.state.focus != "gray"){
-                    this.setState({showText: "gray"});
-                }
-            }
-        } 
+    isClick(recordInfo) {
+        console.log(recordInfo)
     }
     createSnapshotIcon(recordInfo) {
         let snapshotIdText = recordInfo.screenshot;
@@ -120,20 +91,20 @@ class RecordLine extends React.Component {
             selectBar = (
                 <Col xs="auto" className={cls.clickRecoedLineInputCol} style={{ paddingRight: "5px", width: "45%", height: "5%"}}>
                     <ButtonToolbar>
-                        <Button size="sm" style={{backgroundColor: this.state.clickAnimation}} className={cls.buttonabc} value = "clickAnimation" onClick={(event) => {
+                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[0]}} className={cls.buttonabc} value = "clickAnimation" onClick={(event) => {
                                 let recordNum = recordInfo.id.split('-')[1];
                                 events.workArea.selectForm(event, recordNum);
-                                this.isClick(event);
+                                this.isClick(recordInfo);
                             }}>C</Button>
-                        <Button size="sm" style={{backgroundColor: this.state.focus}} className={cls.buttonabc} value="focus" onClick={(event) => {
+                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[1]}} className={cls.buttonabc} value="focus" onClick={(event) => {
                                 let recordNum = recordInfo.id.split('-')[1];
                                 events.workArea.selectForm(event, recordNum);
-                                this.isClick(event);
+                                this.isClick(recordInfo);
                             }}>F</Button>
-                        <Button size="sm" style={{backgroundColor: this.state.showText}} className={cls.buttonabc} value="showText" onClick={(event) => {
+                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[2]}} className={cls.buttonabc} value="showText" onClick={(event) => {
                                 let recordNum = recordInfo.id.split('-')[1];
                                 events.workArea.selectForm(event, recordNum);
-                                this.isClick(event);
+                                this.isClick(recordInfo);
                             }}>S</Button>
                     </ButtonToolbar>
                 </Col>

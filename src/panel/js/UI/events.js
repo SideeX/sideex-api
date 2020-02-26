@@ -267,7 +267,32 @@ export default {
         selectForm: function(event, recordNum){
             let caseIdText = root.fileController.getSelectedCases()[0];
             let record = root.fileController.getRecord(caseIdText, recordNum);
-            if((record.value.selectValue.indexOf(event.target.value) != -1)){
+            if(event.target.value == "clickAnimation"){
+                if(record.value.btnColor[0] == "gray"){
+                    record.value.btnColor[0] = "green";
+                }else{
+                    if(record.value.btnColor[1] != "gray" || record.value.btnColor[2] != "gray"){
+                        record.value.btnColor[0] = "gray";
+                    }
+                }
+            }else if(event.target.value == "focus"){
+                if(record.value.btnColor[1] == "gray"){
+                    record.value.btnColor[1] = "yellow";
+                }else{
+                    if(record.value.btnColor[0] != "gray" || record.value.btnColor[2] != "gray"){
+                        record.value.btnColor[1] = "gray";
+                    }
+                }
+            }else if(event.target.value == "showText"){
+                if(record.value.btnColor[2] == "gray"){
+                    record.value.btnColor[2] = "red";
+                }else{
+                    if(record.value.btnColor[0] != "gray" || record.value.btnColor[1] != "gray"){
+                        record.value.btnColor[2] = "gray";
+                    }
+                }
+            } 
+            if(record.value.selectValue.indexOf(event.target.value) != -1){
                 if(record.value.selectValue.indexOf(",") == -1){
                     return;
                 }
@@ -277,11 +302,12 @@ export default {
                 record.value.selectValue = record.value.selectValue.concat(",", event.target.value);
             }
             console.log(record.value.selectValue);
-            if(event.target.value === "showText"){
+            if(event.target.value == "showText"){
                 let text = prompt("enter the text");
                 record.value.value = text;    
-                console.log(record.value);
             }
+            console.log(record.value.btnColor);
+            workArea.syncCommands();
         },
         clickAddCommand: function (event) {
             event.stopPropagation();

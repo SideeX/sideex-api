@@ -549,7 +549,7 @@ export class Playback {
         let caseIdText = this.root.fileController.getSelectedCases()[0];
         let record = this.root.fileController.getRecord(caseIdText, recordNum);
         let selectValue = record.value.selectValue;
-        if(selectValue === "showText"){
+        if(selectValue.indexOf("showText") != -1){
             value = record.value.value;
         }
         console.log(name);
