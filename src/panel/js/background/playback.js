@@ -505,7 +505,7 @@ export class Playback {
     getCurrentPlayingFrameId() {
         return this.getFrameId(this.currentPlayingTabId);
     }
-    async sendCommand(command, target, value, index, top) {
+    async sendCommand(command, target, value, index, selectValue, top) {
 
         let frameId = this.getCurrentPlayingFrameId();
         console.log(frameId);
@@ -517,7 +517,8 @@ export class Playback {
             command: command,
             target: target,
             value: value,
-            index: index
+            index: index,
+            selectValue: selectValue
         }, undefined, { frameId: top ? 0 : frameId });    
     }
 
@@ -552,6 +553,10 @@ export class Playback {
             value = record.value.value;
         }
         console.log(name);
+        console.log(recordNum);
+        console.log(caseIdText);
+        console.log(record);
+        console.log(selectValue);
         console.log(target);
         console.log(value);
         console.log(this.determineCommandType(name));
@@ -559,9 +564,9 @@ export class Playback {
             case Playback.COMMAND_TYPE_CONTENT:
             case Playback.COMMAND_TYPE_CONTEXTMENU: {
                 if(this.root.api){
-                    result = await this.sendCommand(name, target, value, index);
+                    result = await this.sendCommand(name, target, value, index, selectValue);
                 }else{
-                    result = await this.windowController.sendCommand(name, target, value, index);
+                    result = await this.windowController.sendCommand(name, target, value, index, selectValue);
                 }
                 console.log(result);
                 return this.handleCommandResult(result);

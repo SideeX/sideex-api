@@ -7,7 +7,6 @@ import cx from "classnames";
 import cls from "../style.scss";
 import events from "../../../events";
 import { workArea } from "../../../entryPoint";
-import MultiSelect from "react-multiselect-button-dropdown"
 
 //filecontroller events sideex-api
 class RecordLine extends React.Component {
