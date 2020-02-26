@@ -16,6 +16,8 @@
  */
 import cloneDeep from "lodash/cloneDeep";
 import { compareTwoArray } from "../lib/utils";
+import { SaveFile } from './save-file';
+import { LoadFile } from './load-file';
 import * as EntryPoint from "../UI/entryPoint";
 
 export class FileController {
@@ -41,6 +43,8 @@ export class FileController {
             nameMap: {}
         };
         this.tempCommands = [];
+        this.loadFile = new LoadFile(root, this);
+        this.saveFile = new SaveFile(root, this);
     }
 
     deleteRecord(caseIdText, index) {

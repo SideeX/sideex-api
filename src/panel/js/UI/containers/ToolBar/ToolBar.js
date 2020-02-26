@@ -11,6 +11,7 @@ import {
     ResumeButton,
     StopRecordButton,
     SpeedButton,
+    SaveFileButton,
 } from './components'
 import cls from "./style.scss";
 import events from "../../events";
@@ -89,7 +90,7 @@ class ToolBar extends React.Component {
                     <SpeedButton />
                 </Col> */}
                 <Col xs="3" className={cls.buttonCol}>
-                    <SpeedButton />
+                    <SaveFileButton />
                 </Col>
             </Row>
         );

@@ -2,7 +2,6 @@ import { browser } from "webextension-polyfill-ts";
 import { root } from "../background/initial";
 import * as EntryPoint from "../UI/entryPoint";
 import { toolBar, workArea, fileList, app} from "./entryPoint";
-
 export default {
     toolBar: {
         clickPlayButton: function (mode) {
@@ -126,16 +125,21 @@ export default {
             document.getElementById("open-files").click();
         },
         changeOpenFile: function (event) {
-            for (let i = 0; i < event.target.files.length; i++) {
-                if (root.fileController.isFileNameOpened(event.target.files[i].name)) {
-                    app.setModal({
-                        isOpen: true, type: "alert",
-                        title: "Error on opening file",
-                        content: `"${event.target.files[i].name}" has been opened.`
-                    });
-                    continue;
+            if(root.fileController.getSuiteNum() == 0){
+                for (let i = 0; i < event.target.files.length; i++) {
+                    if (root.fileController.isFileNameOpened(event.target.files[i].name)) {
+                        app.setModal({
+                            isOpen: true, type: "alert",
+                            title: "Error on opening file",
+                            content: `"${event.target.files[i].name}" has been opened.`
+                        });
+                        continue;
+                    }
+                    root.fileController.loadFile.readFile(event.target.files[i]);
+                    break;
                 }
-                root.fileController.loadFile.readFile(event.target.files[i]);
+            }else{
+                console.log("more than two suite!");
             }
             event.target.value = null;
             fileList.syncFiles();

@@ -9,6 +9,7 @@ import cx from "classnames";
 import events from "../../events";
 import FileListModal from "./components/FileListModal";
 import { app } from "../../entryPoint";
+import { root } from "../../../background/initial";
 
 class FileList extends React.Component {
     constructor(props) {
@@ -44,7 +45,7 @@ class FileList extends React.Component {
         return (
             <Col xs="auto" className={fileListColStyle} id="fileList-col" >
                 <FileListModal modal={this.props.fileList.modal}/>
-                <input id="open-files" type="file" multiple accept="text/html"
+                <input id="open-files" type="file" multiple accept="application/json"
                     style={{display: "none"}} onChange={events.fileList.changeOpenFile}
                 />
                 <Container className={cls.fileListContainerHeaderStyle}>

@@ -143,7 +143,7 @@ export var fileController = {
         downloadSuites: () => {},
         makeTextFile:(text) => {
             var data = new Blob([text], {
-                type: 'text/plain'
+                type: 'application/json'
             });
             // If we are replacing a previously generated file we need to
             // manually revoke the object URL to avoid memory leaks.
