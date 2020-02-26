@@ -18,11 +18,10 @@
 import sendkeysMap from "./sendkeysMap";
 import { Utils } from "../common/utils";
 import { PatternMatcher } from "../common/patternMatcher";
-import storage from "../common/storage";
-import { browser } from "webextension-polyfill-ts";
+// import storage from "../common/storage";
+// import { browser } from "webextension-polyfill-ts";
 import { escapeHTML } from "../common/escape.js";
-import { MessageController } from "../content/message-controller";
-import { NavbarText } from "reactstrap";
+// import { MessageController } from "../content/message-controller";
 
 export class Sideex {
     constructor(browserBot) {

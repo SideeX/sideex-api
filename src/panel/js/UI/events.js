@@ -135,6 +135,7 @@ export default {
                         });
                         continue;
                     }
+                    console.log(event.target.files[i], i);
                     root.fileController.loadFile.readFile(event.target.files[i]);
                     break;
                 }
@@ -310,7 +311,7 @@ export default {
         },
         clickDeleteCommand: function (event) {
             event.stopPropagation();
-            root.uiTools.setIsOnWorkArea(true);
+            // root.uiTools.setIsOnWorkArea(true);
             let caseIdText = root.fileController.getSelectedCases()[0];
             let recordIdText = root.fileController.getSelectedRecords()[0];
             let index = parseInt(recordIdText.split('-')[1]);

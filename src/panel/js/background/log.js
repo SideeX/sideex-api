@@ -33,7 +33,7 @@ export class Log {
             type: type,
             message: str
         });
-        EntryPoint.console.setAutoScrollLog({ isUsed: true });
+        // EntryPoint.console.setAutoScrollLog({ isUsed: true });
         console.log(type, str);
     }
 

@@ -15,6 +15,10 @@ export class SaveFile {
 
         if (root.isDOMBased) {
             this.downloadCompleted = this.downloadCompleted.bind(this);
+            // console.log("222");
+            // console.log(browser);
+            // console.log(browser.downloads);
+            // console.log(browser.downloads.onChanged);
             browser.downloads.onChanged.addListener(this.downloadCompleted);
         }
     }

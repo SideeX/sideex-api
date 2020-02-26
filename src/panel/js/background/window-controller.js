@@ -131,6 +131,7 @@ export class WindowController {
         if (tabId >= 0) {
             return this.playingFrameLocations[tabId][this.currentPlayingFrameLocation];
         } else {
+            console.log(this.currentPlayingTabId, this.currentPlayingFrameLocation);
             return this.playingFrameLocations[this.currentPlayingTabId][this.currentPlayingFrameLocation];
         }
     }
@@ -150,7 +151,9 @@ export class WindowController {
 
     async sendCommand(command, target, value, index, selectValue, top) {
         let tabId = this.getCurrentPlayingTabId();
+        console.log(tabId);
         let frameId = this.getCurrentPlayingFrameId();
+        console.log(frameId);
         let action = ("waitSeries" === command ) ? "Wait" : "Command";
         return await MessageController.tabSendMessage({
             action: action,

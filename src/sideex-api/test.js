@@ -1,7 +1,7 @@
 import { SideeX } from './index';
-
-export const sideex = new SideeX();
-export const test = {
+import { classBody } from '@babel/types';
+const sideex = new SideeX();
+const test = {
     addVars: () => {
         console.log('add');
         sideex.variables.add("varName-1", 0);
@@ -27,5 +27,63 @@ export const test = {
         test.addVars();
         test.getVars();
         test.deleteVars();
+    },
+
+    testsuite_check: () => {
+        console.log("testsuite_check");
+        sideex.file.testSuite.add({title:"tyler"});
+        console.log(sideex.file.testSuite.getSuiteIdText("tyler"));
+        console.log(sideex.file.testSuite.get("suite-0"));
+
     }
 };
+// test.testsuite_check();
+// console.log(sideex);
+var input = document.getElementById('input');
+var all = document.getElementById('all');
+var suite = document.getElementById('suite');
+var cases = document.getElementById('case');
+var yellow = document.getElementById('change_yellow');
+var white = document.getElementById('change_white');
+var color = document.getElementById('color');
+var tests = document.getElementById('test');
+input.addEventListener("change", handlefile, false);
+all.addEventListener("click", ()=>{
+    sideex.playback.start();
+}, false);
+suite.addEventListener("click", ()=>{     
+    
+}, false);
+cases.addEventListener("click", ()=>{ 
+    console.log(sideex.file.testSuite.get("suite-0"));
+    console.log(sideex.file.testCase.get("case-0"));
+}, false); 
+yellow.addEventListener("click", ()=>{
+    
+}, false);
+white.addEventListener("click", ()=>{
+    console.log(sideex.recorder.stop());
+}, false);
+tests.addEventListener("click", ()=>{
+    console.log(sideex.file.testSuite.add());
+    console.log(sideex.file.testSuite.getSelected());
+    console.log(sideex.file.testCase.add());
+    console.log(sideex.file.testCase.getSelected());
+}, false);
+color.addEventListener("click", ()=>{
+    console.log(sideex.log.get("logs"));
+    console.log(sideex.log.get("typeMap"));
+    console.log(sideex.recorder.start());
+},false);
+
+function handlefile() {
+    var file = this.files[0];
+    console.log(file);
+    sideex.file.testSuite.load(file);
+    
+}
+
+
+
+
+

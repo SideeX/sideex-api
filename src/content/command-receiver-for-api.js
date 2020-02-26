@@ -22,6 +22,8 @@ import { MessageController } from "../content/message-controller";
 
 var targetSelecter = null;
 MessageController.addListener(async function doCommands(request) {
+    console.log(request);
+    request = request.data;
     switch (request.action) {
         case "Wait": {
             await sideex.doAutoWait(request.command, request.value);
@@ -31,19 +33,14 @@ MessageController.addListener(async function doCommands(request) {
             console.log("command", request.command);
             let command = request.command;
             let value = request.value;
-            let selectValue = request.selectValue;
-            console.log(command, value, selectValue);
             if (sideex.hasCommand(command)) {
                 document.documentElement.setAttribute("SideeXPlayingFlag", true);
                 let target = await sideex.doVerifyLocator(request);
                 try {
-                    await sideex.doCommand(command, target, value, selectValue);
-                    if(command == "clickAt"){
-                        await sideex.commandWait(target);
-                    }
+                    await sideex.doCommand(command, target, value);
                 } catch (e) {
-                    console.error(bcommand + " failed\n", e.stack);
-                    document.documentElement.removeAttriute("SideeXPlayingFlag");
+                    console.error(command + " failed\n", e.stack);
+                    document.documentElement.removeAttribute("SideeXPlayingFlag");
                     return { status: false, message: e.message };
                 }
             } else {

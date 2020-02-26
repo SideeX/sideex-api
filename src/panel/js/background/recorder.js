@@ -257,9 +257,15 @@ export class BackgroundRecorder {
      * @param {Object} sender Details about message sender
      */
     commandHandler(message, sender) {
-        if (!message.command || this.openedWindowIds[sender.tab.windowId] === undefined)
+        console.log(message, sender);
+        if(this.root.api){
+            message = message.data;
+        }
+        if (!message.command || this.openedWindowIds[sender.tab.windowId] === undefined){
+            console.log("1");
             return;
-
+        }
+        console.log("2");
         let caseIdText = this.root.fileController.getSelectedCases()[0];
 
         if (!this.root.fileController.getNetworkSpeed()) {
@@ -426,12 +432,15 @@ export class BackgroundRecorder {
             return;
         }
         this.attached = true;
-        browser.tabs.onActivated.addListener(this.tabSwitchHandler);
-        browser.windows.onFocusChanged.addListener(this.windowSwitchHandler);
-        browser.tabs.onRemoved.addListener(this.tabRemovalHandler);
-        browser.webNavigation.onCreatedNavigationTarget.addListener(this.tabsCreatedHandler);
+        if(!this.root.api){
+            browser.tabs.onActivated.addListener(this.tabSwitchHandler);
+            browser.windows.onFocusChanged.addListener(this.windowSwitchHandler);
+            browser.tabs.onRemoved.addListener(this.tabRemovalHandler);
+            browser.webNavigation.onCreatedNavigationTarget.addListener(this.tabsCreatedHandler);
+        }
         MessageController.addListener(this.commandHandler);
-        this.attachDOMRecorder();
+        if(!this.root.api)
+            this.attachDOMRecorder();
     }
 
     /**
@@ -442,12 +451,15 @@ export class BackgroundRecorder {
             return;
         }
         this.attached = false;
-        browser.tabs.onActivated.removeListener(this.tabSwitchHandler);
-        browser.windows.onFocusChanged.removeListener(this.windowSwitchHandler);
-        browser.tabs.onRemoved.removeListener(this.tabRemovalHandler);
-        browser.webNavigation.onCreatedNavigationTarget.removeListener(this.tabsCreatedHandler);
-        browser.runtime.onMessage.removeListener(this.commandHandler);
-        this.detachDOMRecorder();
+        if(!this.root.api){
+            browser.tabs.onActivated.removeListener(this.tabSwitchHandler);
+            browser.windows.onFocusChanged.removeListener(this.windowSwitchHandler);
+            browser.tabs.onRemoved.removeListener(this.tabRemovalHandler);
+            browser.webNavigation.onCreatedNavigationTarget.removeListener(this.tabsCreatedHandler);
+            browser.runtime.onMessage.removeListener(this.commandHandler);
+            window.removeEventListener("message", this.commandHandler);
+            this.detachDOMRecorder();
+        }
     }
 
     /**
@@ -542,7 +554,8 @@ export class BackgroundRecorder {
      * Send message to stop selecting target in the previous selected tab
      */
     stopSelectingTarget() {
-        this.detachTargetRecorder();
+        if(!this.root.api)
+            this.detachTargetRecorder();
         return MessageController.tabSendMessage({
             action: "SelectElement",
             selecting: false

@@ -14,6 +14,7 @@
  *  limitations under the License.
  *
  */
+import { MessageController } from "../../../content/message-controller";
 import { WindowController } from './window-controller';
 import { Preprocessor } from './preprocessor';
 import { Utils } from "../../../common/utils";
@@ -48,7 +49,17 @@ export class Playback {
         this.idOfTimeout;
         this.timeout = Playback.DEFAULT_TIMEOUT_VALUE;
 
+        if(this.root.api){
+            this.currentPlayingTabId = undefined;
+            this.currentPlayingFrameLocation = 'root';
+            this.playingFrameLocations = {};
+            this.playingFrameLocations[this.currentPlayingTabId] = {};
+            this.playingFrameLocations[this.currentPlayingTabId]["root"] = 0;
+        }
+        
+
         if (this.root.isDOMBased) {
+            console.log("windowcontroller open");
             this.windowController = new WindowController(root, this);
         }
         this.preprocessor = new Preprocessor(root);
@@ -216,9 +227,12 @@ export class Playback {
         this.implicitTime = 0;
         this.caseFailed = false;
         this.curPlayIndex.push({ direction: 0, index: fromIndex - 1 });
-
         try {
-            await this.windowController.init();
+            // console.log("inside");
+            if(!this.root.api){
+                console.log(this.windowController);
+                await this.windowController.init();
+            }
         } catch (e) {
             console.error(e);
             this.addLog("error", "Initialization failed.");
@@ -260,7 +274,7 @@ export class Playback {
                 console.log("play: ", command.name, command.target, command.value, command.preWaitTime);
                 await this.doCommand(command);
             }
-
+            console.log("finish");
             this.finishCommand(this.commandFailed, record);
 
             if (this.caseFailed) break;
@@ -350,7 +364,9 @@ export class Playback {
             if (this.isStop) return;
 
             try {
+                console.log("hi");
                 await this.dispatchCommand(JSON.stringify(this.curPlayIndex), command);
+                console.log("after hi");
                 break;
             } catch (e) {
                 console.error(e);
@@ -385,7 +401,7 @@ export class Playback {
                 }
             }
         } while (!this.commandFailed);
-
+        console.log("come here");
         if (this.determineCommandType(command.name) == Playback.COMMAND_TYPE_CONTENT ||
             this.determineCommandType(command.name) == Playback.COMMAND_TYPE_EXTENSION_SELECT) {
             while (!this.commandFailed) {
@@ -477,6 +493,35 @@ export class Playback {
         return str;
     }
 
+    async doAutoWait(type, value = 0) {
+    }
+    getFrameId(tabId) {
+        if (tabId >= 0) {
+            return this.playingFrameLocations[tabId][this.currentPlayingFrameLocation];
+        } else {
+            return this.playingFrameLocations[this.currentPlayingTabId][this.currentPlayingFrameLocation];
+        }
+    }
+    getCurrentPlayingFrameId() {
+        return this.getFrameId(this.currentPlayingTabId);
+    }
+    async sendCommand(command, target, value, index, top) {
+
+        let frameId = this.getCurrentPlayingFrameId();
+        console.log(frameId);
+
+        let action = ("waitSeries" === command ) ? "Wait" : "Command";
+        
+        return await MessageController.tabSendMessage({
+            action: action,
+            command: command,
+            target: target,
+            value: value,
+            index: index
+        }, undefined, { frameId: top ? 0 : frameId });    
+    }
+
+    
     async doAutoWaitSeries(preWaitTime) {
         if (!preWaitTime) {
             return Promise.resolve();
@@ -484,14 +529,17 @@ export class Playback {
         // await this.doAutoWait("pageWait");
         // await this.doAutoWait("ajaxWait", preWaitTime.ajax);
         // await this.doAutoWait("DOMWait", preWaitTime.DOM);
-        if (this.shutdown)
+        if (this.shutdown){
             return;
-        else
-            await this.windowController.sendCommand("waitSeries", "", 0, JSON.stringify(this.curPlayIndex));
+        }
+        else{
+            if(this.root.api){
+                await this.sendCommand("waitSeries", "", 0, JSON.stringify(this.curPlayIndex));
+            }else{
+                await this.windowController.sendCommand("waitSeries", "", 0, JSON.stringify(this.curPlayIndex));
+            }
+        }
     }
-
-    // async doAutoWait(type, value = 0) {
-    // }
 
     async dispatchCommand(index, command) {
         let result;
@@ -503,11 +551,18 @@ export class Playback {
         if(selectValue === "showText"){
             value = record.value.value;
         }
+        console.log(name);
+        console.log(target);
         console.log(value);
+        console.log(this.determineCommandType(name));
         switch (this.determineCommandType(name)) {
             case Playback.COMMAND_TYPE_CONTENT:
             case Playback.COMMAND_TYPE_CONTEXTMENU: {
-                result = await this.windowController.sendCommand(name, target, value, index, selectValue);
+                if(this.root.api){
+                    result = await this.sendCommand(name, target, value, index);
+                }else{
+                    result = await this.windowController.sendCommand(name, target, value, index);
+                }
                 console.log(result);
                 return this.handleCommandResult(result);
             }
@@ -533,10 +588,21 @@ export class Playback {
     }
 
     handleCommandResult(result) {
-        if (result.status) {
-            return true;
-        } else {
-            return Promise.reject(result.message);
+        if(this.root.api){
+            if (result === "Success") {
+                console.log("Success");
+                return true;
+            } else {
+                return Promise.reject(result.message);
+            }
+        }else{
+            if (result.status) {
+                console.log("true");
+                return true;
+            } else {
+                return Promise.reject(result.message);
+            }
+
         }
     }
 

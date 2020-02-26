@@ -130,38 +130,36 @@ export class LoadFile {
         //         this.parent.setSelectedCases([caseIdTexts[0]]) :
         //         this.parent.setSelectedSuites(selectedSuites);
         // }
-        console.log("asd");
+        console.log(fileText);
         let obj = JSON.parse(fileText);
             for (let suite of obj.suites) {
                 let cases = suite.cases;
                 suite.cases = [];
-                this.root.fileController.addTestSuite({
+                console.log(this.root.fileController.addTestSuite({
                     fileName: suite.fileName,
                     title: suite.title,
                     cases: [],
                     modified: false
-                });
+                }));
                 for (let caseEle of cases) {
-                    this.root.fileController.addTestCase({
+                    console.log(this.root.fileController.addTestCase({
                         title: caseEle.title,
                         records: caseEle.records.map(record => {
                             return this.parent.newCommand(record.name, record.target, record.value, record.pwt);
                         }),
                         modified: false
-                    });
+                    }));
                 }
             }
     }
 
     readFile(file) {
+        console.log(file);
         if (!file.type.includes("json")) return;
 
         let reader = new FileReader();
         reader.readAsText(file);
-        
-
         reader.onload = () => {
-           
             let fileText = reader.result;
             // check for input file version
             // if it is not SideeX2, transforming it

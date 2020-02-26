@@ -1,0 +1,330 @@
+import test.bundle.js
+
+
+sideex.testSuite:
+    sideex.file.testSuite.add(suiteData);
+        add一個test suite
+        parameters:
+            -suiteData:
+                suite中的詳細內容
+        return suiteIdText
+        
+    -sideex.file.testSuite.get(suiteIdText);
+        取得suite中的詳細內容
+        parameters:
+            -suiteIdText:
+                suite的id
+        return suiteData
+    
+    -sideex.file.testSuite.getSuiteIdText(suiteName);
+        取得suite的id
+        parameters:
+            -suiteName:
+                suite的名字
+        return suiteIdText
+    
+    -sideex.file.testSuite.rename(suiteIdText, newSuiteName);
+        修改suite的名字
+        parameters:
+            -suiteIdText:
+                suite的id
+            -newSuiteName:
+                suite更改後的名字
+        return newSuiteName
+
+    -sideex.file.testSuite.copy(suiteIdTexts);
+        複製suites到selected suite後面
+        parameters:
+            -suiteIdTexts:
+                suites的id
+                default: selectedsuites的id
+
+    -sideex.file.testSuite.close(suiteIdTexts);
+        關閉suites
+        parameters:
+            -suiteIdTexts:
+                suites的id
+
+    -sideex.file.testSuite.closeAll();
+        關閉所有suites
+
+    -sideex.file.testSuite.setSelected(SuiteIdTexts);
+        更改selected的SuitesId
+        parameters:
+            -suiteIdTexts:
+                suites的id
+
+    -sideex.file.testSuite.getSelected();
+        取得selected的SuitesId
+        return SuiteIdTexts
+            
+    -sideex.file.testSuite.load(file);
+        讀取file進來
+        parameters:
+            -file:
+                要操作的file
+-----------------------------------------------------------------------------------------
+sideex.testCase:
+
+    sideex.file.testCase.add(caseData);
+        add一個test case
+        parameters:
+            -caseData:
+                case中的詳細內容
+        return caseIdText
+
+    -sideex.file.testCase.get(caseIdText);
+        取得case中的詳細內容
+        parameters:
+            -caseIdText:
+                case的id
+        return caseData
+    
+    -sideex.file.testCase.getCaseIdText(caseName suiteIdText);
+        取得case的id
+        parameters:
+            -caseName:
+                case的名字
+            -suiteIdText:
+                suite的id
+                default: selectedsuite的id
+        return caseIdText
+    
+    -sideex.file.testCase.rename(caseIdText, newCaseName);
+        修改case的名字
+        parameters:
+            -caseIdText:
+                case的id
+            -newCaseName:
+                case更改後的名字
+        return newCaseName
+
+    -sideex.file.testCase.copy(srcCaseIdTexts, dstSuiteIdText);
+        複製cases到selected case後面
+        parameters:
+            -srccaseIdTexts:
+                要操作cases的id
+                default: selectedcases的id
+            -dstSuiteIdText:
+                destination's suite id
+                default: selectedsuite id
+    
+    -sideex.file.testCase.cut(srcCaseIdTexts, dstSuiteIdText);
+        剪下cases到selected case後面
+        parameters:
+            -srccaseIdTexts:
+                要操作cases的id
+                default: selectedcases的id
+            -dstSuiteIdText:
+                destination's suite id
+                default: selectedsuite id
+
+    -sideex.file.testCase.remove(caseIdText);
+        刪除case
+        parameters:
+            -caseIdText:
+                case的id
+
+    -sideex.file.testCase.setSelected(caseIdTexts);
+        更改selectedCasesId
+        parameters:
+            -caseIdTexts:
+                cases的id
+
+    -sideex.file.testCase.getSelected();
+        取得selected的CasesId
+        return CaseIdTexts
+----------------------------------------------------------------------------------------
+sideex.record: 
+
+   -sideex.file.record.add(recordData);
+        add一個record在selected case
+        parameters:
+            -recordData:
+                record中的詳細內容
+                
+    -sideex.file.record.get(recordIndex, caseIdText);
+        取得case中的詳細內容
+        parameters:
+            -recordIndex:
+                index of the record in the case
+            -caseIdText:
+                case的id
+                default: selected case
+        return recordData
+        
+    -sideex.file.record.delete(recordIndex, caseIdText);
+        刪除case中的record
+        parameters:
+            -recordIndex:
+                index of the record in the case
+            -caseIdText:
+                case的id
+                default: selected case
+
+    -sideex.file.record.deleteAll(caseIdText);
+        刪除case中的所有record
+        parameters:
+            -caseIdText:
+                case的id
+                default: selected case
+    
+    -sideex.file.record.copy(srcCaseIdText, srcRecordIndex, destCaseIdText, destRecordIndex);
+        複製record到selected record後面
+        parameters:
+            -srccaseIdText:
+                要操作case的id
+                default: selectedcase的id
+            -srcRecordIndex:
+                要操作record的index
+                default: selectedrecord index
+            -destCaseIdText:
+                destination's case id
+                default: selectedcase id
+            -destRecordIndex:
+                destination's record index
+                default: selectedrecord index
+    
+    -sideex.file.record.setBreakpoint(bool, recordIndex, caseIdText);
+        設置breakpoint到當前record
+        parameters:
+            -bool:
+                是否有breakpoint(true為有breakpoint, false為無)
+            -recordIndex:
+                index of the record in the case
+                default: selected record
+            -caseIdText:
+                case的id
+                default: selected case
+            
+    -sideex.file.record.getBreakpoint(recordIndex, caseIdText);
+        看當前record是否有breakpoint
+        parameters:
+            -recordIndex:
+                index of the record in the case
+            -caseIdText:
+                case的id
+                default: selected case
+        return breakpoint
+    
+    -sideex.file.record.changeUsedIndex(usedIndex, type, recordIndex, caseIdText);
+        
+        parameters:
+            -usedIndex:
+            -type:
+            -recordIndex:
+                index of the record in the case
+                default: selected record
+            -caseIdText:
+                case的id
+                default: selected case
+        return breakpoint
+
+    -sideex.file.record.clearStatus(caseIdText);
+        clear status in all suites
+        parameters:
+            -caseIdText:
+                case的id
+                default: selected case
+
+    -sideex.file.record.clearAllStatus();
+        clear status in the case
+            
+
+    -sideex.file.record.setSelected(recordIdTexts);
+        更改selectedRecordsId
+        parameters:
+            -recordIdTexts:
+                records的id
+
+    -sideex.file.record.getSelected();
+        取得selected的recordsId
+        return RecordIdTexts
+-------------------------------------------------------------------------------------------------
+sideex.variables:
+
+    -sideex.variables.add(name, value);
+        add一個variable
+        parameters:
+            -name:
+                variable name
+            -value:
+                variable value
+        return varIdText
+                
+    -sideex.variables.get(target);
+        取得var的詳細內容
+        parameters:
+            -target:
+                count->return variables數目
+                startNum->return 開始的variable
+                varNames->return 所有var名稱
+                vars->return 所有variables細節
+                default: vars
+        
+    -sideex.variables.delete(varIdText);
+        刪除variable
+        parameters:
+            -varIdText:
+                variable's id
+        return varIdText
+
+    -sideex.variables.clearAll();
+        刪除所有variable
+
+    -sideex.variables.changeName(varIdText, name);
+        modify name of variable
+        parameters:
+            -varIdText:
+                variable's id
+            -name:
+                modify name
+        return { varIdText, name }
+
+    -sideex.variables.changeValue(varIdText, value);
+        modify value of variable
+        parameters:
+            -varIdText:
+                variable's id
+            -value:
+                modify value
+        return { varIdText, name }
+
+-----------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------
+sideex.playblack.start(mode = "all", idText = undefined, speed = 5);
+    -播放
+    parameters:
+        -mode:
+            使用者play的模式，有分成case, suite, 和all。
+            case: 播放單個case
+            suite: 播放整個suite
+            all: 全部都播放
+                
+            default: all
+        -idText:
+        -speed:
+            播放速度
+
+            default: 5
+
+

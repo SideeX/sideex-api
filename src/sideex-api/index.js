@@ -1,16 +1,18 @@
 import { browser } from "webextension-polyfill-ts";
 import platform from "platform";
-// import * as EntryPoint from "../UI/entryPoint";
 import { FileController } from '../panel/js/IO/file-controller';
+// import {LoadFile} from '../panel/js/IO/load-file';
 import { BackgroundRecorder } from '../panel/js/background/recorder';
 import { Playback } from '../panel/js/background/playback';
+// import * as EntryPoint from "../panel/js/UI/entryPoint";
 import { VariableController } from '../panel/js/background/variable-controller';
 import { Setting } from "../panel/js/background/setting";
 import { Log } from '../panel/js/background/log';
-
+import "../content/command-receiver-for-api";
+import "../content/recorder-handlers"
 export class SideeX {
     constructor() {
-        this.root = { isDOMBased: true };
+        this.root = { isDOMBased: false };
         this.root.api = true;
 
         this.root.fileController = new FileController(this.root);
@@ -95,6 +97,9 @@ export class SideeX {
                 },
                 getSelected: function () {
                     return self.root.fileController.getSelectedSuites();
+                },
+                load: function (file) {
+                    return self.root.fileController.loadFile.readFile(file);
                 }
             },
             testCase: {
@@ -277,8 +282,8 @@ export class SideeX {
                         break;
                 }
             },
-            delete: (varIdTexts) => {                        // (["var-0"])
-                this.root.variables.deleteVariable(varIdTexts);
+            delete: (varIdText) => {                        // (["var-0"])
+                this.root.variables.deleteVariable(varIdText);
                 return varIdText;
             },
             clearAll: () => {
@@ -316,7 +321,6 @@ export class SideeX {
             start: (caseIdText = this.root.fileController.getSelectedCases()[0]) => {
                 if (caseIdText === undefined) {
                     this.root.recorder.prepareRecord();
-                    console.log(123123);
                     caseIdText = this.root.fileController.getSelectedCases()[0];
                 }
                 if (this.root.fileController.getTestCase(caseIdText)) {
@@ -326,7 +330,6 @@ export class SideeX {
                     this.root.recorder.notificationCount = 0;
 
                     this.root.recorder.isRecord = true;
-
                     //EntryPoint.toolBar.syncButtonState();
                     //EntryPoint.fileList.syncFiles();
                 } else {
@@ -366,9 +369,9 @@ export class SideeX {
                 this.root.recorder.isRecord = false;
                 this.root.playback.isPlay = true;
                 this.root.recorder.detach();
-
                 switch (mode) {
                     case "case": {
+                        console.log("case");
                         let caseIdText = idText === undefined ? this.root.fileController.getSelectedCases()[0] : idText;
                         if (this.root.fileController.getTestCase(caseIdText)) {
                             this.root.fileController.setSelectedCases([caseIdText]);
@@ -383,10 +386,11 @@ export class SideeX {
                         }
                     }
                     case "suite": {
+                        console.log("suite");
                         let suiteIdText = idText === undefined ? this.root.fileController.getSelectedSuites()[0] : idText;
                         if (this.root.fileController.getTestSuite(suiteIdText)) {
                             this.root.fileController.setSelectedSuites([suiteIdText]);
-                            this.root.playback.doPlay(0, 0); // Playback.PLAY_CASE
+                            this.root.playback.doPlay(1, 0); // Playback.PLAY_CASE
                             return suiteIdText;
                         } else {
                             if (suiteIdText) {
@@ -397,6 +401,7 @@ export class SideeX {
                         }
                     }
                     case "all": {
+                        console.log("all");
                         let caseIdText = idText === undefined ? this.root.fileController.getSelectedCases()[0] : idText;
                         if (this.root.fileController.getTestCase(caseIdText) === undefined) {
                             throw new Error("There is no suites available, please record one first");
