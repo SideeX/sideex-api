@@ -382,14 +382,26 @@ Sideex.commands = {
         var body = document.getElementsByTagName("body");
         var originalzIndex = element.style.zIndex;
         element.doClick = 0;
+        console.log(coordString);
+        console.log(locator);
         if(selectValue.indexOf("clickAnimation") != -1){
-            var newDiv1 = document.createElement("img");
-            newDiv1.id = "newDiv";
-            this.addcss("#newDiv {animation: flash 5s;} @keyframes flash {from,50%,to {opacity: 1;}25%,75% {opacity: 0;}");
-            newDiv1.src = "https://pngimg.com/uploads/cursor/cursor_PNG102.png";
-            newDiv1.style.position = "absolute";
-            newDiv1.style.height = 7 + "vh";
-            newDiv1.style.width = 5 + "vh";
+            
+            var newDiv1 = document.createElement("div");
+            var triangle = document.createElement("div");
+            var rectangle = document.createElement("div");
+            triangle.id = "triangle";
+            rectangle.id = "rectangle";
+            newDiv1.id = "newDiv1";
+            this.addcss("#triangle { width: 0; height: 0; border-style: solid; border-width: 0 35px 80px 35px; border-color: transparent transparent white transparent; transform: rotate(-45deg); position: absolute;}");
+            this.addcss("#rectangle{ width: 25px; height: 50px; background-color: white; transform: rotate(-45deg); position: absolute;}");
+            this.addcss("#newDiv1 { width: 100px; height: 100px; background-color: black; position : absolute; animation: flash 5s; }");
+            this.addcss("@keyframes flash {from,50%,to {opacity: 1;}25%,75% {opacity: 0;}");
+            newDiv1.appendChild(triangle);
+            newDiv1.appendChild(rectangle);
+            triangle.style.left = newDiv1.offsetLeft + 1 + "px";
+            triangle.style.top = newDiv1.offsetTop + 1 + "px";
+            rectangle.style.left = triangle.offsetLeft + 50 + "px";
+            rectangle.style.top = triangle.offsetTop + 43 + "px";
             newDiv1.style.left = this.getElementPositionLeft(locator) + element.offsetWidth + "px";
             newDiv1.style.top = this.getElementPositionTop(locator) + element.offsetHeight + "px";
             newDiv1.style.zIndex = 9999;
@@ -443,9 +455,7 @@ Sideex.commands = {
             })
             if(newDiv2){
                 newDiv2.addEventListener("click", function(e){
-                    element.dispatchEvent(e);
-                    console.log(e);
-                    // element.click();
+                    element.click();
                 })
             }
         }else{

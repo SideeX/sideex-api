@@ -302,6 +302,7 @@ export default {
                 record.value.selectValue = record.value.selectValue.concat(",", event.target.value);
             }
             console.log(record.value.selectValue);
+            console.log(record.value);
             if(event.target.value == "showText"){
                 let text = prompt("enter the text");
                 record.value.value = text;    
