@@ -554,7 +554,8 @@ export class FileController {
                 options: [],
                 tac: "",
                 selectValue: "clickAnimation",
-                btnColor: ["green", "gray", "gray"],
+                text: ["", ""],
+                btnColor: ["green", "gray", "gray", "gray"],
                 ...value
             },
             preWaitTime: {

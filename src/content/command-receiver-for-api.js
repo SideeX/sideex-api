@@ -34,11 +34,12 @@ MessageController.addListener(async function doCommands(request) {
             let command = request.command;
             let value = request.value;
             let selectValue = request.selectValue;
+            let text = request.text;
             if (sideex.hasCommand(command)) {
                 document.documentElement.setAttribute("SideeXPlayingFlag", true);
                 let target = await sideex.doVerifyLocator(request);
                 try {
-                    await sideex.doCommand(command, target, value, selectValue);
+                    await sideex.doCommand(command, target, value, selectValue, text);
                 } catch (e) {
                     console.error(command + " failed\n", e.stack);
                     document.documentElement.removeAttribute("SideeXPlayingFlag");

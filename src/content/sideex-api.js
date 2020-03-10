@@ -45,8 +45,8 @@ export class Sideex {
     hasCommand(command) {
         return Sideex.commands[command] != null;
     }
-    async doCommand(command, target, value, selectValue) {
-        return await Sideex.commands[command].call(this, target, value, selectValue);
+    async doCommand(command, target, value, selectValue, text) {
+        return await Sideex.commands[command].call(this, target, value, selectValue, text);
     }
     async doAutoWait(type, value) {
         console.log(type);
@@ -362,7 +362,22 @@ export class Sideex {
         s.appendChild(document.createTextNode(css));
         head.appendChild(s);
     }
-
+    writing(str, element, callback){
+        var i = 0;
+        element.textContent = "";
+        var write = setInterval(() => {
+            if(str.length != 0 && element.textContent.length != str.length){
+                element.textContent = element.textContent.concat(str[i]);
+                i ++;
+            }else{
+                element.textContent = "";
+                clearInterval(write);
+                if(callback){
+                    callback(str, element, null);
+                }
+            }
+        }, 300);
+    }
 }
 
 Sideex.commands = {
@@ -376,12 +391,13 @@ Sideex.commands = {
      *      event relative to the element returned by the locator.
      *
      */
-    async clickAt(locator, coordString, selectValue){
+    async clickAt(locator, coordString, selectValue, text){
         var element = this.browserBot.findElement(locator);
         var clientXY = this.getClientXY(element, coordString);
         var body = document.getElementsByTagName("body");
         var originalzIndex = element.style.zIndex;
         element.doClick = 0;
+        console.log(text);
         if(selectValue.indexOf("clickAnimation") != -1){
             var newDiv1 = document.createElement("div");
             var triangle = document.createElement("div");
@@ -441,17 +457,20 @@ Sideex.commands = {
             newDiv3.style.position = "fixed";
             newDiv3.style.height = 10 + "vh";
             newDiv3.style.width = 100 + "vw";
-            newDiv3.style.fontSize = 3 + "vh";
+            newDiv3.style.fontSize = 5 + "vh";
             newDiv3.style.bottom = 0;
             newDiv3.style.left = 0;
             newDiv3.style.zIndex = 9999;
             newDiv3.style.color = "white";
             newDiv3.style.textAlign = "center";
-            newDiv3.textContent = coordString;
+            newDiv3.textContent = text[0];
             body[0].appendChild(newDiv3);
         }
+        if(selectValue.indexOf("typewriting") != -1){
+            this.writing(text[1], element, this.writing);
+        }
         if(selectValue.indexOf("clickAnimation") != -1){
-            element.addEventListener("click", function(e){
+            element.addEventListener("click", function(){
                 if(newDiv1) {
                     body[0].removeChild(newDiv1);
                 }

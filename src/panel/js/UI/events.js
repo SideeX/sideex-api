@@ -271,7 +271,7 @@ export default {
                 if(record.value.btnColor[0] == "gray"){
                     record.value.btnColor[0] = "green";
                 }else{
-                    if(record.value.btnColor[1] != "gray" || record.value.btnColor[2] != "gray"){
+                    if(record.value.btnColor[1] != "gray" || record.value.btnColor[2] != "gray" || record.value.btnColor[3] != "gray"){
                         record.value.btnColor[0] = "gray";
                     }
                 }
@@ -279,7 +279,7 @@ export default {
                 if(record.value.btnColor[1] == "gray"){
                     record.value.btnColor[1] = "yellow";
                 }else{
-                    if(record.value.btnColor[0] != "gray" || record.value.btnColor[2] != "gray"){
+                    if(record.value.btnColor[0] != "gray" || record.value.btnColor[2] != "gray" || record.value.btnColor[3] != "gray"){
                         record.value.btnColor[1] = "gray";
                     }
                 }
@@ -287,8 +287,16 @@ export default {
                 if(record.value.btnColor[2] == "gray"){
                     record.value.btnColor[2] = "red";
                 }else{
-                    if(record.value.btnColor[0] != "gray" || record.value.btnColor[1] != "gray"){
+                    if(record.value.btnColor[0] != "gray" || record.value.btnColor[1] != "gray" || record.value.btnColor[3] != "gray"){
                         record.value.btnColor[2] = "gray";
+                    }
+                }
+            }else if(event.target.value == "typewriting"){
+                if(record.value.btnColor[3] == "gray"){
+                    record.value.btnColor[3] = "blue";
+                }else{
+                    if(record.value.btnColor[0] != "gray" || record.value.btnColor[1] != "gray" || record.value.btnColor[2] != "gray"){
+                        record.value.btnColor[3] = "gray";
                     }
                 }
             } 
@@ -304,8 +312,12 @@ export default {
             console.log(record.value.selectValue);
             console.log(record.value);
             if(event.target.value == "showText"){
-                let text = prompt("enter the text");
-                record.value.value = text;    
+                let str = prompt("enter the text");
+                record.value.text[0] = str;    
+            }
+            if(event.target.value == "typewriting"){
+                let str = prompt("enter the text");
+                record.value.text[1] = str;    
             }
             console.log(record.value.btnColor);
             workArea.syncCommands();

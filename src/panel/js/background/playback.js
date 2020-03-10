@@ -323,7 +323,6 @@ export class Playback {
         this.commandFailed = false;
         let selectTarget = record.target.options[record.target.usedIndex];
         let selectValue = record.value.options[record.value.usedIndex];
-
         let name = record.name;
         let target = selectTarget.type === "tac" ? record.target.tac : selectTarget.value;
         let value = selectValue.type === "tac" ? record.target.tac : selectValue.value;
@@ -505,7 +504,7 @@ export class Playback {
     getCurrentPlayingFrameId() {
         return this.getFrameId(this.currentPlayingTabId);
     }
-    async sendCommand(command, target, value, index, selectValue, top) {
+    async sendCommand(command, target, value, index, selectValue, text, top) {
 
         let frameId = this.getCurrentPlayingFrameId();
         console.log(frameId);
@@ -518,7 +517,8 @@ export class Playback {
             target: target,
             value: value,
             index: index,
-            selectValue: selectValue
+            selectValue: selectValue,
+            text: text,
         }, undefined, { frameId: top ? 0 : frameId });    
     }
 
@@ -549,14 +549,13 @@ export class Playback {
         let caseIdText = this.root.fileController.getSelectedCases()[0];
         let record = this.root.fileController.getRecord(caseIdText, recordNum);
         let selectValue = record.value.selectValue;
-        if(selectValue.indexOf("showText") != -1){
-            value = record.value.value;
-        }
+        let text = record.value.text;
         console.log(name);
         console.log(recordNum);
         console.log(caseIdText);
         console.log(record);
         console.log(selectValue);
+        console.log(text);
         console.log(target);
         console.log(value);
         console.log(this.determineCommandType(name));
@@ -564,9 +563,9 @@ export class Playback {
             case Playback.COMMAND_TYPE_CONTENT:
             case Playback.COMMAND_TYPE_CONTEXTMENU: {
                 if(this.root.api){
-                    result = await this.sendCommand(name, target, value, index, selectValue);
+                    result = await this.sendCommand(name, target, value, index, selectValue, text);
                 }else{
-                    result = await this.windowController.sendCommand(name, target, value, index, selectValue);
+                    result = await this.windowController.sendCommand(name, target, value, index, selectValue, text);
                 }
                 console.log(result);
                 return this.handleCommandResult(result);

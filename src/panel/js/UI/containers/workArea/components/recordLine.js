@@ -89,23 +89,36 @@ class RecordLine extends React.Component {
         }
         if(recordInfo.name === "clickAt"){
             selectBar = (
-                <Col xs="auto" className={cls.clickRecoedLineInputCol} style={{ paddingRight: "5px", width: "45%", height: "5%"}}>
+                <Col xs="auto" className={cls.clickRecoedLineInputCol} style={{ paddingRight: "5px", width: "50%", height: "5%"}}>
                     <ButtonToolbar>
-                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[0]}} className={cls.buttonabc} value = "clickAnimation" onClick={(event) => {
+                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[0]}} className={cls.buttonabc} value = "clickAnimation" title = "clickAnimation"
+                            onClick={(event) => {
                                 let recordNum = recordInfo.id.split('-')[1];
                                 events.workArea.selectForm(event, recordNum);
                                 this.isClick(recordInfo);
-                            }}>C</Button>
-                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[1]}} className={cls.buttonabc} value="focus" onClick={(event) => {
+                            }}>C
+                            <div style = {{height: "5px", width: "10px", display: "none"}}>clickAnimation</div>
+                        </Button>
+                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[1]}} classame={cls.buttonabc} value="focus" title = "focus"
+                            onClick={(event) => {
                                 let recordNum = recordInfo.id.split('-')[1];
                                 events.workArea.selectForm(event, recordNum);
                                 this.isClick(recordInfo);
-                            }}>F</Button>
-                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[2]}} className={cls.buttonabc} value="showText" onClick={(event) => {
+                            }}>F
+                        </Button>
+                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[2]}} className={cls.buttonabc} value="showText" title = "showText" 
+                            onClick={(event) => {
                                 let recordNum = recordInfo.id.split('-')[1];
                                 events.workArea.selectForm(event, recordNum);
                                 this.isClick(recordInfo);
-                            }}>S</Button>
+                            }}>S
+                        </Button>
+                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[3]}} className={cls.buttonabc} value="typewriting" title = "typewriting"
+                            onClick={(event) => {
+                                let recordNum = recordInfo.id.split('-')[1];
+                                events.workArea.selectForm(event, recordNum);
+                                this.isClick(recordInfo);
+                            }}>T</Button>
                     </ButtonToolbar>
                 </Col>
             );
