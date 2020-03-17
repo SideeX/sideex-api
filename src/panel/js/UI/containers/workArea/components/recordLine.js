@@ -87,7 +87,7 @@ class RecordLine extends React.Component {
                 </Container>
             );
         }
-        if(recordInfo.name === "clickAt"){
+        if(recordInfo.name === "animation"){
             selectBar = (
                 <Col xs="auto" className={cls.clickRecoedLineInputCol} style={{ paddingRight: "5px", width: "50%", height: "5%"}}>
                     <ButtonToolbar>

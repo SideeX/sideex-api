@@ -35,6 +35,12 @@ export default {
         value: "x,y position of the mouse event relative to the target element. For example: 10,10. Left blank means a simple click.",
         description: ""
     },
+    "animation": {
+        name: "animation",
+        target: "A locator",
+        value: "x,y position of the mouse event relative to the target element. For example: 10,10. Left blank means a simple click.",
+        description: ""
+    },
     "doubleClickAt": {
         name: "doubleClickAt",
         target: "A locator",

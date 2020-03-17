@@ -87,6 +87,11 @@ export default {
             onClick: events.workArea.clickDeleteCommand
         },
         {
+            title: "Modify cmd",
+            shortCut: "",
+            onClick: events.workArea.clickChangeCommand
+        },
+        {
             title: "Delete all cmds",
             shortCut: "",
             onClick: events.workArea.clickDeleteAllCommand

@@ -39,7 +39,7 @@ MessageController.addListener(async function doCommands(request) {
                 let target = await sideex.doVerifyLocator(request);
                 try {
                     await sideex.doCommand(command, target, value, selectValue, text);
-                    if(command == "clickAt"){
+                    if(command == "animation"){
                         await sideex.commandWait(target);
                     }
                 } catch (e) {

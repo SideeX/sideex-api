@@ -628,6 +628,7 @@ export class Playback {
             case "open":
             case "runScript":
             case "clickAt":
+            case "animation":
             case "onclick":
             case "echo":
             case "doubleClickAt":

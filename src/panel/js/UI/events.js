@@ -348,6 +348,16 @@ export default {
                 }
             });
         },
+        clickChangeCommand: function (event) {
+            event.stopPropagation();
+            let caseIdText = root.fileController.getSelectedCases()[0];
+            let recordIdText = root.fileController.getSelectedRecords()[0];
+            let index = parseInt(recordIdText.split('-')[1]);
+            let record = root.fileController.getRecord(caseIdText, index);
+            record.name = "animation";
+
+            workArea.syncCommands();
+        },
         clickDeleteCommand: function (event) {
             event.stopPropagation();
             // root.uiTools.setIsOnWorkArea(true);

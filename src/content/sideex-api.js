@@ -391,7 +391,26 @@ Sideex.commands = {
      *      event relative to the element returned by the locator.
      *
      */
-    async clickAt(locator, coordString, selectValue, text){
+    async clickAt(locator, coordString){
+        var element = this.browserBot.findElement(locator);
+        var clientXY = this.getClientXY(element, coordString);
+        this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
+        this.browserBot.fireMouseEvent(element, 'mousedown', true, clientXY[0], clientXY[1]);
+        this.browserBot.triggerFocusEvent(element);
+        this.browserBot.fireMouseEvent(element, 'mouseup', true, clientXY[0], clientXY[1]);
+        this.browserBot.fireMouseEvent(element, 'click', true, clientXY[0], clientXY[1]);
+        // END
+    },
+    /**
+         * Double clicks on a link, button, checkbox or radio button. If the double click action
+         * causes a new page to load (like a link usually does), call
+         * waitForPageToLoad.
+         *
+         * @param locator an element locator
+         *
+         */
+
+    async animation(locator, coordString, selectValue, text){
         var element = this.browserBot.findElement(locator);
         var clientXY = this.getClientXY(element, coordString);
         var body = document.getElementsByTagName("body");
@@ -517,14 +536,7 @@ Sideex.commands = {
         }
         // END
     },
-    /**
-         * Double clicks on a link, button, checkbox or radio button. If the double click action
-         * causes a new page to load (like a link usually does), call
-         * waitForPageToLoad.
-         *
-         * @param locator an element locator
-         *
-         */
+
     async doubleClickAt(locator, coordString) {
         var element = this.browserBot.findElement(locator);
         var clientXY = this.getClientXY(element, coordString);
