@@ -348,12 +348,13 @@ export default {
                 }
             });
         },
-        clickChangeCommand: function (event) {
+        clickConvertCommand: function (event) {
             event.stopPropagation();
             let caseIdText = root.fileController.getSelectedCases()[0];
             let recordIdText = root.fileController.getSelectedRecords()[0];
             let index = parseInt(recordIdText.split('-')[1]);
             let record = root.fileController.getRecord(caseIdText, index);
+            // let text = prompt("enter the text");
             record.name = "animation";
 
             workArea.syncCommands();
