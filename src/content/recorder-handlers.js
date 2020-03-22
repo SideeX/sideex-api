@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
 import { Recorder } from "./recorder";
 import { Utils } from "../common/utils";
 import { MessageController } from "../content/message-controller";

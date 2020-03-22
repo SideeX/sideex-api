@@ -69,22 +69,23 @@ export class FileController {
         let index = cases.indexOf(caseIdText);
         index >= 0 && cases.splice(index, 1);
         delete this.testCase.cases[caseIdText];
-        // this.testCase.count--;
-        this.setSelectedCases([]);
+        this.testCase.count--;
+        // this.setSelectedCases([]);
     }
 
     deleteSuite(suiteIdText) {
         let suite = this.testSuite.suites[suiteIdText];
-        for (let caseIdText of suite.cases) {
-            this.deleteCase(caseIdText);
+        let length = this.testSuite.suites[suiteIdText].cases.length;
+        for (let i = length -1; i >= 0; i--) {
+            this.deleteCase(suite.cases[i]);
         }
         this.deleteNameMap(suiteIdText);
         let index = this.testSuite.order.indexOf(suiteIdText);
         index >= 0 && this.testSuite.order.splice(index, 1);
         delete this.testSuite.suites[suiteIdText];
-        // this.testSuite.count--;
-        this.setSelectedCases([]);
-        this.setSelectedSuites([]);
+        this.testSuite.count--;
+        // this.setSelectedCases([]);
+        // this.setSelectedSuites([]);
     }
 
     deleteAllSuites() {

@@ -10,6 +10,7 @@ import { Setting } from "../panel/js/background/setting";
 import { Log } from '../panel/js/background/log';
 import "../content/command-receiver-for-api";
 import "../content/recorder-handlers"
+import {Recorder} from "../content/recorder"
 export class SideeX {
     constructor() {
         this.root = { isDOMBased: false };
@@ -435,112 +436,141 @@ export class SideeX {
             }
         };
         this.others = {
-            selectElement: {
-                start: () => {
-                    this.root.recorder.isSelecting = true;
-                    if (this.root.recorder.isRecord)
-                        this.root.recorder.start();
-                    this.root.recorder.startSelectingTarget()
-                        .catch((error) => {
-                            console.error(error);
-                            log.pushLog("error", "Current active tab can't use inspector or was closed.");
-                            this.root.recorder.isSelecting = false;
-                            this.root.recorder.stopSelectingTarget();
-                        });
-                },
-                stop: () => {
-                    this.root.recorder.isSelecting = false;
-                    this.root.recorder.stopSelectingTarget()
-                        .catch((error) => { console.error(error); });
-                }
-            },
-            //TODO: test config
-            showElement: async (target, htmlString) => {
-                try {
-                    // TODO: handle tac value
-                    let tabs = await browser.tabs.query({
-                        active: true,
-                        windowId: this.root.recorder.contentWindowId
-                    });
-                    if (tabs.length === 0) {
-                        console.log("No match tabs");
-                    } else {
-                        let framesInfo = await browser.webNavigation.getAllFrames({ tabId: tabs[0].id });
-                        let frameIds = [];
-                        for (let info of framesInfo) {
-                            frameIds.push(info.frameId);
-                        }
-                        frameIds.sort();
-                        let infos = {
-                            index: 0,
-                            tabId: tabs[0].id,
-                            frameIds: frameIds,
-                            targetValue: target,
-                            customHtml: htmlString
-                        };
-                        this.root.recorder.sendShowElementMessage(infos);
-                    }
-                } catch (e) {
-                    console.error(e);
-                }
-            },
-            //TODO: test
-            reportError: async (errorText, mode) => {
-                if (errorText.length === 0 && mode === "none") return;
+            // selectElement: {
+            //     start: () => {
+            //         this.root.recorder.isSelecting = true;
+            //         if (this.root.recorder.isRecord)
+            //             this.root.recorder.start();
+            //         this.root.recorder.startSelectingTarget()
+            //             .catch((error) => {
+            //                 console.error(error);
+            //                 log.pushLog("error", "Current active tab can't use inspector or was closed.");
+            //                 this.root.recorder.isSelecting = false;
+            //                 this.root.recorder.stopSelectingTarget();
+            //             });
+            //     },
+            //     stop: () => {
+            //         this.root.recorder.isSelecting = false;
+            //         this.root.recorder.stopSelectingTarget()
+            //             .catch((error) => { console.error(error); });
+            //     }
+            // },
+            // //TODO: test config
+            // showElement: async (target, htmlString) => {
+            //     try {
+            //         // TODO: handle tac value
+            //         let tabs = await browser.tabs.query({
+            //             active: true,
+            //             windowId: this.root.recorder.contentWindowId
+            //         });
+            //         if (tabs.length === 0) {
+            //             console.log("No match tabs");
+            //         } else {
+            //             let framesInfo = await browser.webNavigation.getAllFrames({ tabId: tabs[0].id });
+            //             let frameIds = [];
+            //             for (let info of framesInfo) {
+            //                 frameIds.push(info.frameId);
+            //             }
+            //             frameIds.sort();
+            //             let infos = {
+            //                 index: 0,
+            //                 tabId: tabs[0].id,
+            //                 frameIds: frameIds,
+            //                 targetValue: target,
+            //                 customHtml: htmlString
+            //             };
+            //             this.root.recorder.sendShowElementMessage(infos);
+            //         }
+            //     } catch (e) {
+            //         console.error(e);
+            //     }
+            // },
+            // //TODO: test
+            // reportError: async (errorText, mode) => {
+            //     if (errorText.length === 0 && mode === "none") return;
 
-                let obj = {
-                    env: {
-                        browser: platform.name,
-                        browserVersion: platform.version,
-                        os: platform.os.family,
-                        osVersion: platform.os.version,
-                        screen: {
-                            width: (screen.width) ? screen.width : -1,
-                            height: (screen.height) ? screen.height : -1
-                        }
-                    },
-                    content: {
-                        text: errorText,
-                        file: { type: mode, testSuite: { suites: {} }, testCase: { cases: {} } },
-                        logs: this.root.log.logs
+            //     let obj = {
+            //         env: {
+            //             browser: platform.name,
+            //             browserVersion: platform.version,
+            //             os: platform.os.family,
+            //             osVersion: platform.os.version,
+            //             screen: {
+            //                 width: (screen.width) ? screen.width : -1,
+            //                 height: (screen.height) ? screen.height : -1
+            //             }
+            //         },
+            //         content: {
+            //             text: errorText,
+            //             file: { type: mode, testSuite: { suites: {} }, testCase: { cases: {} } },
+            //             logs: this.root.log.logs
+            //         }
+            //     };
+            //     switch (mode) {
+            //         case "case": {
+            //             let caseIdText = this.root.fileController.getSelectedCases()[0];
+            //             if (!caseIdText) break;
+            //             obj.content.file.testCase.cases[caseIdText] = this.root.fileController.getTestCase(caseIdText);
+            //             break;
+            //         }
+            //         case "suite": {
+            //             let suiteIdText = this.root.fileController.getSelectedSuites()[0];
+            //             if (!suiteIdText) break;
+            //             let caseIdTexts = this.root.fileController.getTestSuite(suiteIdText).cases;
+            //             obj.content.file.testSuite.suites[suiteIdText] = this.root.fileController.getTestSuite(suiteIdText);
+            //             for (let caseIdText of caseIdTexts) {
+            //                 obj.content.file.testCase.cases[caseIdText] = this.root.fileController.getTestCase(caseIdText);
+            //             }
+            //             break;
+            //         }
+            //         case "all": {
+            //             obj.content.file.testSuite = this.root.fileController.testSuite;
+            //             obj.content.file.testCase = this.root.fileController.testCase;
+            //             break;
+            //         }
+            //         default:
+            //             break;
+            //     }
+            //     console.log(obj);
+            //     console.log(this.root.setting.get("token"));
+            //     return await fetch("https://sideex.io/api/reports/widget/error", {
+            //         headers: {
+            //             'content-type': 'application/json'
+            //             // 'Authorization': `Bearer ${this.root.setting.get("token")}`
+            //         },
+            //         method: 'POST',
+            //         body: JSON.stringify(obj)
+            //     });
+            // }
+        };
+
+        this.test = {
+            selectForm: (value, recordNum) => {
+
+                let caseIdText = this.root.fileController.getSelectedCases()[0];
+                let record = this.root.fileController.getRecord(caseIdText, recordNum);
+                record.name = "animation";
+                if(record.value.selectValue.indexOf(value) != -1){
+                    if(record.value.selectValue.indexOf(",") == -1){
+                        return;
                     }
-                };
-                switch (mode) {
-                    case "case": {
-                        let caseIdText = this.root.fileController.getSelectedCases()[0];
-                        if (!caseIdText) break;
-                        obj.content.file.testCase.cases[caseIdText] = this.root.fileController.getTestCase(caseIdText);
-                        break;
-                    }
-                    case "suite": {
-                        let suiteIdText = this.root.fileController.getSelectedSuites()[0];
-                        if (!suiteIdText) break;
-                        let caseIdTexts = this.root.fileController.getTestSuite(suiteIdText).cases;
-                        obj.content.file.testSuite.suites[suiteIdText] = this.root.fileController.getTestSuite(suiteIdText);
-                        for (let caseIdText of caseIdTexts) {
-                            obj.content.file.testCase.cases[caseIdText] = this.root.fileController.getTestCase(caseIdText);
-                        }
-                        break;
-                    }
-                    case "all": {
-                        obj.content.file.testSuite = this.root.fileController.testSuite;
-                        obj.content.file.testCase = this.root.fileController.testCase;
-                        break;
-                    }
-                    default:
-                        break;
+                    record.value.selectValue = record.value.selectValue.replace(",", "");
+                    record.value.selectValue = record.value.selectValue.replace(value, "");
+                }else{
+                    record.value.selectValue = record.value.selectValue.concat(",", value);
                 }
-                console.log(obj);
-                console.log(this.root.setting.get("token"));
-                return await fetch("https://sideex.io/api/reports/widget/error", {
-                    headers: {
-                        'content-type': 'application/json'
-                        // 'Authorization': `Bearer ${this.root.setting.get("token")}`
-                    },
-                    method: 'POST',
-                    body: JSON.stringify(obj)
-                });
+                console.log(record.value.selectValue);
+                console.log(record.value);
+                if(value == "showText"){
+                    let str = prompt("enter the text");
+                    record.value.text[0] = str;    
+                }
+                if(value == "typewriting"){
+                    let str = prompt("enter the text");
+                    record.value.text[1] = str;    
+                }
             }
+
         };
     }
 }

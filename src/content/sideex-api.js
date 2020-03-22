@@ -19,9 +19,11 @@ import sendkeysMap from "./sendkeysMap";
 import { Utils } from "../common/utils";
 import { PatternMatcher } from "../common/patternMatcher";
 // import storage from "../common/storage";
-// import { browser } from "webextension-polyfill-ts";
+// #!if isExt === true
+import { browser } from "webextension-polyfill-ts";
+// #!endif
 import { escapeHTML } from "../common/escape.js";
-// import { MessageController } from "../content/message-controller";
+import { MessageController } from "../content/message-controller";
 
 export class Sideex {
     constructor(browserBot) {
@@ -49,8 +51,6 @@ export class Sideex {
         return await Sideex.commands[command].call(this, target, value, selectValue, text);
     }
     async doAutoWait(type, value) {
-        console.log(type);
-        console.log(value);
         this.window.postMessage({
             direction: "from-content-playback-auto-wait",
             type: type,

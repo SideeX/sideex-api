@@ -324,7 +324,7 @@ export default {
         },
         clickAddCommand: function (event) {
             event.stopPropagation();
-            root.uiTools.setIsOnWorkArea(true);
+            // root.uiTools.setIsOnWorkArea(true);
             root.recorder.prepareRecord();
             let info = root.fileController.insertCommand("after", "",
                 { options: [{ type: "other", value: "" }] },

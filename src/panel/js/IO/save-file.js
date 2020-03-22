@@ -14,10 +14,6 @@ export class SaveFile {
 
         if (root.isDOMBased) {
             this.downloadCompleted = this.downloadCompleted.bind(this);
-            // console.log("222");
-            // console.log(browser);
-            // console.log(browser.downloads);
-            // console.log(browser.downloads.onChanged);
             browser.downloads.onChanged.addListener(this.downloadCompleted);
         }
     }
@@ -165,10 +161,6 @@ export class SaveFile {
 
     async downloadCompleted(downloadDelta) {
         let file = this.downloadFile[downloadDelta.id];
-        console.log(downloadDelta);
-        // console.log(downloadDelta.id);
-        // console.log(file);
-        // console.log(this.downloadFile);
         if (downloadDelta.id && downloadDelta.state &&
             downloadDelta.state.current === "complete") {
             console.log(file);

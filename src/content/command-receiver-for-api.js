@@ -15,8 +15,7 @@
  *
  */
 import TargetSelecter from "./targetSelecter";
-// import { browser } from "webextension-polyfill-ts";
-import { sideex, locatorBuilders, browserBot } from "./content-initialization";
+import { sideex, locatorBuilders, browserBot, recorder} from "./content-initialization";
 import "../common/utils";
 import { MessageController } from "../content/message-controller";
 

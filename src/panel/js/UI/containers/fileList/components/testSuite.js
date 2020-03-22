@@ -30,7 +30,7 @@ class TestSuite extends React.Component {
     testCaseList(suiteIdText, cases, testCase) {
         let caseList = [];
         for (let caseIdText of cases) {
-            console.log(caseIdText);
+            // console.log(caseIdText);
             caseList.push(
                 <TestCase
                     key={`key-${caseIdText}`}

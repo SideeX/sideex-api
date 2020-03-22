@@ -22,7 +22,9 @@
  * A recorder to receive and record commands
  * @class
  */
-import { browser } from "webextension-polyfill-ts";
+// #!if isExt === true 
+import { browser } from "webextension-polyfill-ts"; 
+// #!endif 
 import { PreRecorder } from './preRecorder';
 import { boundMethod } from "autobind-decorator";
 import * as EntryPoint from "../UI/entryPoint";
@@ -55,6 +57,9 @@ export class BackgroundRecorder {
         this.rebind();
 
         this.notificationCount = 0;
+
+        this.w_id = Date.now()%1000; 
+        this.i_id = Date.now()%999; 
 
         this.preRecorder = new PreRecorder(root, this);
 
@@ -260,12 +265,12 @@ export class BackgroundRecorder {
         console.log(message, sender);
         if(this.root.api){
             message = message.data;
+            sender = {tab: {windowId: this.w_id, id:this.i_id}};
+            this.openedWindowIds[sender.tab.windowId] = true;
         }
         if (!message.command || this.openedWindowIds[sender.tab.windowId] === undefined){
-            console.log("1");
             return;
         }
-        console.log("2");
         let caseIdText = this.root.fileController.getSelectedCases()[0];
 
         if (!this.root.fileController.getNetworkSpeed()) {
@@ -289,7 +294,7 @@ export class BackgroundRecorder {
             this.openedTabIds[caseIdText][sender.tab.id] = "win_ser_local";
         }
 
-        if (this.root.fileController.getRecordNum(caseIdText) === 0) {
+        if (this.root.fileController.getRecordNum(caseIdText) === 0  && !this.root.api) {
             this.root.fileController.insertCommand("after", "open",
                 { options: [{ type: "other", value: sender.tab.url }]},
                 { options: [{ type: "other", value: "" }]}
@@ -337,10 +342,11 @@ export class BackgroundRecorder {
         if (message.insertBeforeLastCommand) {
             this.root.fileController.addCommandBeforeLastCommand(message.command, message.target, message.value);
         } else {
-            this.notification(message.command, message.target.options[0].value, message.value.options[0].value);
+            if(!this.root.api){ 
+                this.notification(message.command, message.target.options[0].value, message.value.options[0].value); 
+            } 
             let selectedCaseIdText = this.root.fileController.getSelectedCases()[0];
             let index = this.root.fileController.getRecordNum(selectedCaseIdText);
-            // console.log(message.preWaitTime);
             if (index > 0) {
                 this.root.fileController.setRecordPreWaitTime(selectedCaseIdText, index - 1, message.preWaitTime);
             }
@@ -439,8 +445,11 @@ export class BackgroundRecorder {
             browser.webNavigation.onCreatedNavigationTarget.addListener(this.tabsCreatedHandler);
         }
         MessageController.addListener(this.commandHandler);
-        if(!this.root.api)
-            this.attachDOMRecorder();
+        if(!this.root.api){ 
+            this.attachDOMRecorder(); 
+        }else{ 
+            MessageController.tabSendMessage({ action: "AttachRecorder" }); 
+        } 
     }
 
     /**
@@ -459,7 +468,9 @@ export class BackgroundRecorder {
             browser.runtime.onMessage.removeListener(this.commandHandler);
             window.removeEventListener("message", this.commandHandler);
             this.detachDOMRecorder();
-        }
+        }else{ 
+            MessageController.tabSendMessage({ action: "DetachRecorder" }); 
+        } 
     }
 
     /**

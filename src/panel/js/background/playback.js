@@ -228,7 +228,6 @@ export class Playback {
         this.caseFailed = false;
         this.curPlayIndex.push({ direction: 0, index: fromIndex - 1 });
         try {
-            // console.log("inside");
             if(!this.root.api){
                 console.log(this.windowController);
                 await this.windowController.init();
@@ -363,9 +362,7 @@ export class Playback {
             if (this.isStop) return;
 
             try {
-                console.log("hi");
                 await this.dispatchCommand(JSON.stringify(this.curPlayIndex), command);
-                console.log("after hi");
                 break;
             } catch (e) {
                 console.error(e);
@@ -400,7 +397,6 @@ export class Playback {
                 }
             }
         } while (!this.commandFailed);
-        console.log("come here");
         if (this.determineCommandType(command.name) == Playback.COMMAND_TYPE_CONTENT ||
             this.determineCommandType(command.name) == Playback.COMMAND_TYPE_EXTENSION_SELECT) {
             while (!this.commandFailed) {
@@ -550,15 +546,15 @@ export class Playback {
         let record = this.root.fileController.getRecord(caseIdText, recordNum);
         let selectValue = record.value.selectValue;
         let text = record.value.text;
-        console.log(name);
-        console.log(recordNum);
-        console.log(caseIdText);
-        console.log(record);
-        console.log(selectValue);
-        console.log(text);
-        console.log(target);
-        console.log(value);
-        console.log(this.determineCommandType(name));
+        // console.log(name);
+        // console.log(recordNum);
+        // console.log(caseIdText);
+        // console.log(record);
+        // console.log(selectValue);
+        // console.log(text);
+        // console.log(target);
+        // console.log(value);
+        // console.log(this.determineCommandType(name));
         switch (this.determineCommandType(name)) {
             case Playback.COMMAND_TYPE_CONTENT:
             case Playback.COMMAND_TYPE_CONTEXTMENU: {
@@ -594,14 +590,14 @@ export class Playback {
     handleCommandResult(result) {
         if(this.root.api){
             if (result === "Success") {
-                console.log("Success");
+                // console.log("Success");
                 return true;
             } else {
                 return Promise.reject(result.message);
             }
         }else{
             if (result.status) {
-                console.log("true");
+                // console.log("true");
                 return true;
             } else {
                 return Promise.reject(result.message);

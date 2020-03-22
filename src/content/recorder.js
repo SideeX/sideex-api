@@ -14,7 +14,9 @@
  *  limitations under the License.
  *
  */
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
 import { Utils } from "../common/utils";
 import { LocatorBuilders } from "./locatorBuilders";
 import { recorderHandlersInit } from "./recorder-handlers";
@@ -123,7 +125,7 @@ export class Recorder {
             return;
         }
         this.attached = false;
-        this.observer.disconnect();
+        // this.observer.disconnect();
         for (let eventKey in this.eventListeners) {
             var eventInfo = this.parseEventKey(eventKey);
             var eventName = eventInfo.eventName;

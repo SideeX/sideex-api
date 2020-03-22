@@ -130,7 +130,7 @@ export class LoadFile {
         //         this.parent.setSelectedCases([caseIdTexts[0]]) :
         //         this.parent.setSelectedSuites(selectedSuites);
         // }
-        console.log(fileText);
+        // console.log(fileText);
         let obj = JSON.parse(fileText);
             for (let suite of obj.suites) {
                 let cases = suite.cases;
@@ -154,7 +154,7 @@ export class LoadFile {
     }
 
     readFile(file) {
-        console.log(file);
+        // console.log(file);
         if (!file.type.includes("json")) return;
 
         let reader = new FileReader();
@@ -181,7 +181,7 @@ export class LoadFile {
             //     }
             // }
             let result = this.checkLoadedFile(fileText);
-            console.log(result);
+            // console.log(result);
             if (!result.isSideex || !(result.version.format.length > 0 && result.version.format[0] >= 2)) {
                 app.setModal({
                     isOpen: true, type: "alert",
@@ -231,7 +231,7 @@ export class LoadFile {
         // }
         let obj = JSON.parse(input);
         if (!obj.version) return { isSideex: boolean, version: SideeXVersion };
-        console.log(obj);
+        // console.log(obj);
         result.isSideex = obj.version.sideex ? true : false;
         result.version = obj.version.format ? obj.version : result.version;
         

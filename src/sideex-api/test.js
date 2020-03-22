@@ -59,20 +59,18 @@ cases.addEventListener("click", ()=>{
     console.log(sideex.file.testCase.get("case-0"));
 }, false); 
 yellow.addEventListener("click", ()=>{
-    
+    yellow.style.backgroundColor = "yellow";
 }, false);
 white.addEventListener("click", ()=>{
     console.log(sideex.recorder.stop());
 }, false);
 tests.addEventListener("click", ()=>{
-    console.log(sideex.file.testSuite.add());
-    console.log(sideex.file.testSuite.getSelected());
-    console.log(sideex.file.testCase.add());
-    console.log(sideex.file.testCase.getSelected());
+    console.log(sideex.file.testSuite.getSelected())
+    console.log(sideex.file.testCase.getSelected());;
+    console.log(sideex.file.record.get(0));
+    console.log(sideex.test.selectForm("showText", 0));
 }, false);
 color.addEventListener("click", ()=>{
-    console.log(sideex.log.get("logs"));
-    console.log(sideex.log.get("typeMap"));
     console.log(sideex.recorder.start());
 },false);
 
