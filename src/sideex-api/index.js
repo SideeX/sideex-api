@@ -545,32 +545,54 @@ export class SideeX {
         };
 
         this.test = {
-            selectForm: (value, recordNum) => {
-
+            findIndex: function(list, str){
+                let i;
+                for(i = 0; i < list.length; i++){
+                    if(list[i].indexOf(str) != -1){
+                        return i;
+                    }
+                }
+                return -1;
+            },
+            convertCommand: (recordNum, cmdName, value) => {
                 let caseIdText = this.root.fileController.getSelectedCases()[0];
                 let record = this.root.fileController.getRecord(caseIdText, recordNum);
-                record.name = "animation";
-                if(record.value.selectValue.indexOf(value) != -1){
-                    if(record.value.selectValue.indexOf(",") == -1){
-                        return;
-                    }
-                    record.value.selectValue = record.value.selectValue.replace(",", "");
-                    record.value.selectValue = record.value.selectValue.replace(value, "");
-                }else{
-                    record.value.selectValue = record.value.selectValue.concat(",", value);
+                record.name = cmdName;
+                let passstr = "";
+                var passValue = {
+                    value: 0,
+                    selectValue: "",
+                    showText: "",
+                    typeWriting: "",
                 }
-                console.log(record.value.selectValue);
-                console.log(record.value);
+                let passlist = record.value.options[0].value.split(" | ");
+                passValue.value = passlist[0];
+                if(this.test.findIndex(passlist, "selectValue") != -1){
+                    let index = this.test.findIndex(passlist, "selectValue");
+                    let tempstr = passlist[index];
+                    tempstr = tempstr.replace("selectValue:" ,"");
+                    if(tempstr.indexOf(value) != -1){
+                        tempstr = tempstr.replace(",", "");
+                        tempstr = tempstr.replace(value, "");
+                    }else{
+                        tempstr = tempstr.concat(",", value);
+                    }
+                    console.log(tempstr);
+                    passValue.selectValue = tempstr;
+                }else{
+                    passValue.selectValue = value;
+                }
                 if(value == "showText"){
                     let str = prompt("enter the text");
-                    record.value.text[0] = str;    
+                    passValue.showText = str;    
                 }
-                if(value == "typewriting"){
+                if(value == "typeWriting"){
                     let str = prompt("enter the text");
-                    record.value.text[1] = str;    
+                    passValue.typewriting = str;    
                 }
-            }
-
-        };
+                passstr = passstr.concat(passValue.value, " | ", "selectValue:", passValue.selectValue, " | ", "showText:", passValue.showText, " | ", "typeWriting:", passValue.typeWriting);
+                record.value.options[0].value = passstr;
+                }
+            };
+        }
     }
-}

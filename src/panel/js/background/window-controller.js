@@ -151,7 +151,7 @@ export class WindowController {
         return tabs[0];
     }
 
-    async sendCommand(command, target, value, index, selectValue, text, top) {
+    async sendCommand(command, target, value, index, top) {
         let tabId = this.getCurrentPlayingTabId();
         console.log(tabId);
         let frameId = this.getCurrentPlayingFrameId();
@@ -163,8 +163,6 @@ export class WindowController {
             target: target,
             value: value,
             index: index,
-            selectValue: selectValue,
-            text: text,
         }, tabId, { frameId: top ? 0 : frameId });
     }
 

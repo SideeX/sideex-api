@@ -31,14 +31,12 @@ MessageController.addListener(async function doCommands(request) {
             console.log("command", request.command);
             let command = request.command;
             let value = request.value;
-            let selectValue = request.selectValue;
-            let text = request.text;
-            console.log(command, value, selectValue);
+            console.log(command, value);
             if (sideex.hasCommand(command)) {
                 document.documentElement.setAttribute("SideeXPlayingFlag", true);
                 let target = await sideex.doVerifyLocator(request);
                 try {
-                    await sideex.doCommand(command, target, value, selectValue, text);
+                    await sideex.doCommand(command, target, value);
                     if(command == "animation"){
                         await sideex.commandWait(target);
                     }

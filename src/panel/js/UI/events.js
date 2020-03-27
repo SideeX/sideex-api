@@ -264,9 +264,25 @@ export default {
     },
 
     workArea: {
+        findIndex: function(list, str){
+            let i;
+            for(i = 0; i < list.length; i++){
+                if(list[i].indexOf(str) != -1){
+                    return i;
+                }
+            }
+            return -1;
+        },
         selectForm: function(event, recordNum){
             let caseIdText = root.fileController.getSelectedCases()[0];
             let record = root.fileController.getRecord(caseIdText, recordNum);
+            let passstr = "";
+            var passValue = {
+                value: 0,
+                selectValue: "",
+                showText: "",
+                typeWriting: "",
+            }
             if(event.target.value == "clickAnimation"){
                 if(record.value.btnColor[0] == "gray"){
                     record.value.btnColor[0] = "green";
@@ -291,7 +307,7 @@ export default {
                         record.value.btnColor[2] = "gray";
                     }
                 }
-            }else if(event.target.value == "typewriting"){
+            }else if(event.target.value == "typeWriting"){
                 if(record.value.btnColor[3] == "gray"){
                     record.value.btnColor[3] = "blue";
                 }else{
@@ -300,26 +316,36 @@ export default {
                     }
                 }
             } 
-            if(record.value.selectValue.indexOf(event.target.value) != -1){
-                if(record.value.selectValue.indexOf(",") == -1){
-                    return;
+            console.log(record.value.options[0].value);
+            let passlist = record.value.options[0].value.split(" | ");
+            console.log(passlist);
+            passValue.value = passlist[0];
+            if(this.findIndex(passlist, "selectValue") != -1){
+                let index = this.findIndex(passlist, "selectValue");
+                let tempstr = passlist[index];
+                tempstr = tempstr.replace("selectValue:" ,"");
+                if(tempstr.indexOf(event.target.value) != -1){
+                    tempstr = tempstr.replace(",", "");
+                    tempstr = tempstr.replace(event.target.value, "");
+                }else{
+                    tempstr = tempstr.concat(",", event.target.value);
                 }
-                record.value.selectValue = record.value.selectValue.replace(",", "");
-                record.value.selectValue = record.value.selectValue.replace(event.target.value, "");
+                console.log(tempstr);
+                passValue.selectValue = tempstr;
             }else{
-                record.value.selectValue = record.value.selectValue.concat(",", event.target.value);
+                passValue.selectValue = event.target.value;
             }
-            console.log(record.value.selectValue);
-            console.log(record.value);
             if(event.target.value == "showText"){
                 let str = prompt("enter the text");
-                record.value.text[0] = str;    
+                passValue.showText = str;    
             }
-            if(event.target.value == "typewriting"){
+            if(event.target.value == "typeWriting"){
                 let str = prompt("enter the text");
-                record.value.text[1] = str;    
+                passValue.typewriting = str;    
             }
-            console.log(record.value.btnColor);
+            passstr = passstr.concat(passValue.value, " | ", "selectValue:", passValue.selectValue, " | ", "showText:", passValue.showText, " | ", "typeWriting:", passValue.typeWriting);
+            console.log(passstr);
+            record.value.options[0].value = passstr;
             workArea.syncCommands();
         },
         clickAddCommand: function (event) {

@@ -47,8 +47,8 @@ export class Sideex {
     hasCommand(command) {
         return Sideex.commands[command] != null;
     }
-    async doCommand(command, target, value, selectValue, text) {
-        return await Sideex.commands[command].call(this, target, value, selectValue, text);
+    async doCommand(command, target, value) {
+        return await Sideex.commands[command].call(this, target, value);
     }
     async doAutoWait(type, value) {
         this.window.postMessage({
@@ -410,14 +410,17 @@ Sideex.commands = {
          *
          */
 
-    async animation(locator, coordString, selectValue, text){
+    async animation(locator, coordString){
+        console.log(coordString);
+        var list = coordString.split(" | ");
+        console.log(list);
+        coordString = list[0];
         var element = this.browserBot.findElement(locator);
         var clientXY = this.getClientXY(element, coordString);
         var body = document.getElementsByTagName("body");
         var originalzIndex = element.style.zIndex;
         element.doClick = 0;
-        console.log(text);
-        if(selectValue.indexOf("clickAnimation") != -1){
+        if(list[1].indexOf("clickAnimation") != -1){
             var newDiv1 = document.createElement("div");
             var triangle = document.createElement("div");
             var rectangle = document.createElement("div");
@@ -456,7 +459,7 @@ Sideex.commands = {
                 newDiv1.style.right = 0 + "px";
             }
         }
-        if(selectValue.indexOf("focus") != -1){
+        if(list[1].indexOf("focus") != -1){
             var newDiv2 = document.createElement("div");
             newDiv2.style.position = "absolute";
             newDiv2.style.height = element.offsetHeight + "px";
@@ -469,7 +472,7 @@ Sideex.commands = {
             // 2147483647 is maximum
             body[0].appendChild(newDiv2);
         }
-        if(selectValue.indexOf("showText") != -1){
+        if(list[1].indexOf("showText") != -1){
             var newDiv3 = document.createElement("div");
             newDiv3.style.backgroundColor = "#6d96dd";
             newDiv3.style.border = "3px #173581 solid";
@@ -482,13 +485,15 @@ Sideex.commands = {
             newDiv3.style.zIndex = 9999;
             newDiv3.style.color = "white";
             newDiv3.style.textAlign = "center";
-            newDiv3.textContent = text[0];
+            list[2] = list[2].replace("showText:", "");
+            newDiv3.textContent = list[2];
             body[0].appendChild(newDiv3);
         }
-        if(selectValue.indexOf("typewriting") != -1){
+        if(list[1].indexOf("typeWriting") != -1){
+            list[3] = list[3].replace("typeWriting:", "");
             this.writing(text[1], element, this.writing);
         }
-        if(selectValue.indexOf("clickAnimation") != -1){
+        if(list[1].indexOf("clickAnimation") != -1){
             element.addEventListener("click", function(){
                 if(newDiv1) {
                     body[0].removeChild(newDiv1);

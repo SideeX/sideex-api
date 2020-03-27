@@ -15,9 +15,6 @@ class RecordLine extends React.Component {
         this.recordElement;
     }
 
-    isClick(recordInfo) {
-        console.log(recordInfo)
-    }
     createSnapshotIcon(recordInfo) {
         let snapshotIdText = recordInfo.screenshot;
         if (snapshotIdText != "") {
@@ -95,7 +92,6 @@ class RecordLine extends React.Component {
                             onClick={(event) => {
                                 let recordNum = recordInfo.id.split('-')[1];
                                 events.workArea.selectForm(event, recordNum);
-                                this.isClick(recordInfo);
                             }}>C
                             <div style = {{height: "5px", width: "10px", display: "none"}}>clickAnimation</div>
                         </Button>
@@ -103,21 +99,18 @@ class RecordLine extends React.Component {
                             onClick={(event) => {
                                 let recordNum = recordInfo.id.split('-')[1];
                                 events.workArea.selectForm(event, recordNum);
-                                this.isClick(recordInfo);
                             }}>F
                         </Button>
                         <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[2]}} className={cls.buttonabc} value="showText" title = "showText" 
                             onClick={(event) => {
                                 let recordNum = recordInfo.id.split('-')[1];
                                 events.workArea.selectForm(event, recordNum);
-                                this.isClick(recordInfo);
                             }}>S
                         </Button>
                         <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[3]}} className={cls.buttonabc} value="typewriting" title = "typewriting"
                             onClick={(event) => {
                                 let recordNum = recordInfo.id.split('-')[1];
                                 events.workArea.selectForm(event, recordNum);
-                                this.isClick(recordInfo);
                             }}>T</Button>
                     </ButtonToolbar>
                 </Col>
