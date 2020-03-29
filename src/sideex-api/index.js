@@ -11,6 +11,8 @@ import { Log } from '../panel/js/background/log';
 import "../content/command-receiver-for-api";
 import "../content/recorder-handlers"
 import {Recorder} from "../content/recorder"
+import { conditionalExpression } from "@babel/types";
+
 export class SideeX {
     constructor() {
         this.root = { isDOMBased: false };
@@ -267,37 +269,37 @@ export class SideeX {
         };
         this.variables = {
             add: (name, value) => {                         // ("var-0", 1)
-                return this.root.variables.addVariable(name, value);
+                return self.root.variables.addVariable(name, value);
             },
             get: (target = "vars") => {
                 switch (target) {
                     case "count":
-                        return this.root.variables.getVarNum();
+                        return self.root.variables.getVarNum();
                     case "startNum":
-                        return this.root.variables.globalVars.startNum;
+                        return self.root.variables.globalVars.startNum;
                     case "varNames":
-                        return this.root.variables.globalVars.varNames;
+                        return self.root.variables.globalVars.varNames;
                     case "vars":
-                        return this.root.variables.globalVars.vars;
+                        return self.root.variables.globalVars.vars;
                     default:
                         break;
                 }
             },
             delete: (varIdText) => {                        // (["var-0"])
-                this.root.variables.deleteVariable(varIdText);
+                self.root.variables.deleteVariable(varIdText);
                 return varIdText;
             },
             clearAll: () => {
-                this.root.variables.clearVariables();
+                self.root.variables.clearVariables();
             },
             changeName: (varIdText, name) => {
                 if (varIdText)
-                    this.root.variables.updateVarName(varIdText, name);
+                    self.root.variables.updateVarName(varIdText, name);
                 return { varIdText, name };
             },
             changeValue: (varIdText, value) => {
                 if (varIdText)
-                    this.root.variables.updateVarValue(varIdText, value);
+                    self.root.variables.updateVarValue(varIdText, value);
                 return { varIdText, value };
             }
         };
@@ -305,32 +307,32 @@ export class SideeX {
             get: (target) => {
                 switch (target) {
                     case "logs":
-                        return this.root.log.logs;
+                        return self.root.log.logs;
                     case "typeMap":
-                        return this.root.log.logTypeMap;
+                        return self.root.log.logTypeMap;
                     default:
                         break;
                 }
             },
             clear: () => {
-                this.root.fileController.clearLog();
-                this.root.log.clearLog();
-                return this.root.log.logs;
+                self.root.fileController.clearLog();
+                self.root.log.clearLog();
+                return self.root.log.logs;
             }
         };
         this.recorder = {
-            start: (caseIdText = this.root.fileController.getSelectedCases()[0]) => {
+            start: (caseIdText = self.root.fileController.getSelectedCases()[0]) => {
                 if (caseIdText === undefined) {
-                    this.root.recorder.prepareRecord();
-                    caseIdText = this.root.fileController.getSelectedCases()[0];
+                    self.root.recorder.prepareRecord();
+                    caseIdText = self.root.fileController.getSelectedCases()[0];
                 }
-                if (this.root.fileController.getTestCase(caseIdText)) {
+                if (self.root.fileController.getTestCase(caseIdText)) {
                     console.log("Recording");
-                    this.root.fileController.setSelectedCases([caseIdText]);
-                    this.root.recorder.attach();
-                    this.root.recorder.notificationCount = 0;
+                    self.root.fileController.setSelectedCases([caseIdText]);
+                    self.root.recorder.attach();
+                    self.root.recorder.notificationCount = 0;
 
-                    this.root.recorder.isRecord = true;
+                    self.root.recorder.isRecord = true;
                     //EntryPoint.toolBar.syncButtonState();
                     //EntryPoint.fileList.syncFiles();
                 } else {
@@ -341,8 +343,8 @@ export class SideeX {
             },
             stop: () => {
                 console.log("Stop");
-                this.root.recorder.detach();
-                this.root.recorder.isRecord = false;
+                self.root.recorder.detach();
+                self.root.recorder.isRecord = false;
 
                 //EntryPoint.toolBar.syncButtonState();
                 //EntryPoint.fileList.syncFiles();
@@ -353,30 +355,30 @@ export class SideeX {
                 if (value < 0 || value > 5) {
                     return this.root.log.pushLog('error', 'speed should be set from range 1 to 5');
                 } else {
-                    this.root.setting.set({ delay: 500 * (5 - value) });
+                    self.root.setting.set({ delay: 500 * (5 - value) });
                     //EntryPoint.toolBar.updateSpeed(parseInt(value));
                     return value;
                 }
             },
             getSpeed: () => {
-                let speed = 5 - (this.root.setting.params.delay / 500);
+                let speed = 5 - (self.root.setting.params.delay / 500);
                 return speed;
             }
         };
         this.playback = {
             start: (mode = "all", idText = undefined, speed = 5) => {
-                this.setting.setSpeed(speed);
+                self.setting.setSpeed(speed);
 
-                this.root.recorder.isRecord = false;
-                this.root.playback.isPlay = true;
-                this.root.recorder.detach();
+                self.root.recorder.isRecord = false;
+                self.root.playback.isPlay = true;
+                self.root.recorder.detach();
                 switch (mode) {
                     case "case": {
                         console.log("case");
-                        let caseIdText = idText === undefined ? this.root.fileController.getSelectedCases()[0] : idText;
-                        if (this.root.fileController.getTestCase(caseIdText)) {
-                            this.root.fileController.setSelectedCases([caseIdText]);
-                            this.root.playback.doPlay(0, 0); // Playback.PLAY_CASE
+                        let caseIdText = idText === undefined ? self.root.fileController.getSelectedCases()[0] : idText;
+                        if (self.root.fileController.getTestCase(caseIdText)) {
+                            self.root.fileController.setSelectedCases([caseIdText]);
+                            self.root.playback.doPlay(0, 0); // Playback.PLAY_CASE
                             return caseIdText;
                         } else {
                             if (caseIdText) {
@@ -388,10 +390,10 @@ export class SideeX {
                     }
                     case "suite": {
                         console.log("suite");
-                        let suiteIdText = idText === undefined ? this.root.fileController.getSelectedSuites()[0] : idText;
-                        if (this.root.fileController.getTestSuite(suiteIdText)) {
-                            this.root.fileController.setSelectedSuites([suiteIdText]);
-                            this.root.playback.doPlay(1, 0); // Playback.PLAY_CASE
+                        let suiteIdText = idText === undefined ? self.root.fileController.getSelectedSuites()[0] : idText;
+                        if (self.root.fileController.getTestSuite(suiteIdText)) {
+                            self.root.fileController.setSelectedSuites([suiteIdText]);
+                            self.root.playback.doPlay(1, 0); // Playback.PLAY_CASE
                             return suiteIdText;
                         } else {
                             if (suiteIdText) {
@@ -403,11 +405,11 @@ export class SideeX {
                     }
                     case "all": {
                         console.log("all");
-                        let caseIdText = idText === undefined ? this.root.fileController.getSelectedCases()[0] : idText;
-                        if (this.root.fileController.getTestCase(caseIdText) === undefined) {
+                        let caseIdText = idText === undefined ? self.root.fileController.getSelectedCases()[0] : idText;
+                        if (self.root.fileController.getTestCase(caseIdText) === undefined) {
                             throw new Error("There is no suites available, please record one first");
                         }
-                        this.root.playback.doPlay(2, 0); // Playback.PLAY_ALL_SUITES
+                        self.root.playback.doPlay(2, 0); // Playback.PLAY_ALL_SUITES
                         break;
                     }
                 }
@@ -415,24 +417,46 @@ export class SideeX {
 
             },
             stop: () => {
-                this.root.playback.stop();
+                self.root.playback.stop();
 
-                this.root.playback.isPlay = false;
+                self.root.playback.isPlay = false;
                 //EntryPoint.toolBar.syncButtonState();
             },
             pause: () => {
-                this.root.playback.pause();
+                self.root.playback.pause();
 
-                this.root.playback.isPlay = false;
-                this.root.playback.isPause = true;
+                self.root.playback.isPlay = false;
+                self.root.playback.isPause = true;
                 //EntryPoint.toolBar.syncButtonState();
             },
             resume: () => {
-                this.root.playback.resume();
+                self.root.playback.resume();
 
-                this.root.playback.isPlay = true;
-                this.root.playback.isPause = false;
+                self.root.playback.isPlay = true;
+                self.root.playback.isPause = false;
                 //EntryPoint.toolBar.syncButtonState();
+            },
+            addCommand: (cmdName, isDoSnapshot, type, isManual, verifyLocator, reference, code) => {
+                
+                self.root.playback.commandReferences[cmdName] = {
+                    isDoSnapshot: isDoSnapshot,
+                    type: {
+                            record: type.record,
+                            playback: type.playback
+                    },
+                    isManual: isManual,
+                    verifyLocator: verifyLocator,
+                    reference: {
+                            name: reference.name,
+                            target: reference.target,
+                            value: reference.value,
+                            description: reference.description
+                    }
+
+                };
+                // console.log(self.root.playback);
+                self.root.playback.sideex.addCommand(cmdName, code);
+                
             }
         };
         this.others = {
@@ -545,54 +569,10 @@ export class SideeX {
         };
 
         this.test = {
-            findIndex: function(list, str){
-                let i;
-                for(i = 0; i < list.length; i++){
-                    if(list[i].indexOf(str) != -1){
-                        return i;
-                    }
-                }
-                return -1;
+            addFunction: (name, code) => {
+                self.test[name] = code;
             },
-            convertCommand: (recordNum, cmdName, value) => {
-                let caseIdText = this.root.fileController.getSelectedCases()[0];
-                let record = this.root.fileController.getRecord(caseIdText, recordNum);
-                record.name = cmdName;
-                let passstr = "";
-                var passValue = {
-                    value: 0,
-                    selectValue: "",
-                    showText: "",
-                    typeWriting: "",
-                }
-                let passlist = record.value.options[0].value.split(" | ");
-                passValue.value = passlist[0];
-                if(this.test.findIndex(passlist, "selectValue") != -1){
-                    let index = this.test.findIndex(passlist, "selectValue");
-                    let tempstr = passlist[index];
-                    tempstr = tempstr.replace("selectValue:" ,"");
-                    if(tempstr.indexOf(value) != -1){
-                        tempstr = tempstr.replace(",", "");
-                        tempstr = tempstr.replace(value, "");
-                    }else{
-                        tempstr = tempstr.concat(",", value);
-                    }
-                    console.log(tempstr);
-                    passValue.selectValue = tempstr;
-                }else{
-                    passValue.selectValue = value;
-                }
-                if(value == "showText"){
-                    let str = prompt("enter the text");
-                    passValue.showText = str;    
-                }
-                if(value == "typeWriting"){
-                    let str = prompt("enter the text");
-                    passValue.typewriting = str;    
-                }
-                passstr = passstr.concat(passValue.value, " | ", "selectValue:", passValue.selectValue, " | ", "showText:", passValue.showText, " | ", "typeWriting:", passValue.typeWriting);
-                record.value.options[0].value = passstr;
-                }
+
             };
         }
     }

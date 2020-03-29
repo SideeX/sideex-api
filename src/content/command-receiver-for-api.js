@@ -21,7 +21,6 @@ import { MessageController } from "../content/message-controller";
 
 var targetSelecter = null;
 MessageController.addListener(async function doCommands(request) {
-    console.log(request);
     request = request.data;
     switch (request.action) {
         case "Wait": {

@@ -19,15 +19,19 @@ import { WindowController } from './window-controller';
 import { Preprocessor } from './preprocessor';
 import { Utils } from "../../../common/utils";
 import * as EntryPoint from "../UI/entryPoint";
+import { commandReferences } from "../../../common/command";
+import {sideex} from "../../../content/content-initialization";
 
 export class Playback {
     constructor(root) {
         this.root = root;
-
+        this.sideex = sideex;
         this.shutdown = false;
         this.isPlay = false;
         this.isPause = false;
         this.isStop = false;
+
+        this.commandReferences = commandReferences;
         
         this.playMode = 0;
         this.playSuites = [];
@@ -397,18 +401,18 @@ export class Playback {
                 }
             }
         } while (!this.commandFailed);
-        if (this.determineCommandType(command.name) == Playback.COMMAND_TYPE_CONTENT ||
-            this.determineCommandType(command.name) == Playback.COMMAND_TYPE_EXTENSION_SELECT) {
-            while (!this.commandFailed) {
-                try {
-                    await this.doAutoWaitSeries(command.preWaitTime);
-                    break;
-                } catch (e) {
-                    console.log(e);
-                    continue;
-                }
-            }
-        }
+        // if (this.determineCommandType(command.name) == Playback.COMMAND_TYPE_CONTENT ||
+        //     this.determineCommandType(command.name) == Playback.COMMAND_TYPE_EXTENSION_SELECT) {
+        //     while (!this.commandFailed) {
+        //         try {
+        //             await this.doAutoWaitSeries(command.preWaitTime);
+        //             break;
+        //         } catch (e) {
+        //             console.log(e);
+        //             continue;
+        //         }
+        //     }
+        // }
     }
 
     finishCommand(isFail, record) {
@@ -542,18 +546,9 @@ export class Playback {
         let recordNum = index.split("index")[3][2];
         let caseIdText = this.root.fileController.getSelectedCases()[0];
         let record = this.root.fileController.getRecord(caseIdText, recordNum);
-        // console.log(name);
-        // console.log(recordNum);
-        // console.log(caseIdText);
-        // console.log(record);
-        // console.log(selectValue);
-        // console.log(text);
-        // console.log(target);
-        // console.log(value);
-        // console.log(this.determineCommandType(name));
         switch (this.determineCommandType(name)) {
-            case Playback.COMMAND_TYPE_CONTENT:
-            case Playback.COMMAND_TYPE_CONTEXTMENU: {
+            case "content":
+            case "contextmenu": {
                 if(this.root.api){
                     result = await this.sendCommand(name, target, value, index);
                 }else{
@@ -562,12 +557,12 @@ export class Playback {
                 console.log(result);
                 return this.handleCommandResult(result);
             }
-            case Playback.COMMAND_TYPE_EXTENSION:
-            case Playback.COMMAND_TYPE_EXTENSION_SELECT: {
+            case "extension":
+            case "extension_select": {
                 let commandCapital = `${name.charAt(0).toUpperCase()}${name.slice(1)}`;
                 return this.windowController[`do${commandCapital}`](target, value);
             }
-            case Playback.COMMAND_TYPE_PANEL: {
+            case "panel": {
                 return Promise.resolve();
             }
             default: {
@@ -616,62 +611,8 @@ export class Playback {
     }
 
     determineCommandType(command) {
-        switch (command) {
-            case "open":
-            case "runScript":
-            case "clickAt":
-            case "animation":
-            case "onclick":
-            case "echo":
-            case "doubleClickAt":
-            case "rightClickAt":
-            case "mouseDownAt":
-            case "mouseMoveAt":
-            case "mouseOut":
-            case "mouseOver":
-            case "mouseUpAt":
-            case "dragAndDrop":
-            case "dragAndDropToObject":
-            case "sendKeys":
-            case "submit":
-            case "onsubmit":
-            case "type":
-            case "editContent":
-            case "addSelection":
-            case "removeSelection":
-            case "select":
-            case "answerOnNextPrompt":
-            case "chooseCancelOnNextPrompt":
-            case "assertPrompt":
-            case "chooseOkOnNextConfirmation":
-            case "chooseCancelOnNextConfirmation":
-            case "assertConfirmation":
-            case "assertAlert":
-            case "waitForElementPresent":
-            case "setCSS":
-                return Playback.COMMAND_TYPE_CONTENT;
-            case "close":
-            case "pause":
-                return Playback.COMMAND_TYPE_EXTENSION;
-            case "selectWindow":
-            case "selectFrame":
-                return Playback.COMMAND_TYPE_EXTENSION_SELECT;
-            case "store":
-            case "storeGlobalVars":
-            case "storeText":
-            case "storeTitle":
-            case "storeValue":
-            case "verifyText":
-            case "verifyTitle":
-            case "verifyValue":
-            case "verifyVisibility":
-            case "assertText":
-            case "assertTitle":
-            case "assertValue":
-                return Playback.COMMAND_TYPE_CONTEXTMENU;
-            default:
-                return Playback.COMMAND_TYPE_UNDEFINED;
-        }
+        if (!(command in commandReferences)) return "undefined";
+        return commandReferences[command].type.playback;
     }
 }
 
