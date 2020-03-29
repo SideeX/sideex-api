@@ -11,7 +11,6 @@ import { Log } from '../panel/js/background/log';
 import "../content/command-receiver-for-api";
 import "../content/recorder-handlers"
 import {Recorder} from "../content/recorder"
-import { conditionalExpression } from "@babel/types";
 
 export class SideeX {
     constructor() {
