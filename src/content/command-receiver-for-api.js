@@ -21,7 +21,8 @@ import { MessageController } from "../content/message-controller";
 
 var targetSelecter = null;
 MessageController.addListener(async function doCommands(request) {
-    request = request.data;
+    // console.log(request);
+    // request = request.data;
     switch (request.action) {
         case "Wait": {
             await sideex.doAutoWait(request.command, request.value);
@@ -102,7 +103,7 @@ MessageController.addListener(async function doCommands(request) {
             return {};
         }
         default:
-            throw new Error("Action not found");
+            // throw new Error("Action not found");
     }
 });
 

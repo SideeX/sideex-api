@@ -274,6 +274,10 @@ export class Utils {
 
         }
     }
+    static is<T>(_target: any, expression: boolean = true): _target is T {
+        return expression;
+    }
+    
     static SeleniumError = class extends Error {
         isSeleniumError: boolean = true
         constructor(message: string) {

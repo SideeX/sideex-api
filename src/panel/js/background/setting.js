@@ -1,4 +1,6 @@
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
 import { boundMethod } from "autobind-decorator";
 export class Setting {
     constructor(root) {

@@ -15,7 +15,9 @@
  *
  */
 
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
 
 /**
  * A copy of data storage in an extension

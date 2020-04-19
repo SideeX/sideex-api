@@ -1,4 +1,6 @@
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
 import platform from "platform";
 import { FileController } from '../panel/js/IO/file-controller';
 // import {LoadFile} from '../panel/js/IO/load-file';
@@ -10,7 +12,8 @@ import { Setting } from "../panel/js/background/setting";
 import { Log } from '../panel/js/background/log';
 import "../content/command-receiver-for-api";
 import "../content/recorder-handlers"
-import {Recorder} from "../content/recorder"
+import { Recorder } from "../content/recorder"
+import { locatorBuilders } from "../content/content-initialization";
 
 export class SideeX {
     constructor() {
@@ -435,8 +438,7 @@ export class SideeX {
                 self.root.playback.isPause = false;
                 //EntryPoint.toolBar.syncButtonState();
             },
-            addCommand: (cmdName, isDoSnapshot, type, isManual, verifyLocator, reference, code) => {
-                
+            addCustomCommand: (cmdName, isDoSnapshot = true, type = {record: "mouse", playback: "content"}, isManual = false, verifyLocator = true, reference = {name: cmdName, target: "A locator", value: "", description: ""}, code) => {    
                 self.root.playback.commandReferences[cmdName] = {
                     isDoSnapshot: isDoSnapshot,
                     type: {
@@ -453,10 +455,28 @@ export class SideeX {
                     }
 
                 };
-                // console.log(self.root.playback);
                 self.root.playback.sideex.addCommand(cmdName, code);
                 
+            },
+            commandWait: async (target) => {
+                // console.log(self.root.playback.sideex.commandWait(target))
+                console.log(target)
+                console.log(self.root.playback.sideex.commandWait(target))
+                return (self.root.playback.sideex.commandWait(target));   
+            },
+
+            findElement: (locator) => {
+                console.log(locator)
+                // console.log(self.root.playback.sideex.browserBot.findElement(locator));
+                return (self.root.playback.sideex.browserBot.findElement(locator));   
+            },
+
+            getClientXY: (element, coordString) => {
+                console.log(element);
+                console.log(coordString);
+                return (self.root.playback.sideex.getClientXY(element, coordString));
             }
+                    
         };
         this.others = {
             // selectElement: {
@@ -566,12 +586,5 @@ export class SideeX {
             //     });
             // }
         };
-
-        this.test = {
-            addFunction: (name, code) => {
-                self.test[name] = code;
-            },
-
-            };
-        }
     }
+}

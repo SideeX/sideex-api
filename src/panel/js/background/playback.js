@@ -20,7 +20,7 @@ import { Preprocessor } from './preprocessor';
 import { Utils } from "../../../common/utils";
 import * as EntryPoint from "../UI/entryPoint";
 import { commandReferences } from "../../../common/command";
-import {sideex} from "../../../content/content-initialization";
+import { sideex } from "../../../content/content-initialization";
 
 export class Playback {
     constructor(root) {
@@ -366,6 +366,7 @@ export class Playback {
             if (this.isStop) return;
 
             try {
+                console.log(command);
                 await this.dispatchCommand(JSON.stringify(this.curPlayIndex), command);
                 break;
             } catch (e) {
@@ -579,22 +580,22 @@ export class Playback {
     }
 
     handleCommandResult(result) {
-        if(this.root.api){
-            if (result === "Success") {
-                // console.log("Success");
-                return true;
-            } else {
-                return Promise.reject(result.message);
-            }
-        }else{
-            if (result.status) {
-                // console.log("true");
-                return true;
-            } else {
-                return Promise.reject(result.message);
-            }
-
+        // if(this.root.api){
+        //     if (result === "Success") {
+        //         // console.log("Success");
+        //         return true;
+        //     } else {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        //         return Promise.reject(result.message);
+        //     }
+        // }else{
+        if (result.status) {
+            // console.log("true");
+            return true;
+        } else {
+            return Promise.reject(result.message);
         }
+
+        // }
     }
 
     isReceivingEndError(errorMessage) {

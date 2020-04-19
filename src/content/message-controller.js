@@ -1,12 +1,16 @@
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
+import "../utils/windowListeners"
 
 export class MessageController {
     static tabSendMessage(message, tabId, options) {
         if (this.isExtension) {
             return browser.tabs.sendMessage(tabId, message, options);
         } else {
-            window.postMessage(message);
-            return Promise.resolve('Success');
+            return window.postMessageAsync("message", message);
+            // window.postMessage(message);
+            // return Promise.resolve('Success');
         }
     }
 
@@ -14,8 +18,9 @@ export class MessageController {
         if (this.isExtension) {
             return browser.runtime.sendMessage(extensionId, message, options);
         } else {
-            window.postMessage(message);
-            return Promise.resolve('Success');
+            // window.postMessage(message);
+            // return Promise.resolve('Success');
+            return window.postMessageAsync("message", message);
         }
     }
 
@@ -23,7 +28,8 @@ export class MessageController {
         if (this.isExtension) {
             return browser.runtime.onMessage.addListener(callback);
         } else {
-            return window.addEventListener("message", callback);
+            // return window.addEventListener("message", callback);
+            return window.addAsyncMessageListener("message", callback);
         }
     }
 }

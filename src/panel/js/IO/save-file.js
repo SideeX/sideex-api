@@ -1,6 +1,8 @@
 import { doEscape } from '../../../common/escape';
 import { Utils } from "../../../utils/utils.common";
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
 import { cloneDeep } from "lodash";
 import { fileList } from "../UI/entryPoint";
 

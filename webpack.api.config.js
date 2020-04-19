@@ -2,9 +2,11 @@ var path = require('path');
 var merge = require('webpack-merge');
 const webpack = require('webpack');
 var common = require('./webpack.common.js');
+var nodeExternals = require('webpack-node-externals');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = merge(common, {
+    // externals: [nodeExternals()],
     entry: {
         index: ['./src/sideex-api/index.js'],
         test: ['./src/sideex-api/test.js']

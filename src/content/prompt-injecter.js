@@ -14,7 +14,9 @@
  *  limitations under the License.
  *
  */
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
 import { browserBot } from "./content-initialization";
 let script = document.createElement('script');
 script.src = browser.runtime.getURL('page/prompt.js');

@@ -7,7 +7,9 @@ import PauseIconDisabled from "../../../../../icons/pause_disabled.svg";
 import events from "../../../events";
 import cls from "../style.scss";
 import cx from "classnames";
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
 
 function PauseButton({ mode }) {
     let isDisabled = mode == "default" || mode == "record";

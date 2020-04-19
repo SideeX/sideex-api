@@ -262,9 +262,9 @@ export class BackgroundRecorder {
      * @param {Object} sender Details about message sender
      */
     commandHandler(message, sender) {
-        console.log(message, sender);
+        // console.log(message, sender);
+        // message = message.data;
         if(this.root.api){
-            message = message.data;
             sender = {tab: {windowId: this.w_id, id:this.i_id}};
             this.openedWindowIds[sender.tab.windowId] = true;
         }
@@ -304,34 +304,37 @@ export class BackgroundRecorder {
         if (this.openedTabIds[caseIdText][sender.tab.id] === undefined)
             return;
 
-        if (message.frameLocation !== this.currentRecordingFrameLocation[caseIdText]) {
-            let newFrameLevels = message.frameLocation.split(':');
-            let oldFrameLevels = this.currentRecordingFrameLocation[caseIdText].split(':');
-            while (oldFrameLevels.length > newFrameLevels.length) {
-                this.root.fileController.insertCommand("after", "selectFrame",
-                    { options: [{ type: "other", value: "relative=parent" }]},
-                    { options: [{ type: "other", value: "" }]}
-                );
-                oldFrameLevels.pop();
+        if(!this.root.api){
+            if (message.frameLocation !== this.currentRecordingFrameLocation[caseIdText]) {
+                let newFrameLevels = message.frameLocation.split(':');
+                let oldFrameLevels = this.currentRecordingFrameLocation[caseIdText].split(':');
+                while (oldFrameLevels.length > newFrameLevels.length) {
+                    this.root.fileController.insertCommand("after", "selectFrame",
+                        { options: [{ type: "other", value: "relative=parent" }]},
+                        { options: [{ type: "other", value: "" }]}
+                    );
+                    oldFrameLevels.pop();
+                }
+                while (oldFrameLevels.length !== 0 &&
+                    oldFrameLevels[oldFrameLevels.length - 1] != newFrameLevels[oldFrameLevels.length - 1]
+                ) {
+                    this.root.fileController.insertCommand("after", "selectFrame",
+                        { options: [{ type: "other", value: "relative=parent" }]},
+                        { options: [{ type: "other", value: "" }]}
+                    );
+                    oldFrameLevels.pop();
+                }
+                while (oldFrameLevels.length < newFrameLevels.length) {
+                    this.root.fileController.insertCommand("after", "selectFrame",
+                        { options: [{ type: "other", value: "index=" + newFrameLevels[oldFrameLevels.length] }]},
+                        { options: [{ type: "other", value: "" }]}
+                    );
+                    oldFrameLevels.push(newFrameLevels[oldFrameLevels.length]);
+                }
+                this.currentRecordingFrameLocation[caseIdText] = message.frameLocation;
             }
-            while (oldFrameLevels.length !== 0 &&
-                oldFrameLevels[oldFrameLevels.length - 1] != newFrameLevels[oldFrameLevels.length - 1]
-            ) {
-                this.root.fileController.insertCommand("after", "selectFrame",
-                    { options: [{ type: "other", value: "relative=parent" }]},
-                    { options: [{ type: "other", value: "" }]}
-                );
-                oldFrameLevels.pop();
-            }
-            while (oldFrameLevels.length < newFrameLevels.length) {
-                this.root.fileController.insertCommand("after", "selectFrame",
-                    { options: [{ type: "other", value: "index=" + newFrameLevels[oldFrameLevels.length] }]},
-                    { options: [{ type: "other", value: "" }]}
-                );
-                oldFrameLevels.push(newFrameLevels[oldFrameLevels.length]);
-            }
-            this.currentRecordingFrameLocation[caseIdText] = message.frameLocation;
         }
+        
 
         this.preRecorder.preProcess(message, this.selfWindowId);
         if (this.preRecorder.isReturn()) {

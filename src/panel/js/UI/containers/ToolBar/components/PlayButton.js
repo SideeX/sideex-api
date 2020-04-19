@@ -8,7 +8,9 @@ import React from "react";
 import events from "../../../events";
 import cls from "../style.scss";
 import cx from "classnames";
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
 
 function PlayButton({ mode, setPlay, toggleSetPlayMode, setPlayMode }) {
     const buttonStyle = cx(cls.buttonStyle, {

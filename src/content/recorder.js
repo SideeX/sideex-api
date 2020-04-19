@@ -204,11 +204,12 @@ export class Recorder {
                     command: command,
                     target: target,
                     value: value,
-                    preWaitTime: preWaitTime,
-                    insertBeforeLastCommand: insertBeforeLastCommand,
-                    frameLocation: (actualFrameLocation != undefined) ? actualFrameLocation : this.frameLocation
+                    // preWaitTime: preWaitTime,
+                    // insertBeforeLastCommand: insertBeforeLastCommand,
+                    // frameLocation: (actualFrameLocation != undefined) ? actualFrameLocation : this.frameLocation
                 });
             } catch (error) {
+                console.log(error);
                 // If receiving end does not exist, detach the recorder
                 this.detach();
             }

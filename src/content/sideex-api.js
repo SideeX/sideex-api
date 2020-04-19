@@ -348,6 +348,7 @@ export class Sideex {
 
     async commandWait(target) {
         var element = this.browserBot.findElement(target);
+        console.log(element.doClick);
         while(!element.doClick){
             await Utils.delay(10);
         }

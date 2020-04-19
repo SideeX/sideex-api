@@ -14,7 +14,9 @@
  *  limitations under the License.
  *
  */
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
 import { Utils } from "../common/utils";
 import { MessageController } from "../content/message-controller";
 

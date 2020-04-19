@@ -1,5 +1,7 @@
 // import { fileController, this.root.uiTools, reference } from '../background/initial';
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
 import * as EntryPoint from "../UI/entryPoint";
 export class UiTools {
     constructor(root) {

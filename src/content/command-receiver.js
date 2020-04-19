@@ -15,7 +15,9 @@
  *
  */
 import TargetSelecter from "./targetSelecter";
+// #!if isExt === true
 import { browser } from "webextension-polyfill-ts";
+// #!endif
 import { sideex, locatorBuilders, browserBot } from "./content-initialization";
 import "../common/utils";
 import { MessageController } from "../content/message-controller";
@@ -37,11 +39,8 @@ MessageController.addListener(async function doCommands(request) {
                 let target = await sideex.doVerifyLocator(request);
                 try {
                     await sideex.doCommand(command, target, value);
-                    if(command == "animation"){
-                        await sideex.commandWait(target);
-                    }
                 } catch (e) {
-                    console.error(bcommand + " failed\n", e.stack);
+                    console.error(command + " failed\n", e.stack);
                     document.documentElement.removeAttriute("SideeXPlayingFlag");
                     return { status: false, message: e.message };
                 }
