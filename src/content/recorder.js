@@ -156,22 +156,22 @@ export class Recorder {
             target = this.prebuildedTarget;
             this.prebuildedTarget = null;
         }
-        let preWaitTime = getPreWaitTime.call(this);
+        // let preWaitTime = getPreWaitTime.call(this);
         sendMessageToPanel.call(this, command, preprocessTarget(target), preprocessValue(value),
-            preWaitTime, insertBeforeLastCommand, actualFrameLocation);
+            insertBeforeLastCommand, actualFrameLocation);
 
         /**
          * Calculate pre-wait time
          */
-        function getPreWaitTime() {
-            let preWaitTime = {
-                ajax: 0,
-                resource: 0,
-                DOM: 0,
-                beforeunload: 0
-            };
-            return preWaitTime;
-        }
+        // function getPreWaitTime() {
+        //     let preWaitTime = {
+        //         ajax: 0,
+        //         resource: 0,
+        //         DOM: 0,
+        //         beforeunload: 0
+        //     };
+        //     return preWaitTime;
+        // }
 
         function preprocessTarget(target) {
             let temp = [];
@@ -197,7 +197,7 @@ export class Recorder {
             };
         }
 
-        async function sendMessageToPanel(command, target, value, preWaitTime, insertBeforeLastCommand, actualFrameLocation) {
+        async function sendMessageToPanel(command, target, value, insertBeforeLastCommand, actualFrameLocation) {
             try {
                 console.log(`-> Record: %c${command}`, "color: blue;");
                 await MessageController.runtimeSendMessage({

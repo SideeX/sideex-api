@@ -269,8 +269,8 @@ export function recorderHandlersInit() {
                     var tempTarget = event.target.parentElement;
                     var formChk = tempTarget.tagName.toLowerCase();
                     //console.log(tempValue + " " + enterTarget.value + " " + tabCheck + " " + enterTarget + " " + focusValue);
-                    console.log(this.focusValue);
-                    console.log(this.enterTarget.value);
+                    // console.log(this.focusValue);
+                    // console.log(this.enterTarget.value);
                     if (this.tempValue == this.enterTarget.value && this.tabCheck == this.enterTarget) {
                         this.record("sendKeys", this.locatorBuilders.buildAll(enterTarget), "${KEY_ENTER}");
                         this.enterTarget = null;

@@ -9,6 +9,61 @@ var yellow = document.getElementById('change_yellow');
 var white = document.getElementById('change_white');
 var color = document.getElementById('color');
 var tests = document.getElementById('test');
+var cc = document.getElementById('cc');
+cc.addEventListener("click", () => {
+    /*testsuite
+    console.log(sideex.file.testSuite.add());
+    console.log(sideex.file.testSuite.get("suite-0"));
+    console.log(sideex.file.testSuite.rename("suite-0", "tyler"));
+    console.log(sideex.file.testSuite.getSuiteIdText("tyler"));
+    console.log(sideex.file.testSuite.copy());
+    console.log(sideex.file.testSuite.checkSuitesOrder());
+    console.log(sideex.file.testSuite.close("suite-0"));
+    console.log(sideex.file.testSuite.checkSuitesOrder());
+    console.log(sideex.file.testSuite.add());
+    console.log(sideex.file.testSuite.add());
+    console.log(sideex.file.testSuite.add());
+    console.log(sideex.file.testSuite.add());
+    console.log(sideex.file.testSuite.add());
+    console.log(sideex.file.testSuite.close("suite-1"));
+    console.log(sideex.file.testSuite.getSelected());
+    console.log(sideex.file.testSuite.close("suite-3"));
+    console.log(sideex.file.testSuite.checkSuitesOrder());
+    console.log(sideex.file.testSuite.setSelected(["suite-2"]));
+    console.log(sideex.file.testSuite.getSelected());
+    console.log(sideex.file.testSuite.setSelected(["suite-2", "suite-4"]));
+    console.log(sideex.file.testSuite.getSelected());
+    console.log(sideex.file.testSuite.setSelected(["suite-3"]));
+    console.log(sideex.file.testSuite.getSelected());
+    // console.log(sideex.file.testSuite.close("suite-1"));
+    console.log(sideex.file.testSuite.checkSuitesOrder());
+    console.log(sideex.file.testSuite.getSelected());
+    console.log(sideex.file.testSuite.closeAll());
+    console.log(sideex.file.testSuite.getSelected());
+    console.log(sideex.file.testSuite.checkSuitesOrder());
+    */
+   /*testcase*/ 
+   console.log(sideex.file.testSuite.add());
+   console.log(sideex.file.testCase.add());
+   console.log(sideex.file.testCase.get("case-0"));
+   console.log(sideex.file.testCase.rename("case-0", "tt"));
+   console.log(sideex.file.testCase.getCaseIdText("tt"));
+   console.log(sideex.file.testCase.add());
+   console.log(sideex.file.testCase.checkCasesOrder());
+   console.log(sideex.file.testCase.getSelected());
+   console.log(sideex.file.testCase.copy());
+   console.log(sideex.file.testCase.checkCasesOrder());
+   console.log(sideex.file.testCase.cut(["case-1"]));
+   console.log(sideex.file.testCase.checkCasesOrder());
+   console.log(sideex.file.testCase.remove("case-1"));
+   console.log(sideex.file.testCase.getSelected());
+   console.log(sideex.file.testCase.add());
+   console.log(sideex.file.testCase.add());
+   console.log(sideex.file.testCase.getSelected());
+   console.log(sideex.file.testCase.add());
+   console.log(sideex.file.testCase.getSelected());
+   console.log(sideex.file.testCase.checkCasesOrder());
+})
 input.addEventListener("change", handlefile, false);
 all.addEventListener("click", ()=>{
     sideex.playback.start();
@@ -71,23 +126,19 @@ suite.addEventListener("click", ()=>{
 
 
     sideex.playback.addCustomCommand(
-        "animation",true,{record:"mouse",playback:"content"},
-        false,true,
-            {name:"animation",target:"",value:"",description:""},
-        
-        
-        
+        "animation",true,
+   
         async function(locator, coordString){
         
                 var list = coordString.split(" | ");
                 
                 coordString = list[0];
         
-                console.log(sideex.playback.findElement(locator));
+                // console.log(sideex.playback.findElement(locator));
                 // console.log(sideex.playback.getClientXY(element, coordString));
             var element = sideex.playback.findElement(locator);	
                 var clientXY = sideex.playback.getClientXY(element, coordString);
-                console.log(clientXY)
+                // console.log(clientXY)
                 var body = document.getElementsByTagName("body");
                 var originalzIndex = element.style.zIndex;
                 element.doClick = 0;
@@ -210,7 +261,12 @@ suite.addEventListener("click", ()=>{
                         element.style.zIndex = originalzIndex;
                     });
                 }
-                await sideex.playback.commandWait(locator);
+
+                while(!element.doClick){
+                    await new Promise((resolve) => { setTimeout(resolve, 10) })
+                }
+                // await self.root.playback.sideex.commandWait(locator)
+                // await sideex.playback.commandWait(locator);
                 // END
             }
 

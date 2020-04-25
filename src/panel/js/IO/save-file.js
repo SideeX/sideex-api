@@ -68,10 +68,10 @@ export class SaveFile {
     parseRecordsToText(records) {
         let result = "";
         for (let i = 0; i < records.length; i++) {
-            let preWaitTime = records[i].preWaitTime;
+            // let preWaitTime = records[i].preWaitTime;
 
             result +=
-                `<tr class="command" data-pbw="${preWaitTime.beforeunload}" data-paw="${preWaitTime.ajax}" data-prw="${preWaitTime.resource}" data-pdw="${preWaitTime.DOM}">` +
+                `<tr class="command"` +
                 this.wrapName(records[i].name) +
                 this.wrapTargets(records[i].target) +
                 this.wrapValues(records[i].value) +
@@ -165,7 +165,7 @@ export class SaveFile {
         let file = this.downloadFile[downloadDelta.id];
         if (downloadDelta.id && downloadDelta.state &&
             downloadDelta.state.current === "complete") {
-            console.log(file);
+            // console.log(file);
             if(file){
                 if (file.type === "file") {
                     this.parent.setSuiteModified(file.suiteIdTexts[0], false, true);

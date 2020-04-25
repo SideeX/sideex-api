@@ -102,9 +102,9 @@ class AutoWait {
         }
     }
 
-    async checkDOMWait(preWaitTime) {
+    async checkDOMWait() {
         this.waitErrType = "DOMWait";
-        await this.delay(preWaitTime);
+        // await this.delay(preWaitTime);
         return true;
     }
 

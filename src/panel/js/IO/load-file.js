@@ -80,12 +80,12 @@ export class LoadFile {
             });
         }
 
-        let preWaitTime = {
-            beforeunload: this.getWaitValue("pbw", content),
-            ajax: this.getWaitValue("paw", content),
-            resource: this.getWaitValue("prw", content),
-            DOM: this.getWaitValue("pdw", content)
-        };
+        // let preWaitTime = {
+        //     beforeunload: this.getWaitValue("pbw", content),
+        //     ajax: this.getWaitValue("paw", content),
+        //     resource: this.getWaitValue("prw", content),
+        //     DOM: this.getWaitValue("pdw", content)
+        // };
 
         return this.parent.newCommand(command, target, value, preWaitTime);
     }

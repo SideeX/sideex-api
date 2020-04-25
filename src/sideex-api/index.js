@@ -75,17 +75,36 @@ export class SideeX {
                 copy: function (suiteIdTexts = self.root.fileController.getSelectedSuites()[0]) {
                     self.root.fileController.copySuites(suiteIdTexts);
                 },
+                checkSuitesOrder: function () {
+                    return self.root.fileController.testSuite.order;
+                },
+                // checkSuitesLength: function () {
+                //     return self.root.fileController.testSuite.count;
+                // },
                 close: function (suiteIdTexts) {
                     suiteIdTexts = typeof (suiteIdTexts) === "string" ?
                         [suiteIdTexts] : suiteIdTexts;
                     if (suiteIdTexts.length > 0) {
                         for (let suiteIdText of suiteIdTexts) {
                             let index = self.root.fileController.testSuite.order.indexOf(suiteIdText);
+                            let indexOfSelectedSuiteIdText = 0;
+                            let indexOfSelectedCaseIdText = 0;
+                            for (let selectedSuiteIdText of self.root.fileController.getSelectedSuites()) {
+                                if (selectedSuiteIdText === suiteIdText) {
+                                    self.root.fileController.selectedSuiteIdTexts.splice(indexOfSelectedSuiteIdText++, 1);
+                                    break;
+                                }
+                            }
+                            for (let selectedCaseIdText of self.root.fileController.getSelectedCases()) {
+                                if (self.root.fileController.getTestCase(selectedCaseIdText).suiteIdText === suiteIdText) {
+                                    self.root.fileController.selectedCaseIdTexts.splice(indexOfSelectedCaseIdText++, 1);
+                                }
+                            }
                             self.root.fileController.deleteSuite(suiteIdText);
-                            console.log(index);
-                            let casesLength = self.root.fileController.testSuite.suites[`suite-${index - 1}`].cases.length;
-                            self.root.fileController.setSelectedCases(casesLength !== 0 ? [self.root.fileController.testSuite.suites[`suite-${index - 1}`].cases[0]] : []);
-                            self.root.fileController.setSelectedSuites(index !== 0 ? [`suite-${index - 1}`] : []);
+                            // console.log(index);
+                            // let casesLength = self.root.fileController.testSuite.suites[`suite-${index - 1}`].cases.length;
+                            // self.root.fileController.setSelectedCases(casesLength !== 0 ? [self.root.fileController.testSuite.suites[`suite-${index - 1}`].cases[0]] : []);
+                            // self.root.fileController.setSelectedSuites(index !== 0 ? [`suite-${index - 1}`] : []);
                         }
                     }
                 },
@@ -96,6 +115,8 @@ export class SideeX {
                             self.root.fileController.deleteSuite(suiteIdText);
                         }
                     }
+                    self.root.fileController.setSelectedCases([]);
+                    self.root.fileController.setSelectedSuites([]);
                 },
                 setSelected: function (suiteIdTexts) {
                     self.root.fileController.setSelectedSuites(suiteIdTexts);
@@ -165,9 +186,23 @@ export class SideeX {
                     let cases = self.root.fileController.testSuite.suites[suiteIdText].cases;
                     let index = cases.indexOf(caseIdText);
                     self.root.fileController.deleteCase(caseIdText);
-                    self.root.fileController.setSelectedCases(index !== 0 ? [`case-${index - 1}`] : []);
-                    self.root.fileController.setSelectedSuites(suiteIdText);
+                    // self.root.fileController.setSelectedCases(index !== 0 ? [`case-${index - 1}`] : []);
+                    // self.root.fileController.setSelectedSuites(suiteIdText);
+                    let indexOfSelectedCaseIdText = 0;
+                    let indexOfSelectedRecordIndex = 0;
+                    for (let selectedCaseIdText of self.root.fileController.getSelectedCases()) {
+                        if (selectedCaseIdText === caseIdText) {
+                            self.root.fileController.selectedCaseIdTexts.splice(indexOfSelectedCaseIdText++, 1);
+                        }
+                    }
+                    self.root.fileController.setSelectedSuites([suiteIdText]);
                 },
+                checkCasesOrder: function () {
+                    return self.root.fileController.testCase.cases;
+                },
+                // checkCasesLength: function () {
+                //     return self.root.fileController.testCase.count;
+                // },
                 setSelected: function (caseIdTexts) {
                     self.root.fileController.setSelectedCases(caseIdTexts);
                 },
@@ -344,7 +379,6 @@ export class SideeX {
 
             },
             stop: () => {
-                console.log("Stop");
                 self.root.recorder.detach();
                 self.root.recorder.isRecord = false;
 
@@ -376,7 +410,7 @@ export class SideeX {
                 self.root.recorder.detach();
                 switch (mode) {
                     case "case": {
-                        console.log("case");
+                        // console.log("case");
                         let caseIdText = idText === undefined ? self.root.fileController.getSelectedCases()[0] : idText;
                         if (self.root.fileController.getTestCase(caseIdText)) {
                             self.root.fileController.setSelectedCases([caseIdText]);
@@ -391,7 +425,7 @@ export class SideeX {
                         }
                     }
                     case "suite": {
-                        console.log("suite");
+                        // console.log("suite");
                         let suiteIdText = idText === undefined ? self.root.fileController.getSelectedSuites()[0] : idText;
                         if (self.root.fileController.getTestSuite(suiteIdText)) {
                             self.root.fileController.setSelectedSuites([suiteIdText]);
@@ -406,7 +440,7 @@ export class SideeX {
                         }
                     }
                     case "all": {
-                        console.log("all");
+                        // console.log("all");
                         let caseIdText = idText === undefined ? self.root.fileController.getSelectedCases()[0] : idText;
                         if (self.root.fileController.getTestCase(caseIdText) === undefined) {
                             throw new Error("There is no suites available, please record one first");
@@ -438,7 +472,11 @@ export class SideeX {
                 self.root.playback.isPause = false;
                 //EntryPoint.toolBar.syncButtonState();
             },
-            addCustomCommand: (cmdName, isDoSnapshot = true, type = {record: "mouse", playback: "content"}, isManual = false, verifyLocator = true, reference = {name: cmdName, target: "A locator", value: "", description: ""}, code) => {    
+            addCustomCommand: (cmdName, verifyLocator = true, code) => {    
+                let isDoSnapshot = true;
+                let type = {record: "mouse", playback: "content"};
+                let isManual = false;
+                let  reference = {name: cmdName, target: "A locator", value: "", description: ""};
                 self.root.playback.commandReferences[cmdName] = {
                     isDoSnapshot: isDoSnapshot,
                     type: {
@@ -458,22 +496,22 @@ export class SideeX {
                 self.root.playback.sideex.addCommand(cmdName, code);
                 
             },
-            commandWait: async (target) => {
-                // console.log(self.root.playback.sideex.commandWait(target))
-                console.log(target)
-                console.log(self.root.playback.sideex.commandWait(target))
-                return (self.root.playback.sideex.commandWait(target));   
-            },
+            // commandWait: async (target) => {
+            //     // console.log(self.root.playback.sideex.commandWait(target))
+            //     // console.log(target)
+            //     // console.log(self.root.playback.sideex.commandWait(target))
+            //     return (self.root.playback.sideex.commandWait(target));   
+            // },
 
             findElement: (locator) => {
-                console.log(locator)
+                // console.log(locator)
                 // console.log(self.root.playback.sideex.browserBot.findElement(locator));
                 return (self.root.playback.sideex.browserBot.findElement(locator));   
             },
 
             getClientXY: (element, coordString) => {
-                console.log(element);
-                console.log(coordString);
+                // console.log(element);
+                // console.log(coordString);
                 return (self.root.playback.sideex.getClientXY(element, coordString));
             }
                     

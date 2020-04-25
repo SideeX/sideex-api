@@ -153,7 +153,7 @@ export class Playback {
         this.playSuites = [ ...preprocessResult.playSuites ];
         this.root.variables.initLocalVars();
         this.root.recorder.preRecorder.flushBuffer(false);
-        console.log(preprocessResult);
+        // console.log(preprocessResult);
 
         EntryPoint.footer.setResultValue("run", preprocessResult.caseNum);
         EntryPoint.footer.setResultValue("success", 0);
@@ -277,7 +277,7 @@ export class Playback {
                 console.log("play: ", command.name, command.target, command.value, command.preWaitTime);
                 await this.doCommand(command);
             }
-            console.log("finish");
+            // console.log("finish");
             this.finishCommand(this.commandFailed, record);
 
             if (this.caseFailed) break;
@@ -329,7 +329,7 @@ export class Playback {
         let name = record.name;
         let target = selectTarget.type === "tac" ? record.target.tac : selectTarget.value;
         let value = selectValue.type === "tac" ? record.target.tac : selectValue.value;
-        let preWaitTime = record.preWaitTime;
+        // let preWaitTime = record.preWaitTime;
 
         // parse variable
         try {
@@ -357,7 +357,7 @@ export class Playback {
             name: name,
             target: target,
             value: value,
-            preWaitTime: preWaitTime
+            // preWaitTime: preWaitTime
         };
     }
 
@@ -366,7 +366,7 @@ export class Playback {
             if (this.isStop) return;
 
             try {
-                console.log(command);
+                // console.log(command);
                 await this.dispatchCommand(JSON.stringify(this.curPlayIndex), command);
                 break;
             } catch (e) {
@@ -508,7 +508,7 @@ export class Playback {
     async sendCommand(command, target, value, index, top) {
 
         let frameId = this.getCurrentPlayingFrameId();
-        console.log(frameId);
+        // console.log(frameId);
 
         let action = ("waitSeries" === command ) ? "Wait" : "Command";
         
@@ -522,10 +522,10 @@ export class Playback {
     }
 
     
-    async doAutoWaitSeries(preWaitTime) {
-        if (!preWaitTime) {
-            return Promise.resolve();
-        }
+    async doAutoWaitSeries() {
+        // if (!preWaitTime) {
+        //     return Promise.resolve();
+        // }
         // await this.doAutoWait("pageWait");
         // await this.doAutoWait("ajaxWait", preWaitTime.ajax);
         // await this.doAutoWait("DOMWait", preWaitTime.DOM);
@@ -555,7 +555,7 @@ export class Playback {
                 }else{
                     result = await this.windowController.sendCommand(name, target, value, index);
                 }
-                console.log(result);
+                // console.log(result);
                 return this.handleCommandResult(result);
             }
             case "extension":

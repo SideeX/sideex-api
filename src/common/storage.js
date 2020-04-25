@@ -85,7 +85,7 @@ class Storage {
 
     async syncPanel(obj) {
         let result = await browser.storage.sync.set(obj);
-        console.log(result);
+        // console.log(result);
     }
 
     async retrieve(keys) {

@@ -350,9 +350,6 @@ export class BackgroundRecorder {
             } 
             let selectedCaseIdText = this.root.fileController.getSelectedCases()[0];
             let index = this.root.fileController.getRecordNum(selectedCaseIdText);
-            if (index > 0) {
-                this.root.fileController.setRecordPreWaitTime(selectedCaseIdText, index - 1, message.preWaitTime);
-            }
             this.root.fileController.insertCommand("after", message.command, message.target, message.value);
         }
     }

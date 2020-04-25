@@ -55,7 +55,7 @@ export class Sideex {
         this.window.postMessage({
             direction: "from-content-playback-auto-wait",
             type: type,
-            preWaitTime: value
+            // preWaitTime: value
         }, "*");
         return await this.getWaitResult();
     }
@@ -346,16 +346,16 @@ export class Sideex {
         }
     }
 
-    async commandWait(target) {
-        var element = this.browserBot.findElement(target);
-        console.log(element.doClick);
-        while(!element.doClick){
-            await Utils.delay(10);
-        }
-        if(element.doClick){
-            return;
-        }
-    }
+    // async commandWait(target) {
+    //     var element = this.browserBot.findElement(target);
+    //     console.log(element.doClick);
+    //     while(!element.doClick){
+    //         await Utils.delay(10);
+    //     }
+    //     if(element.doClick){
+    //         return;
+    //     }
+    // }
 
     addcss(css){
         var head = document.getElementsByTagName('head')[0];

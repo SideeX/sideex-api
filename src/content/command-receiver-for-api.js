@@ -29,7 +29,7 @@ MessageController.addListener(async function doCommands(request) {
             return {};
         }
         case "Command": {
-            console.log("command", request.command);
+            // console.log("command", request.command);
             let command = request.command;
             let value = request.value;
             if (sideex.hasCommand(command)) {
@@ -50,7 +50,7 @@ MessageController.addListener(async function doCommands(request) {
             return { status: true };
         }
         case "SelectElement": {
-            console.log("selectelement");
+            // console.log("selectelement");
             if (request.selecting) {
                 targetSelecter = new TargetSelecter(function (element, win) {
                     if (element && win) {

@@ -69,7 +69,7 @@ export class FileController {
         let index = cases.indexOf(caseIdText);
         index >= 0 && cases.splice(index, 1);
         delete this.testCase.cases[caseIdText];
-        this.testCase.count--;
+        // this.testCase.count--;
         // this.setSelectedCases([]);
     }
 
@@ -83,7 +83,7 @@ export class FileController {
         let index = this.testSuite.order.indexOf(suiteIdText);
         index >= 0 && this.testSuite.order.splice(index, 1);
         delete this.testSuite.suites[suiteIdText];
-        this.testSuite.count--;
+        // this.testSuite.count--;
         // this.setSelectedCases([]);
         // this.setSelectedSuites([]);
     }
@@ -383,13 +383,13 @@ export class FileController {
         recordRef.status = status;
     }
 
-    setRecordPreWaitTime(caseIdText, index, preWaitTime) {
-        Object.assign(this.testCase.cases[caseIdText].records[index].preWaitTime, preWaitTime);
-    }
+    // setRecordPreWaitTime(caseIdText, index, preWaitTime) {
+    //     Object.assign(this.testCase.cases[caseIdText].records[index].preWaitTime, preWaitTime);
+    // }
 
-    getRecordPreWaitTime(caseIdText, index) {
-        return this.testCase.cases[caseIdText].records[index].preWaitTime;
-    }
+    // getRecordPreWaitTime(caseIdText, index) {
+    //     return this.testCase.cases[caseIdText].records[index].preWaitTime;
+    // }
 
     toggleRecordBreakpoint(caseIdText, index) {
         this.testCase.cases[caseIdText].records[index].breakpoint =
@@ -540,7 +540,7 @@ export class FileController {
         }
     }
 
-    newCommand(name, target, value, preWaitTime, breakpoint, status) {
+    newCommand(name, target, value, breakpoint, status) {
         return {
             id: "",
             name: name,
@@ -556,10 +556,6 @@ export class FileController {
                 tac: "",
                 btnColor: ["gray", "gray", "gray", "gray"],
                 ...value
-            },
-            preWaitTime: {
-                beforeunload: 0, ajax: 0, resource: 0, DOM: 0,
-                ...preWaitTime
             },
             screenshot: "",
             breakpoint: breakpoint ? breakpoint : false,

@@ -44,12 +44,6 @@ const testFilesData = {
                             ],
                             tac: ""
                         },
-                        preWaitTime: {
-                            beforeunload: 0,
-                            ajax: 0,
-                            resource: 0,
-                            DOM: 0
-                        },
                         screenshot: "fdsfd",
                         breakpoint: false,
                         status: "default"
@@ -66,12 +60,6 @@ const testFilesData = {
                             usedIndex: 0,
                             options: [{ type: "other", value: "4567" }],
                             tac: ""
-                        },
-                        preWaitTime: {
-                            beforeunload: 0,
-                            ajax: 0,
-                            resource: 0,
-                            DOM: 0
                         },
                         screenshot: "fdsfd",
                         breakpoint: false,
@@ -90,12 +78,6 @@ const testFilesData = {
                                     options: [{ type: "other", value: "4567" }],
                                     tac: ""
                                 },
-                                preWaitTime: {
-                                    beforeunload: 0,
-                                    ajax: 0,
-                                    resource: 0,
-                                    DOM: 0
-                                },
                                 screenshot: "fdsfd",
                                 breakpoint: false,
                                 status: "default"
@@ -112,12 +94,6 @@ const testFilesData = {
                                     usedIndex: 0,
                                     options: [{ type: "other", value: "4567" }],
                                     tac: ""
-                                },
-                                preWaitTime: {
-                                    beforeunload: 0,
-                                    ajax: 0,
-                                    resource: 0,
-                                    DOM: 0
                                 },
                                 screenshot: "fdsfd",
                                 breakpoint: false,
@@ -144,12 +120,6 @@ const testFilesData = {
                             ],
                             tac: "dfghjk"
                         },
-                        preWaitTime: {
-                            beforeunload: 0,
-                            ajax: 0,
-                            resource: 0,
-                            DOM: 0
-                        },
                         screenshot: "fdsfd",
                         breakpoint: false,
                         status: "default"
@@ -167,12 +137,6 @@ const testFilesData = {
                             options: [{ type: "other", value: "4567" }],
                             tac: ""
                         },
-                        preWaitTime: {
-                            beforeunload: 0,
-                            ajax: 0,
-                            resource: 0,
-                            DOM: 0
-                        },
                         screenshot: "fdsfd",
                         breakpoint: false,
                         status: "default"
@@ -189,12 +153,6 @@ const testFilesData = {
                             usedIndex: 0,
                             options: [{ type: "other", value: "4567" }],
                             tac: ""
-                        },
-                        preWaitTime: {
-                            beforeunload: 0,
-                            ajax: 0,
-                            resource: 0,
-                            DOM: 0
                         },
                         screenshot: "fdsfd",
                         breakpoint: false,
@@ -219,12 +177,6 @@ const testFilesData = {
                             options: [{ type: "other", value: "4567" }],
                             tac: ""
                         },
-                        preWaitTime: {
-                            beforeunload: 0,
-                            ajax: 0,
-                            resource: 0,
-                            DOM: 0
-                        },
                         screenshot: "fdsfd",
                         breakpoint: false,
                         status: "default"
@@ -241,12 +193,6 @@ const testFilesData = {
                             usedIndex: 0,
                             options: [{ type: "other", value: "4567" }],
                             tac: ""
-                        },
-                        preWaitTime: {
-                            beforeunload: 0,
-                            ajax: 0,
-                            resource: 0,
-                            DOM: 0
                         },
                         screenshot: "fdsfd",
                         breakpoint: false,
@@ -265,12 +211,6 @@ const testFilesData = {
                             options: [{ type: "tac", value: "auto-located-by-tac" }],
                             tac: "dfghjk"
                         },
-                        preWaitTime: {
-                            beforeunload: 0,
-                            ajax: 0,
-                            resource: 0,
-                            DOM: 0
-                        },
                         screenshot: "fdsfd",
                         breakpoint: false,
                         status: "default"
@@ -287,12 +227,6 @@ const testFilesData = {
                             usedIndex: 0,
                             options: [{ type: "other", value: "4567" }],
                             tac: ""
-                        },
-                        preWaitTime: {
-                            beforeunload: 0,
-                            ajax: 0,
-                            resource: 0,
-                            DOM: 0
                         },
                         screenshot: "fdsfd",
                         breakpoint: false,
@@ -313,12 +247,6 @@ const testFilesData = {
                                     options: [{ type: "other", value: "4567" }],
                                     tac: ""
                                 },
-                                preWaitTime: {
-                                    beforeunload: 0,
-                                    ajax: 0,
-                                    resource: 0,
-                                    DOM: 0
-                                },
                                 screenshot: "fdsfd",
                                 breakpoint: false,
                                 status: "default"
@@ -335,12 +263,6 @@ const testFilesData = {
                                     usedIndex: 0,
                                     options: [{ type: "other", value: "4567" }],
                                     tac: ""
-                                },
-                                preWaitTime: {
-                                    beforeunload: 0,
-                                    ajax: 0,
-                                    resource: 0,
-                                    DOM: 0
                                 },
                                 screenshot: "fdsfd",
                                 breakpoint: false,
@@ -360,12 +282,6 @@ const testFilesData = {
                             usedIndex: 0,
                             options: [{ type: "other", value: "4567" }],
                             tac: ""
-                        },
-                        preWaitTime: {
-                            beforeunload: 0,
-                            ajax: 0,
-                            resource: 0,
-                            DOM: 0
                         },
                         screenshot: "fdsfd",
                         breakpoint: false,
