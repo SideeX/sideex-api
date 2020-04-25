@@ -84,38 +84,6 @@ class RecordLine extends React.Component {
                 </Container>
             );
         }
-        if(recordInfo.name === "animation"){
-            selectBar = (
-                <Col xs="auto" className={cls.clickRecoedLineInputCol} style={{ paddingRight: "5px", width: "50%", height: "5%"}}>
-                    <ButtonToolbar>
-                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[0]}} className={cls.buttonabc} value = "clickAnimation" title = "clickAnimation"
-                            onClick={(event) => {
-                                let recordNum = recordInfo.id.split('-')[1];
-                                events.workArea.selectForm(event, recordNum);
-                            }}>C
-                            <div style = {{height: "5px", width: "10px", display: "none"}}>clickAnimation</div>
-                        </Button>
-                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[1]}} classame={cls.buttonabc} value="focus" title = "focus"
-                            onClick={(event) => {
-                                let recordNum = recordInfo.id.split('-')[1];
-                                events.workArea.selectForm(event, recordNum);
-                            }}>F
-                        </Button>
-                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[2]}} className={cls.buttonabc} value="showText" title = "showText" 
-                            onClick={(event) => {
-                                let recordNum = recordInfo.id.split('-')[1];
-                                events.workArea.selectForm(event, recordNum);
-                            }}>S
-                        </Button>
-                        <Button size="sm" style = {{backgroundColor: recordInfo.value.btnColor[3]}} className={cls.buttonabc} value="typewriting" title = "typewriting"
-                            onClick={(event) => {
-                                let recordNum = recordInfo.id.split('-')[1];
-                                events.workArea.selectForm(event, recordNum);
-                            }}>T</Button>
-                    </ButtonToolbar>
-                </Col>
-            );
-        }
         if (!this.props.isInclude) {
             clickLineHandler = (event) => {
                 event.stopPropagation();

@@ -266,90 +266,6 @@ export default {
     },
 
     workArea: {
-        findIndex: function(list, str){
-            let i;
-            for(i = 0; i < list.length; i++){
-                if(list[i].indexOf(str) != -1){
-                    return i;
-                }
-            }
-            return -1;
-        },
-        selectForm: function(event, recordNum){
-            let caseIdText = root.fileController.getSelectedCases()[0];
-            let record = root.fileController.getRecord(caseIdText, recordNum);
-            let passstr = "";
-            var passValue = {
-                value: 0,
-                selectValue: "",
-                showText: "",
-                typeWriting: "",
-            }
-            if(event.target.value == "clickAnimation"){
-                if(record.value.btnColor[0] == "gray"){
-                    record.value.btnColor[0] = "green";
-                }else{
-                    if(record.value.btnColor[1] != "gray" || record.value.btnColor[2] != "gray" || record.value.btnColor[3] != "gray"){
-                        record.value.btnColor[0] = "gray";
-                    }
-                }
-            }else if(event.target.value == "focus"){
-                if(record.value.btnColor[1] == "gray"){
-                    record.value.btnColor[1] = "yellow";
-                }else{
-                    if(record.value.btnColor[0] != "gray" || record.value.btnColor[2] != "gray" || record.value.btnColor[3] != "gray"){
-                        record.value.btnColor[1] = "gray";
-                    }
-                }
-            }else if(event.target.value == "showText"){
-                if(record.value.btnColor[2] == "gray"){
-                    record.value.btnColor[2] = "red";
-                }else{
-                    if(record.value.btnColor[0] != "gray" || record.value.btnColor[1] != "gray" || record.value.btnColor[3] != "gray"){
-                        record.value.btnColor[2] = "gray";
-                    }
-                }
-            }else if(event.target.value == "typeWriting"){
-                if(record.value.btnColor[3] == "gray"){
-                    record.value.btnColor[3] = "blue";
-                }else{
-                    if(record.value.btnColor[0] != "gray" || record.value.btnColor[1] != "gray" || record.value.btnColor[2] != "gray"){
-                        record.value.btnColor[3] = "gray";
-                    }
-                }
-            } 
-            console.log(record.value.options[0].value);
-            let passlist = record.value.options[0].value.split(" | ");
-            console.log(passlist);
-            passValue.value = passlist[0];
-            if(this.findIndex(passlist, "selectValue") != -1){
-                let index = this.findIndex(passlist, "selectValue");
-                let tempstr = passlist[index];
-                tempstr = tempstr.replace("selectValue:" ,"");
-                if(tempstr.indexOf(event.target.value) != -1){
-                    tempstr = tempstr.replace(",", "");
-                    tempstr = tempstr.replace(event.target.value, "");
-                }else{
-                    tempstr = tempstr.concat(",", event.target.value);
-                }
-                console.log(tempstr);
-                passValue.selectValue = tempstr;
-            }else{
-                passValue.selectValue = event.target.value;
-            }
-            if(event.target.value == "showText"){
-                let str = prompt("enter the text");
-                passValue.showText = str;    
-            }
-            if(event.target.value == "typeWriting"){
-                let str = prompt("enter the text");
-                passValue.typewriting = str;    
-            }
-            passstr = passstr.concat(passValue.value, " | ", "selectValue:", passValue.selectValue, " | ", "showText:", passValue.showText, " | ", "typeWriting:", passValue.typeWriting);
-            console.log(passstr);
-            record.value.options[0].value = passstr;
-            workArea.syncCommands();
-        },
         clickAddCommand: function (event) {
             event.stopPropagation();
             // root.uiTools.setIsOnWorkArea(true);
@@ -375,17 +291,6 @@ export default {
                     values: recordInfo.value.options
                 }
             });
-        },
-        clickConvertCommand: function (event) {
-            event.stopPropagation();
-            let caseIdText = root.fileController.getSelectedCases()[0];
-            let recordIdText = root.fileController.getSelectedRecords()[0];
-            let index = parseInt(recordIdText.split('-')[1]);
-            let record = root.fileController.getRecord(caseIdText, index);
-            // let text = prompt("enter the text");
-            record.name = "animation";
-
-            workArea.syncCommands();
         },
         clickDeleteCommand: function (event) {
             event.stopPropagation();

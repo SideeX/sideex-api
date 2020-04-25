@@ -554,7 +554,6 @@ export class FileController {
                 usedIndex: 0,
                 options: [],
                 tac: "",
-                btnColor: ["gray", "gray", "gray", "gray"],
                 ...value
             },
             screenshot: "",
