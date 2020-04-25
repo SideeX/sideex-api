@@ -69,6 +69,7 @@ all.addEventListener("click", ()=>{
     sideex.playback.start();
 }, false);
 suite.addEventListener("click", ()=>{     
+
     const converCommand = (recordNum, cmdName, value) =>{
         let caseIdText = sideex.file.testCase[0];
         let record = sideex.file.record.get(recordNum, caseIdText);

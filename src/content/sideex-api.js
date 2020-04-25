@@ -345,6 +345,9 @@ export class Sideex {
             return { result: false };
         }
     }
+    addCommand(name, code){
+        Sideex.commands[name] = code;  
+    }
 }
 
 Sideex.commands = {
