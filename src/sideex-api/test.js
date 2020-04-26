@@ -42,19 +42,19 @@ cc.addEventListener("click", () => {
     console.log(sideex.file.testSuite.getSelected());
     console.log(sideex.file.testSuite.checkSuitesOrder());
     */
-   /*testcase*/ 
+   /*testcase
    console.log(sideex.file.testSuite.add());
    console.log(sideex.file.testCase.add());
    console.log(sideex.file.testCase.get("case-0"));
    console.log(sideex.file.testCase.rename("case-0", "tt"));
    console.log(sideex.file.testCase.getCaseIdText("tt"));
    console.log(sideex.file.testCase.add());
-   console.log(sideex.file.testCase.checkCasesOrder());
+   console.log(sideex.file.testCase.getCasesOrder());
    console.log(sideex.file.testCase.getSelected());
    console.log(sideex.file.testCase.copy());
-   console.log(sideex.file.testCase.checkCasesOrder());
+   console.log(sideex.file.testCase.getCasesOrder());
    console.log(sideex.file.testCase.cut(["case-1"]));
-   console.log(sideex.file.testCase.checkCasesOrder());
+   console.log(sideex.file.testCase.getCasesOrder());
    console.log(sideex.file.testCase.remove("case-1"));
    console.log(sideex.file.testCase.getSelected());
    console.log(sideex.file.testCase.add());
@@ -62,7 +62,62 @@ cc.addEventListener("click", () => {
    console.log(sideex.file.testCase.getSelected());
    console.log(sideex.file.testCase.add());
    console.log(sideex.file.testCase.getSelected());
-   console.log(sideex.file.testCase.checkCasesOrder());
+   console.log(sideex.file.testCase.getCasesOrder());
+   */
+  /*record
+  console.log(sideex.file.testSuite.add());
+  console.log(sideex.file.testCase.add());
+  console.log(sideex.file.record.add({name:"1"}));
+  console.log(sideex.file.record.add({name:"2"}));
+  console.log(sideex.file.record.add({name:"3"}));
+  console.log(sideex.file.testCase.get("case-0"));
+  console.log(sideex.file.record.delete(0));
+  console.log(sideex.file.record.get(0));
+  console.log(sideex.file.testCase.get("case-0"));
+  console.log(sideex.file.record.add());
+  console.log(sideex.file.record.add());
+  console.log(sideex.file.record.add());
+  console.log(sideex.file.testCase.get("case-0"));
+  console.log(sideex.file.record.deleteAll());
+  console.log(sideex.file.testCase.get("case-0"));
+  console.log(sideex.file.record.add({name:"1"}));
+  console.log(sideex.file.record.add({name:"2"}));
+  console.log(sideex.file.record.add({name:"3"}));
+  console.log(sideex.file.record.getSelected());
+  console.log(sideex.file.record.setSelected(["records-0"]));
+  console.log(sideex.file.record.getSelected());
+  console.log(sideex.file.record.delete(0));
+  console.log(sideex.file.record.getSelected());
+  console.log(sideex.file.record.add());
+  console.log(sideex.file.record.getSelected());
+  console.log(sideex.file.testCase.get("case-0"));
+  */
+/* variables
+    console.log(sideex.variables.add("tyler", 5646));
+    console.log(sideex.variables.add("terry", 46));
+    console.log(sideex.variables.add("asd", 123));
+    console.log(sideex.variables.get("vars"));
+    console.log(sideex.variables.get("count"));
+    console.log(sideex.variables.get("startNum"));
+    console.log(sideex.variables.get("varNames"));
+    console.log(sideex.variables.delete("var-1"));
+    console.log(sideex.variables.get("vars"));
+    console.log(sideex.variables.clearAll());
+    console.log(sideex.variables.get("vars"));
+    console.log(sideex.variables.add("tyler", 5646));
+    console.log(sideex.variables.add("terry", 46));
+    console.log(sideex.variables.add("asd", 123));
+    console.log(sideex.variables.changeName("var-1","zz"));
+    console.log(sideex.variables.changeValue("var-1",11111));
+    console.log(sideex.variables.get("vars"));
+*/
+/*log
+console.log(sideex.log.get("logs"));
+console.log(sideex.log.get("typeMap"));
+console.log(sideex.log.clear());
+console.log(sideex.log.get("logs"));
+console.log(sideex.log.get("typeMap"));
+*/
 })
 input.addEventListener("change", handlefile, false);
 all.addEventListener("click", ()=>{
@@ -123,6 +178,30 @@ suite.addEventListener("click", ()=>{
         return -1;
     }
 
+    const addcss = (css) => {
+        var head = document.getElementsByTagName('head')[0];
+        var s = document.createElement('style');
+        s.setAttribute('type', 'text/css');
+        s.appendChild(document.createTextNode(css));
+        head.appendChild(s);
+    }
+
+    const writing = (str, element, callback) => {
+        var i = 0;
+        element.textContent = "";
+        var write = setInterval(() => {
+            if(str.length != 0 && element.textContent.length != str.length){
+                element.textContent = element.textContent.concat(str[i]);
+                i ++;
+            }else{
+                element.textContent = "";
+                clearInterval(write);
+                if(callback){
+                    callback(str, element, null);
+                }
+            }
+        }, 300);
+    }
 
 
 
@@ -154,12 +233,12 @@ suite.addEventListener("click", ()=>{
                     triangleBlack.id = "triangleBlack";
                     rectangleBlack.id = "rectangleBlack";
                     newDiv1.id = "newDiv1";
-                    this.addcss("#triangle { width: 0; height: 0; border-style: solid; border-width: 0 35px 80px 35px; border-color: transparent transparent white transparent; transform: rotate(-45deg); position: absolute;}");
-                    this.addcss("#rectangle { width: 25px; height: 50px; background-color: white; transform: rotate(-45deg); position: absolute;}");
-                    this.addcss("#triangleBlack { width: 0; height: 0; border-style: solid; border-width: 0 40px 85px 40px; border-color: transparent transparent black transparent; transform: rotate(-45deg); position: absolute;}");
-                    this.addcss("#rectangleBlack { width: 30px; height: 55px; background-color: black; transform: rotate(-45deg); position: absolute;}");
-                    this.addcss("#newDiv1 { width: 100px; height: 100px; position : absolute; animation: flash 5s; }");
-                    this.addcss("@keyframes flash {from,50%,to {opacity: 1;}25%,75% {opacity: 0;}");
+                    addcss("#triangle { width: 0; height: 0; border-style: solid; border-width: 0 35px 80px 35px; border-color: transparent transparent white transparent; transform: rotate(-45deg); position: absolute;}");
+                    addcss("#rectangle { width: 25px; height: 50px; background-color: white; transform: rotate(-45deg); position: absolute;}");
+                    addcss("#triangleBlack { width: 0; height: 0; border-style: solid; border-width: 0 40px 85px 40px; border-color: transparent transparent black transparent; transform: rotate(-45deg); position: absolute;}");
+                    addcss("#rectangleBlack { width: 30px; height: 55px; background-color: black; transform: rotate(-45deg); position: absolute;}");
+                    addcss("#newDiv1 { width: 100px; height: 100px; position : absolute; animation: flash 5s; }");
+                    addcss("@keyframes flash {from,50%,to {opacity: 1;}25%,75% {opacity: 0;}");
                     newDiv1.appendChild(triangleBlack);
                     newDiv1.appendChild(rectangleBlack);
                     newDiv1.appendChild(triangle);
@@ -214,7 +293,7 @@ suite.addEventListener("click", ()=>{
                 }
                 if(list[1].indexOf("typeWriting") != -1){
                     list[3] = list[3].replace("typeWriting:", "");
-                    this.writing(text[1], element, this.writing);
+                    writing(text[1], element, writing);
                 }
                 if(list[1].indexOf("clickAnimation") != -1){
                     element.addEventListener("click", function(){
@@ -277,7 +356,6 @@ suite.addEventListener("click", ()=>{
 
 
 
-
 }, false);
 cases.addEventListener("click", ()=>{ 
     console.log(sideex.file.testCase.get("case-0"));
@@ -292,11 +370,16 @@ white.addEventListener("click", ()=>{
     console.log(sideex.recorder.stop());
 }, false);
 tests.addEventListener("click", ()=>{
-    // console.log(sideex.file.testSuite.getSelected())
-    // console.log(sideex.file.testCase.getSelected());;
-    // console.log(sideex.file.record.get(0));
-    // console.log(sideex.test.selectForm("showText", 0));
     color.style.backgroundColor = "white";
+    console.log(sideex.file.record.get(0));
+    let record = sideex.file.record.get(0);
+    record.name = "Hello";
+    console.log(sideex.file.record.get(0));
+    sideex.playback.addCustomCommand("Hello", true, () => {
+        console.log("Welcome to SideeX Api!!!");
+        }
+    );
+    sideex.playback.start();
 }, false);
 color.addEventListener("click", ()=>{
     color.style.backgroundColor = "yellow";

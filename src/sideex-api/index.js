@@ -75,7 +75,7 @@ export class SideeX {
                 copy: function (suiteIdTexts = self.root.fileController.getSelectedSuites()[0]) {
                     self.root.fileController.copySuites(suiteIdTexts);
                 },
-                checkSuitesOrder: function () {
+                getSuitesOrder: function () {
                     return self.root.fileController.testSuite.order;
                 },
                 // checkSuitesLength: function () {
@@ -197,7 +197,7 @@ export class SideeX {
                     }
                     self.root.fileController.setSelectedSuites([suiteIdText]);
                 },
-                checkCasesOrder: function () {
+                getCasesOrder: function () {
                     return self.root.fileController.testCase.cases;
                 },
                 // checkCasesLength: function () {

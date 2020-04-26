@@ -56,7 +56,7 @@ export class VariableController {
     }
 
     addVariable(name = "", value = "") {
-        console.log(this.root);
+        // console.log(this.root);
         this.globalVars.count++;
         let index = this.globalVars.startNum++;
         let varIdText = `var-${index}`;
