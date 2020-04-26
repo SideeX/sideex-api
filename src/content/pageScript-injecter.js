@@ -14,9 +14,6 @@
  *  limitations under the License.
  *
  */
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
 import { sideex } from "./content-initialization";
 
 const script = document.createElement("script");

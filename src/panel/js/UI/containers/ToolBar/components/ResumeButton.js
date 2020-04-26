@@ -12,7 +12,7 @@ function ResumeButton({ mode }) {
     });
 
     return (
-        
+
         <div className={buttonStyle}>
             <Button className={cls.IconContainer} onClick={() => { events.toolBar.clickResumeButton(); }} >
                 <FontAwesomeIcon className={cls.commonStyle} icon={faUndoAlt}/>

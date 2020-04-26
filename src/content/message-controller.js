@@ -1,7 +1,4 @@
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
-import "../utils/windowListeners"
+import "../utils/windowListeners";
 
 export class MessageController {
     static tabSendMessage(message, tabId, options) {

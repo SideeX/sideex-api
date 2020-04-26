@@ -14,9 +14,6 @@
  *  limitations under the License.
  *
  */
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
 import { Utils } from "../common/utils";
 import { LocatorBuilders } from "./locatorBuilders";
 import { recorderHandlersInit } from "./recorder-handlers";
@@ -203,7 +200,7 @@ export class Recorder {
                 await MessageController.runtimeSendMessage({
                     command: command,
                     target: target,
-                    value: value,
+                    value: value
                     // preWaitTime: preWaitTime,
                     // insertBeforeLastCommand: insertBeforeLastCommand,
                     // frameLocation: (actualFrameLocation != undefined) ? actualFrameLocation : this.frameLocation

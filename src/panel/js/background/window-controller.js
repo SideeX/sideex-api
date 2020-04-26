@@ -14,9 +14,6 @@
  *  limitations under the License.
  *
  */
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
 import { MessageController } from "../../../content/message-controller";
 
 export class WindowController {
@@ -162,7 +159,7 @@ export class WindowController {
             command: command,
             target: target,
             value: value,
-            index: index,
+            index: index
         }, tabId, { frameId: top ? 0 : frameId });
     }
 

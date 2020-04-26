@@ -18,19 +18,16 @@
 // TODO: separate UI
 // TODO: check multiple-panel support
 
-/**
- * A recorder to receive and record commands
- * @class
- */
-// #!if isExt === true 
-import { browser } from "webextension-polyfill-ts"; 
-// #!endif 
 import { PreRecorder } from './preRecorder';
 import { boundMethod } from "autobind-decorator";
 import * as EntryPoint from "../UI/entryPoint";
 
 import { MessageController } from "../../../content/message-controller";
 
+/**
+ * A recorder to receive and record commands
+ * @class
+ */
 export class BackgroundRecorder {
 
     /**

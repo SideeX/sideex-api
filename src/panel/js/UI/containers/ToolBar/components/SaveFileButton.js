@@ -15,10 +15,10 @@ function SaveFileButton({ mode }) {
     );
 
     return (
-        
+
         <div className={buttonStyle}>
             <Button className={cls.IconContainer} onClick={() => { events.fileList.clickSaveTestSuite(); }} >
-            <FontAwesomeIcon className={recordIcon} icon={faStop}/>
+                <FontAwesomeIcon className={recordIcon} icon={faStop}/>
                 <br />
                 <span className={cls.textStyle}>Save</span>
             </Button>

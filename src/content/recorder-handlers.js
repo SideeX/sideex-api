@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
 import { Recorder } from "./recorder";
 import { Utils } from "../common/utils";
 import { MessageController } from "../content/message-controller";
@@ -376,7 +373,7 @@ export function recorderHandlersInit() {
                 self.record(m.cmd, [[tmpTitle]], '');
             } else if (m.cmd.includes("Value")) {
                 self.record(m.cmd, tmpText, getInputValue(event.target));
-            } else if (m.cmd.includes("Visibility")){
+            } else if (m.cmd.includes("Visibility")) {
                 self.record(m.cmd, tmpText, tmpVal);
             }
             myPort.onMessage.removeListener(portListener);

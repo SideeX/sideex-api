@@ -15,9 +15,6 @@
  *
  */
 import TargetSelecter from "./targetSelecter";
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
 import { sideex, locatorBuilders, browserBot } from "./content-initialization";
 import "../common/utils";
 import { MessageController } from "../content/message-controller";

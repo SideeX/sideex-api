@@ -33,21 +33,16 @@ module.exports = [merge(common, {
                 use: {
                     loader: "babel-loader",
                     options: {
-                        presets: [['env', {
-                            "targets": {
-                                "browsers": ["last 2 Chrome versions"]
-                            },
-                            "modules": "commonjs"
-                        }]]
+                        presets: ['@babel/env']
                     }
                 }
-            },
+            }
         ]
     },
     plugins: [
         new HtmlWebPackPlugin({
             template: "./src/panel/index_react.html",
             filename: "index_react.html"
-        }),
+        })
     ]
 })];

@@ -136,7 +136,7 @@ export var fileController = {
     ...workAreaState,
     loadFile: {
         readSuites: () => {},
-        readFile: () => {},
+        readFile: () => {}
     },
     saveFile: {
         textFile: null,

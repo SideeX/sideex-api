@@ -14,9 +14,6 @@
  *  limitations under the License.
  *
  */
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
 
 export class PreRecorder {
     constructor(root, bgRecorder) {

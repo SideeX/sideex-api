@@ -32,7 +32,7 @@ export class Playback {
         this.isStop = false;
 
         this.commandReferences = commandReferences;
-        
+
         this.playMode = 0;
         this.playSuites = [];
         this.showCase = [];
@@ -53,14 +53,14 @@ export class Playback {
         this.idOfTimeout;
         this.timeout = Playback.DEFAULT_TIMEOUT_VALUE;
 
-        if(this.root.api){
+        if (this.root.api) {
             this.currentPlayingTabId = undefined;
             this.currentPlayingFrameLocation = 'root';
             this.playingFrameLocations = {};
             this.playingFrameLocations[this.currentPlayingTabId] = {};
             this.playingFrameLocations[this.currentPlayingTabId]["root"] = 0;
         }
-        
+
 
         if (this.root.isDOMBased) {
             console.log("windowcontroller open");
@@ -232,7 +232,7 @@ export class Playback {
         this.caseFailed = false;
         this.curPlayIndex.push({ direction: 0, index: fromIndex - 1 });
         try {
-            if(!this.root.api){
+            if (!this.root.api) {
                 console.log(this.windowController);
                 await this.windowController.init();
             }
@@ -356,7 +356,7 @@ export class Playback {
         return {
             name: name,
             target: target,
-            value: value,
+            value: value
             // preWaitTime: preWaitTime
         };
     }
@@ -511,17 +511,17 @@ export class Playback {
         // console.log(frameId);
 
         let action = ("waitSeries" === command ) ? "Wait" : "Command";
-        
+
         return await MessageController.tabSendMessage({
             action: action,
             command: command,
             target: target,
             value: value,
-            index: index,
-        }, undefined, { frameId: top ? 0 : frameId });    
+            index: index
+        }, undefined, { frameId: top ? 0 : frameId });
     }
 
-    
+
     async doAutoWaitSeries() {
         // if (!preWaitTime) {
         //     return Promise.resolve();
@@ -529,13 +529,12 @@ export class Playback {
         // await this.doAutoWait("pageWait");
         // await this.doAutoWait("ajaxWait", preWaitTime.ajax);
         // await this.doAutoWait("DOMWait", preWaitTime.DOM);
-        if (this.shutdown){
+        if (this.shutdown) {
             return;
-        }
-        else{
-            if(this.root.api){
+        } else {
+            if (this.root.api) {
                 await this.sendCommand("waitSeries", "", 0, JSON.stringify(this.curPlayIndex));
-            }else{
+            } else {
                 await this.windowController.sendCommand("waitSeries", "", 0, JSON.stringify(this.curPlayIndex));
             }
         }
@@ -550,9 +549,9 @@ export class Playback {
         switch (this.determineCommandType(name)) {
             case "content":
             case "contextmenu": {
-                if(this.root.api){
+                if (this.root.api) {
                     result = await this.sendCommand(name, target, value, index);
-                }else{
+                } else {
                     result = await this.windowController.sendCommand(name, target, value, index);
                 }
                 // console.log(result);
@@ -584,7 +583,7 @@ export class Playback {
         //     if (result === "Success") {
         //         // console.log("Success");
         //         return true;
-        //     } else {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        //     } else {
         //         return Promise.reject(result.message);
         //     }
         // }else{

@@ -12,13 +12,13 @@ class App extends React.Component {
             isFileListHide : false
         };
         this.toggleFileList = this.toggleFileList.bind(this);
-        
+
         this.backGroundStyle = {
             backgroundColor: '#173581',
             margin: "0px",
             minWidth: "500px"
         };
-   
+
     }
     toggleFileList() {
         this.setState({
@@ -33,7 +33,7 @@ class App extends React.Component {
                     <ContextMenu />
                     <FileList isFileListHide={this.state.isFileListHide}
                         toggleFileList={this.toggleFileList}/>
-                    <Col className={cls.rightSectionSTyle} toggleFileList={this.toggleFileList} workAreaAppend={this.state.isFileListHide}> 
+                    <Col className={cls.rightSectionSTyle} toggleFileList={this.toggleFileList} workAreaAppend={this.state.isFileListHide}>
                         <ToolBar />
                         <WorkArea/>
                     </Col>

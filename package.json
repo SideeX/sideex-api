@@ -129,5 +129,8 @@
         "styled-components": "^3.5.0-0",
         "urijs": "^1.19.2",
         "xmlhttprequest": "^1.8.0"
-    }
+    },
+    "browserslist": [
+        "last 2 Chrome versions"
+    ]
 }

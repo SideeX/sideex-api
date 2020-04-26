@@ -1,6 +1,3 @@
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
 import * as EntryPoint from "../UI/entryPoint";
 export class VariableController {
     constructor(root) {

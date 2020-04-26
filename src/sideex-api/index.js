@@ -1,6 +1,3 @@
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
 import platform from "platform";
 import { FileController } from '../panel/js/IO/file-controller';
 // import {LoadFile} from '../panel/js/IO/load-file';
@@ -11,8 +8,8 @@ import { VariableController } from '../panel/js/background/variable-controller';
 import { Setting } from "../panel/js/background/setting";
 import { Log } from '../panel/js/background/log';
 import "../content/command-receiver-for-api";
-import "../content/recorder-handlers"
-import { Recorder } from "../content/recorder"
+import "../content/recorder-handlers";
+import { Recorder } from "../content/recorder";
 import { locatorBuilders } from "../content/content-initialization";
 
 export class SideeX {
@@ -216,7 +213,7 @@ export class SideeX {
                     target: { options: [{ type: "other", value: "" }] },
                     value: { options: [{ type: "other", value: "" }] }
                 },
-                    caseIdText = self.root.fileController.getSelectedCases()[0]) {
+                caseIdText = self.root.fileController.getSelectedCases()[0]) {
                     self.root.recorder.prepareRecord();
                     let index = self.root.fileController.getRecordNum(caseIdText);
                     let info = self.root.fileController.addCommand(caseIdText, index, recordData.name, recordData.target, recordData.value);
@@ -472,7 +469,7 @@ export class SideeX {
                 self.root.playback.isPause = false;
                 //EntryPoint.toolBar.syncButtonState();
             },
-            addCustomCommand: (cmdName, verifyLocator = true, code) => {    
+            addCustomCommand: (cmdName, verifyLocator = true, code) => {
                 let isDoSnapshot = true;
                 let type = {record: "mouse", playback: "content"};
                 let isManual = false;
@@ -480,33 +477,33 @@ export class SideeX {
                 self.root.playback.commandReferences[cmdName] = {
                     isDoSnapshot: isDoSnapshot,
                     type: {
-                            record: type.record,
-                            playback: type.playback
+                        record: type.record,
+                        playback: type.playback
                     },
                     isManual: isManual,
                     verifyLocator: verifyLocator,
                     reference: {
-                            name: reference.name,
-                            target: reference.target,
-                            value: reference.value,
-                            description: reference.description
+                        name: reference.name,
+                        target: reference.target,
+                        value: reference.value,
+                        description: reference.description
                     }
 
                 };
                 self.root.playback.sideex.addCommand(cmdName, code);
-                
+
             },
             // commandWait: async (target) => {
             //     // console.log(self.root.playback.sideex.commandWait(target))
             //     // console.log(target)
             //     // console.log(self.root.playback.sideex.commandWait(target))
-            //     return (self.root.playback.sideex.commandWait(target));   
+            //     return (self.root.playback.sideex.commandWait(target));
             // },
 
             findElement: (locator) => {
                 // console.log(locator)
                 // console.log(self.root.playback.sideex.browserBot.findElement(locator));
-                return (self.root.playback.sideex.browserBot.findElement(locator));   
+                return (self.root.playback.sideex.browserBot.findElement(locator));
             },
 
             getClientXY: (element, coordString) => {
@@ -514,7 +511,7 @@ export class SideeX {
                 // console.log(coordString);
                 return (self.root.playback.sideex.getClientXY(element, coordString));
             }
-                    
+
         };
         this.others = {
             // selectElement: {

@@ -132,25 +132,25 @@ export class LoadFile {
         // }
         // console.log(fileText);
         let obj = JSON.parse(fileText);
-            for (let suite of obj.suites) {
-                let cases = suite.cases;
-                suite.cases = [];
-                console.log(this.root.fileController.addTestSuite({
-                    fileName: suite.fileName,
-                    title: suite.title,
-                    cases: [],
+        for (let suite of obj.suites) {
+            let cases = suite.cases;
+            suite.cases = [];
+            console.log(this.root.fileController.addTestSuite({
+                fileName: suite.fileName,
+                title: suite.title,
+                cases: [],
+                modified: false
+            }));
+            for (let caseEle of cases) {
+                console.log(this.root.fileController.addTestCase({
+                    title: caseEle.title,
+                    records: caseEle.records.map(record => {
+                        return this.parent.newCommand(record.name, record.target, record.value, record.pwt);
+                    }),
                     modified: false
                 }));
-                for (let caseEle of cases) {
-                    console.log(this.root.fileController.addTestCase({
-                        title: caseEle.title,
-                        records: caseEle.records.map(record => {
-                            return this.parent.newCommand(record.name, record.target, record.value, record.pwt);
-                        }),
-                        modified: false
-                    }));
-                }
             }
+        }
     }
 
     readFile(file) {
@@ -234,7 +234,7 @@ export class LoadFile {
         // console.log(obj);
         result.isSideex = obj.version.sideex ? true : false;
         result.version = obj.version.format ? obj.version : result.version;
-        
+
         return result;
 
         function getAttrValue(attr) {

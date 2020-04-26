@@ -1,1 +1,1 @@
-export { default } from './ToolBar'
+export { default } from './ToolBar';

@@ -19,9 +19,6 @@ import sendkeysMap from "./sendkeysMap";
 import { Utils } from "../common/utils";
 import { PatternMatcher } from "../common/patternMatcher";
 // import storage from "../common/storage";
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
 import { escapeHTML } from "../common/escape.js";
 import { MessageController } from "../content/message-controller";
 import { sideex } from "./content-initialization";
@@ -54,7 +51,7 @@ export class Sideex {
     async doAutoWait(type, value) {
         this.window.postMessage({
             direction: "from-content-playback-auto-wait",
-            type: type,
+            type: type
             // preWaitTime: value
         }, "*");
         return await this.getWaitResult();
@@ -345,8 +342,8 @@ export class Sideex {
             return { result: false };
         }
     }
-    addCommand(name, code){
-        Sideex.commands[name] = code;  
+    addCommand(name, code) {
+        Sideex.commands[name] = code;
     }
 }
 
@@ -361,7 +358,7 @@ Sideex.commands = {
      *      event relative to the element returned by the locator.
      *
      */
-    async clickAt(locator, coordString){
+    async clickAt(locator, coordString) {
         var element = this.browserBot.findElement(locator);
         var clientXY = this.getClientXY(element, coordString);
         this.browserBot.fireMouseEvent(element, 'mouseover', true, clientXY[0], clientXY[1]);
@@ -503,27 +500,27 @@ Sideex.commands = {
         }
     },
 
-    async verifyVisibility(locator, value){
+    async verifyVisibility(locator, value) {
         var element = this.browserBot.findElement(locator);
         var locate = element.getBoundingClientRect();
         var window_height = window.innerHeight;
         var window_width = window.innerWidth;
         //css
-        if(window.getComputedStyle(element).visibility === "hidden" ||
+        if (window.getComputedStyle(element).visibility === "hidden" ||
             window.getComputedStyle(element).opacity === "0" ||
             window.getComputedStyle(element).display === "none" ||
-            window.getComputedStyle(element).width === "0px" || 
-            window.getComputedStyle(element).height === "0px"){ 
-                throw new Error("I can't see!!");
+            window.getComputedStyle(element).width === "0px" ||
+            window.getComputedStyle(element).height === "0px") {
+            throw new Error("I can't see!!");
         }
         //exceed the screen
-        if(locate.top > window_height ||
+        if (locate.top > window_height ||
             locate.bottom < 0 ||
             locate.left > window_width ||
-            locate.right < 0){
-                throw new Error("I can't see!!");
+            locate.right < 0) {
+            throw new Error("I can't see!!");
         }
-        
+
     },
 
     // © Ming-Hung Hsu, SideeX Team
@@ -851,7 +848,7 @@ Sideex.commands = {
      *@param locator an element locator
      *@param value the context of the element in html
      */
-    async editContent(locator, value){
+    async editContent(locator, value) {
         var element = this.browserBot.findElement(locator);
         var editable = element.contentEditable;
         if (editable == "true") {

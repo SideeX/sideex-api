@@ -12,7 +12,7 @@ function StopButton({ mode }) {
     });
 
     return (
-        
+
         <div className={buttonStyle}>
             <Button className={cls.IconContainer} onClick={() => { events.toolBar.clickStopButton(); }} >
                 <FontAwesomeIcon className={cls.commonStyle} icon={faStop}/>

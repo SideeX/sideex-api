@@ -98,7 +98,7 @@ const testFilesData = {
                                 screenshot: "fdsfd",
                                 breakpoint: false,
                                 status: "default"
-                            },
+                            }
                         ]]
                     },
                     {
@@ -157,7 +157,7 @@ const testFilesData = {
                         screenshot: "fdsfd",
                         breakpoint: false,
                         status: "default"
-                    },
+                    }
                 ]
             },
             "case-1": {
@@ -267,8 +267,8 @@ const testFilesData = {
                                 screenshot: "fdsfd",
                                 breakpoint: false,
                                 status: "default"
-                            },]
-                        ],
+                            }]
+                        ]
                     },
                     {
                         id: "records-4",
@@ -286,7 +286,7 @@ const testFilesData = {
                         screenshot: "fdsfd",
                         breakpoint: false,
                         status: "default"
-                    },
+                    }
                 ]
             }
         }
@@ -306,7 +306,7 @@ const files = {
         count: 0,
         untitledCount: 0,
         cases: {}
-    },
+    }
     //...testFilesData
 };
 

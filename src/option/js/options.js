@@ -15,9 +15,6 @@
  *
  */
 import storage from "../../common/storage";
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
 
 $(document).ready(function () {
     browser.storage.sync.get()

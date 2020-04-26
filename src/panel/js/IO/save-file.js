@@ -1,8 +1,5 @@
 import { doEscape } from '../../../common/escape';
 import { Utils } from "../../../utils/utils.common";
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
 import { cloneDeep } from "lodash";
 import { fileList } from "../UI/entryPoint";
 
@@ -166,12 +163,12 @@ export class SaveFile {
         if (downloadDelta.id && downloadDelta.state &&
             downloadDelta.state.current === "complete") {
             // console.log(file);
-            if(file){
+            if (file) {
                 if (file.type === "file") {
                     this.parent.setSuiteModified(file.suiteIdTexts[0], false, true);
                     fileList.syncFiles();
                 }
-            
+
 
                 Utils.releaseObjectURL(file.url);
                 delete this.downloadFile[downloadDelta.id];

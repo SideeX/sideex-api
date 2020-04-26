@@ -76,7 +76,7 @@ export class FileController {
     deleteSuite(suiteIdText) {
         let suite = this.testSuite.suites[suiteIdText];
         let length = this.testSuite.suites[suiteIdText].cases.length;
-        for (let i = length -1; i >= 0; i--) {
+        for (let i = length - 1; i >= 0; i--) {
             this.deleteCase(suite.cases[i]);
         }
         this.deleteNameMap(suiteIdText);

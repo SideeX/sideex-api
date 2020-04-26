@@ -1,6 +1,3 @@
-// #!if isExt === true
-import { browser } from "webextension-polyfill-ts";
-// #!endif
 import { root } from "../background/initial";
 import * as EntryPoint from "../UI/entryPoint";
 import { toolBar, workArea, fileList, app} from "./entryPoint";
@@ -127,7 +124,7 @@ export default {
             document.getElementById("open-files").click();
         },
         changeOpenFile: function (event) {
-            if(root.fileController.getSuiteNum() == 0){
+            if (root.fileController.getSuiteNum() == 0) {
                 for (let i = 0; i < event.target.files.length; i++) {
                     if (root.fileController.isFileNameOpened(event.target.files[i].name)) {
                         app.setModal({
@@ -141,7 +138,7 @@ export default {
                     root.fileController.loadFile.readFile(event.target.files[i]);
                     break;
                 }
-            }else{
+            } else {
                 console.log("more than two suite!");
             }
             event.target.value = null;
@@ -511,5 +508,5 @@ export default {
             refreshUI();
         }
     }
-    
+
 };

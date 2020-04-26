@@ -1,0 +1,1 @@
+declare const browser: import("webextension-polyfill-ts").Browser

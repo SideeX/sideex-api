@@ -1,4 +1,5 @@
 var path = require('path');
+const webpack = require("webpack");
 var HtmlWebPackPlugin = require('html-webpack-plugin');
 var merge = require('webpack-merge');
 var common = require('./webpack.common.js');
@@ -56,7 +57,10 @@ module.exports = [
                     context: './src',
                     to: path.resolve("./dist/extension/page")
                 }
-            ])
+            ]),
+            new webpack.ProvidePlugin({
+                browser: ["webextension-polyfill-ts", "browser"]
+            })
         ]
     }),
     merge(common, {
@@ -80,6 +84,9 @@ module.exports = [
             new HtmlWebPackPlugin({
                 template: "./src/panel/index.html",
                 filename: "../../../index.html"
+            }),
+            new webpack.ProvidePlugin({
+                browser: ["webextension-polyfill-ts", "browser"]
             })
         ]
     }),
@@ -96,6 +103,11 @@ module.exports = [
         },
         devServer: {
             contentBase: path.join(__dirname, 'dist/extension/panel/js/UI/build')
-        }
+        },
+        plugins:[
+            new webpack.ProvidePlugin({
+                browser: ["webextension-polyfill-ts", "browser"]
+            })
+        ]
     })
 ];
