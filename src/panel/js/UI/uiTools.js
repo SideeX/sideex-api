@@ -136,18 +136,18 @@ export class UiTools {
                     let recordInfo = this.root.fileController.getRecord(info.caseIdText, info.index);
                     this.root.fileController.setSelectedRecords([`records-${info.index}`]);
 
-                    EntryPoint.workArea.setEditBlock({
-                        index: info.index, isOpen: true, isSelect: false,
-                        usedIndex: {
-                            target: recordInfo.target.usedIndex,
-                            value: recordInfo.value.usedIndex
-                        },
-                        value: {
-                            name: recordInfo.name,
-                            targets: recordInfo.target.options,
-                            values: recordInfo.value.options
-                        }
-                    });
+                    // EntryPoint.workArea.setEditBlock({
+                    //     index: info.index, isOpen: true, isSelect: false,
+                    //     usedIndex: {
+                    //         target: recordInfo.target.usedIndex,
+                    //         value: recordInfo.value.usedIndex
+                    //     },
+                    //     value: {
+                    //         name: recordInfo.name,
+                    //         targets: recordInfo.target.options,
+                    //         values: recordInfo.value.options
+                    //     }
+                    // });
                     break;
                 }
                 case 79: // Ctrl + O

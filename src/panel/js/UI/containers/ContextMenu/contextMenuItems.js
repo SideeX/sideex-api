@@ -87,11 +87,6 @@ export default {
             onClick: events.workArea.clickDeleteCommand
         },
         {
-            title: "Convert to animation cmd",
-            shortCut: "",
-            onClick: events.workArea.clickConvertCommand
-        },
-        {
             title: "Delete all cmds",
             shortCut: "",
             onClick: events.workArea.clickDeleteAllCommand

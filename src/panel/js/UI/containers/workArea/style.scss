@@ -138,10 +138,10 @@
 }
 
 // edit block
-.editBlockTextStyle {
-    color: white;
-    font-size: 15px;
-}
+// .editBlockTextStyle {
+//     color: white;
+//     font-size: 15px;
+// }
 
 .iconStyle {
     color: white;
@@ -244,9 +244,9 @@
     overflow-x: hidden;
     overflow-y: overlay;
 
-    &.showEditBlock {
-        height: calc(80vh - 17px - 140px - 15px);
-    }
+    // &.showEditBlock {
+    //     height: calc(80vh - 17px - 140px - 15px);
+    // }
 
     &:hover {
         @include scrollbars(#888,#555,$third-color);
@@ -306,51 +306,51 @@
 }
 
 // edit block
-.editBlockTextStyle {
-    margin: auto;
-}
+// .editBlockTextStyle {
+//     margin: auto;
+// }
 
-.editBlockInputCol {
-    margin: auto 0;
-}
+// .editBlockInputCol {
+//     margin: auto 0;
+// }
 
-.editBlockCommand {
-    user-select: none;
-    margin: auto;
-    color: gray;
-}
+// .editBlockCommand {
+//     user-select: none;
+//     margin: auto;
+//     color: gray;
+// }
 
-.editBlockDropDown {
-    padding: 0 !important;
-    border: 0 !important;
-    border-top-left-radius: 0 !important;
-    border-radius: 0 !important;
-    width: 100% !important;
+// .editBlockDropDown {
+//     padding: 0 !important;
+//     border: 0 !important;
+//     border-top-left-radius: 0 !important;
+//     border-radius: 0 !important;
+//     width: 100% !important;
 
-    input {
-        border: 0 !important;
-        border-top-right-radius: 0 !important;
-        border-bottom-right-radius: 0 !important;
-    }
-}
+//     input {
+//         border: 0 !important;
+//         border-top-right-radius: 0 !important;
+//         border-bottom-right-radius: 0 !important;
+//     }
+// }
 
-.editBlockButtonDropDown {
-    width: 100% !important;
-}
+// .editBlockButtonDropDown {
+//     width: 100% !important;
+// }
 
-.editBlockDropDownMenu {
-    max-height: 30vh;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow: overlay;
-}
+// .editBlockDropDownMenu {
+//     max-height: 30vh;
+//     margin: 0;
+//     padding: 0;
+//     width: 100%;
+//     overflow: overlay;
+// }
 
-.editBlockDropDownToggle {
-    background-color: white !important;
-    border: 0 !important;
-    color: black !important;
-}
+// .editBlockDropDownToggle {
+//     background-color: white !important;
+//     border: 0 !important;
+//     color: black !important;
+// }
 
 .labelStyle {
     user-select: none;
@@ -365,15 +365,15 @@
     margin: 5px 0;
 }
 
-.editBlockIconStyle {
-    padding: 0;
-    margin: auto 0;
-    width: 8%;
-    text-align: center;
-    &:hover {
-        filter: brightness(90%);
-    }
-}
+// .editBlockIconStyle {
+//     padding: 0;
+//     margin: auto 0;
+//     width: 8%;
+//     text-align: center;
+//     &:hover {
+//         filter: brightness(90%);
+//     }
+// }
 
 .inputStyle {
     height: 30px;;

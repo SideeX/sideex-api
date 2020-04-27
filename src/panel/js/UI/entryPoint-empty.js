@@ -17,13 +17,13 @@ export const fileList = {
 };
 export const workArea = {
     setAutoScroll: () => {},
-    setEditBlock: () => {},
-    updateEditBlockSelect: () => {},
+    // setEditBlock: () => {},
+    // updateEditBlockSelect: () => {},
     setVideoURL: () => {},
     syncSnapshotModal: () => {},
     syncCommands: () => {},
     syncCommand: () => {},
-    syncEditBlock: () => {}
+    // syncEditBlock: () => {}
 };
 export const footer = {
     setCondition: function () {},
