@@ -368,7 +368,7 @@ export class BackgroundRecorder {
             let index = parseInt(this.root.fileController.getSelectedRecord().split("-")[1]);
             this.root.fileController.setRecordUsedTarget(caseIdText, index, target);
 
-            EntryPoint.workArea.syncEditBlock(caseIdText, index);
+            // EntryPoint.workArea.syncEditBlock(caseIdText, index);
             EntryPoint.workArea.syncCommands();
             return;
         }
@@ -376,7 +376,7 @@ export class BackgroundRecorder {
         if (message.cancelSelectTarget) {
             this.isSelecting = false;
             MessageController.tabSendMessage({action: "SelectElement", selecting: false}, sender.tab.id);
-            EntryPoint.workArea.updateEditBlockSelect();
+            // EntryPoint.workArea.updateEditBlockSelect();
             return;
         }
     }

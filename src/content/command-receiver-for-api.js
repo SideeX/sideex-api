@@ -102,7 +102,7 @@ MessageController.addListener(async function doCommands(request) {
             recorder.detach();
             return {};
         }
-        default:
+        // default:
             // throw new Error("Action not found");
     }
 });

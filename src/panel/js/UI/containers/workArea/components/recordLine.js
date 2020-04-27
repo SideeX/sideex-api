@@ -102,7 +102,7 @@ class RecordLine extends React.Component {
                     }
                 };
                 if (!event.ctrlKey && !event.shiftKey) obj.isOpen = true;
-                workArea.setEditBlock(obj);
+                // workArea.setEditBlock(obj);
             };
             contextMenuHandler = (event) => {
                 events.others.setSelectedRecords([idText], event.ctrlKey, event.shiftKey);

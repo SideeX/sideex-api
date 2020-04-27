@@ -276,18 +276,18 @@ export default {
 
             workArea.syncCommands();
             fileList.syncFiles();
-            workArea.setEditBlock({
-                index: info.index, isOpen: true, isSelect: false,
-                usedIndex: {
-                    target: recordInfo.target.usedIndex,
-                    value: recordInfo.value.usedIndex
-                },
-                value: {
-                    name: recordInfo.name,
-                    targets: recordInfo.target.options,
-                    values: recordInfo.value.options
-                }
-            });
+            // workArea.setEditBlock({
+            //     index: info.index, isOpen: true, isSelect: false,
+            //     usedIndex: {
+            //         target: recordInfo.target.usedIndex,
+            //         value: recordInfo.value.usedIndex
+            //     },
+            //     value: {
+            //         name: recordInfo.name,
+            //         targets: recordInfo.target.options,
+            //         values: recordInfo.value.options
+            //     }
+            // });
         },
         clickDeleteCommand: function (event) {
             event.stopPropagation();
@@ -476,9 +476,7 @@ export default {
 
             let recordIdText = root.fileController.getSelectedRecord();
             workArea.syncCommands();
-            recordIdText &&
-                workArea.syncEditBlock(root.fileController.getSelectedCases()[0],
-                    parseInt(recordIdText.split("-")[1]));
+            recordIdText;
         },
         clickApp: function (event) {
             event.stopPropagation();

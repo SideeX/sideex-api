@@ -349,20 +349,20 @@ export const workAreaState = {
         subtitle: ""
     },
     selectedVideos: [""],
-    editBlock: {
-        index: 0,
-        isOpen: false,
-        isSelect: false,
-        usedIndex: {
-            target: 0,
-            value: 0
-        },
-        value: {
-            name: "",
-            targets: [],
-            values: []
-        }
-    }
+    // editBlock: {
+    //     index: 0,
+    //     isOpen: false,
+    //     isSelect: false,
+    //     usedIndex: {
+    //         target: 0,
+    //         value: 0
+    //     },
+    //     value: {
+    //         name: "",
+    //         targets: [],
+    //         values: []
+    //     }
+    // }
 };
 export const app = {
     contextMenu: {

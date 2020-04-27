@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import cx from "classnames";
 import RecordLine from "./components/recordLine";
 import SnapshotModal from "./components/snapshotModal";
-import EditBlock from "./components/editBlock";
+// import EditBlock from "./components/editBlock";
 import cls from "./style.scss";
 import events from "../../events";
 import { workArea } from "../../entryPoint";
@@ -44,9 +44,7 @@ class WorkArea extends React.Component {
         let workAreaColStyle = cx(cls.workAreaCol, {[cls.append]: this.props.workAreaAppend});
         let workAreaStyle = cx(cls.workArea, {[cls.append]:this.props.workAreaAppend});
         let openNavColStyle = cx(cls.openNavCol, {[cls.show]:this.props.workAreaAppend});
-        let recordContainer = cx(cls.recordContainer, {
-            [cls.showEditBlock]: this.props.workArea.selectedRecordIdTexts.length > 0 && this.props.workArea.editBlock.isOpen
-        });
+        let recordContainer = cx(cls.recordContainer);
 
         return (
             <Col xs="auto" className={workAreaColStyle} id="workArea-col" onClick={events.workArea.clickWorkArea}>
@@ -81,13 +79,13 @@ class WorkArea extends React.Component {
                                 onContextMenu={(event) => { events.app.openContextMenu(event, "record default"); }}
                                 onClick={(event) => {
                                     events.others.setSelectedRecords([], false, false);
-                                    workArea.setEditBlock({ isOpen: false });
+                                    // workArea.setEditBlock({ isOpen: false });
                                 }}
                             >
                                 {this.createRecords(this.props.workArea)}
                             </Container>
-                            <EditBlock editBlock={this.props.workArea.editBlock} setReference={this.props.setReference}
-                                selectedRecordIdTexts={this.props.workArea.selectedRecordIdTexts}/>
+                            {/* <EditBlock editBlock={this.props.workArea.editBlock} setReference={this.props.setReference}
+                                selectedRecordIdTexts={this.props.workArea.selectedRecordIdTexts}/> */}
                             <SnapshotModal workArea={this.props.workArea}
                                 toggleSnapshotModal={this.props.toggleSnapshotModal}
                             />
