@@ -200,10 +200,10 @@ export class Recorder {
                 await MessageController.runtimeSendMessage({
                     command: command,
                     target: target,
-                    value: value
+                    value: value,
+                    insertBeforeLastCommand: insertBeforeLastCommand,
+                    frameLocation: (actualFrameLocation != undefined) ? actualFrameLocation : this.frameLocation
                     // preWaitTime: preWaitTime,
-                    // insertBeforeLastCommand: insertBeforeLastCommand,
-                    // frameLocation: (actualFrameLocation != undefined) ? actualFrameLocation : this.frameLocation
                 });
             } catch (error) {
                 console.log(error);

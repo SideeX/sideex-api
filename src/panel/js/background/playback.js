@@ -579,22 +579,12 @@ export class Playback {
     }
 
     handleCommandResult(result) {
-        // if(this.root.api){
-        //     if (result === "Success") {
-        //         // console.log("Success");
-        //         return true;
-        //     } else {
-        //         return Promise.reject(result.message);
-        //     }
-        // }else{
         if (result.status) {
-            // console.log("true");
             return true;
         } else {
             return Promise.reject(result.message);
         }
 
-        // }
     }
 
     isReceivingEndError(errorMessage) {
