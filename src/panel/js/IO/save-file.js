@@ -154,8 +154,13 @@ export class SaveFile {
             }
             result.suites.push(outputSuite);
         }
-        link = Utils.makeTextFile(JSON.stringify(result, null, "  "), "json");
-        this.doDownload("file", `${filename}.json`, link, { suiteIdTexts: suiteIdTexts });
+        if(!this.root.api){
+            link = Utils.makeTextFile(JSON.stringify(result, null, "  "), "json");
+            this.doDownload("file", `${filename}.json`, link, { suiteIdTexts: suiteIdTexts });
+        }else{
+            let file = JSON.stringify(result)
+            console.log(file);
+        }
     }
 
     async downloadCompleted(downloadDelta) {

@@ -118,6 +118,7 @@ console.log(sideex.log.clear());
 console.log(sideex.log.get("logs"));
 console.log(sideex.log.get("typeMap"));
 */
+sideex.file.testSuite.save();
 });
 input.addEventListener("change", handlefile, false);
 all.addEventListener("click", ()=>{
@@ -368,6 +369,8 @@ yellow.addEventListener("click", ()=>{
 }, false);
 white.addEventListener("click", ()=>{
     console.log(sideex.recorder.stop());
+    console.log(sideex.file.testCase.getSelected());
+    console.log(sideex.file.testSuite.getSelected());
 }, false);
 tests.addEventListener("click", ()=>{
     color.style.backgroundColor = "white";

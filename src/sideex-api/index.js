@@ -123,6 +123,10 @@ export class SideeX {
                 },
                 load: function (file) {
                     return self.root.fileController.loadFile.readFile(file);
+                },
+                save: function () {
+                    let suiteIdTexts = self.root.fileController.getSelectedSuites();
+                    self.root.fileController.saveFile.downloadSuites(suiteIdTexts);
                 }
             },
             testCase: {
