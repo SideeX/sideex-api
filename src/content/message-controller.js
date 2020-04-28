@@ -6,8 +6,6 @@ export class MessageController {
             return browser.tabs.sendMessage(tabId, message, options);
         } else {
             return window.postMessageAsync("message", message);
-            // window.postMessage(message);
-            // return Promise.resolve('Success');
         }
     }
 
@@ -15,8 +13,6 @@ export class MessageController {
         if (this.isExtension) {
             return browser.runtime.sendMessage(extensionId, message, options);
         } else {
-            // window.postMessage(message);
-            // return Promise.resolve('Success');
             return window.postMessageAsync("message", message);
         }
     }
@@ -25,7 +21,6 @@ export class MessageController {
         if (this.isExtension) {
             return browser.runtime.onMessage.addListener(callback);
         } else {
-            // return window.addEventListener("message", callback);
             return window.addAsyncMessageListener("message", callback);
         }
     }

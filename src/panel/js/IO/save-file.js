@@ -159,7 +159,7 @@ export class SaveFile {
             this.doDownload("file", `${filename}.json`, link, { suiteIdTexts: suiteIdTexts });
         }else{
             let file = JSON.stringify(result)
-            console.log(file);
+            return file
         }
     }
 

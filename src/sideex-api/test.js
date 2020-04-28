@@ -10,7 +10,7 @@ var white = document.getElementById('change_white');
 var color = document.getElementById('color');
 var tests = document.getElementById('test');
 var cc = document.getElementById('cc');
-cc.addEventListener("click", () => {
+cc.addEventListener("click", async () => {
     /*testsuite
     console.log(sideex.file.testSuite.add());
     console.log(sideex.file.testSuite.get("suite-0"));
@@ -118,7 +118,9 @@ console.log(sideex.log.clear());
 console.log(sideex.log.get("logs"));
 console.log(sideex.log.get("typeMap"));
 */
-sideex.file.testSuite.save();
+let file = await sideex.file.testSuite.save().then((jsonString)=>{return jsonString});
+
+sideex.file.testSuite.load(file);
 });
 input.addEventListener("change", handlefile, false);
 all.addEventListener("click", ()=>{
@@ -346,8 +348,6 @@ suite.addEventListener("click", ()=>{
             while (!element.doClick) {
                 await new Promise((resolve) => { setTimeout(resolve, 10); });
             }
-            // await self.root.playback.sideex.commandWait(locator)
-            // await sideex.playback.commandWait(locator);
             // END
         }
 
@@ -374,15 +374,20 @@ white.addEventListener("click", ()=>{
 }, false);
 tests.addEventListener("click", ()=>{
     color.style.backgroundColor = "white";
-    console.log(sideex.file.record.get(0));
-    let record = sideex.file.record.get(0);
-    record.name = "Hello";
-    console.log(sideex.file.record.get(0));
-    sideex.playback.addCustomCommand("Hello", true, () => {
-        console.log("Welcome to SideeX Api!!!");
-    }
-    );
-    sideex.playback.start();
+    // console.log(sideex.file.record.get(0));
+    // let record = sideex.file.record.get(0);
+    // record.name = "Hello";
+    // console.log(sideex.file.record.get(0));
+    // sideex.playback.addCustomCommand("Hello", true, (target, value) => {
+    //     console.log(target);
+    //     console.log(value);
+    //     var element = sideex.playback.findElement(target);
+    //     var clientXY = sideex.playback.getClientXY(element, value);
+    //     console.log(element, clientXY);
+    //     console.log("Welcome to SideeX Api!!!");
+    // }
+    // );
+    // sideex.playback.start();
 }, false);
 color.addEventListener("click", ()=>{
     color.style.backgroundColor = "yellow";

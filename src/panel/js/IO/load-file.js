@@ -116,7 +116,7 @@ export class LoadFile {
         }
     }
 
-    readSuites(filename, fileText) {
+    readSuites(fileText) {
         // let selectedSuites = [];
         // let suiteTexts = fileText.match(/<div class="suite">[\s\S]*?<\/div>/gi);
         // if (suiteTexts) {
@@ -155,12 +155,19 @@ export class LoadFile {
 
     readFile(file) {
         // console.log(file);
-        if (!file.type.includes("json")) return;
-
+        if(!this.root.api){
+            if (!file.type.includes("json")) return;
+        }
         let reader = new FileReader();
-        reader.readAsText(file);
+        if(!this.root.api){
+            reader.readAsText(file);
+        }
         reader.onload = () => {
-            let fileText = reader.result;
+            if(this.root.api){
+                var fileText = file;
+            }else{
+                var fileText = reader.result;
+            }
             // check for input file version
             // if it is not SideeX2, transforming it
             // if (!this.checkIsVersion2(fileText)) {
@@ -192,7 +199,7 @@ export class LoadFile {
             }
             // append on test grid
             // this.fileTransformer.appendTestSuite(file, fileText);
-            this.readSuites(file.name, fileText);
+            this.readSuites(fileText);
             fileList.syncFiles();
         };
 
