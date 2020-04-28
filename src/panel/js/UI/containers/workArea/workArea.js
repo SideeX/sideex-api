@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import cx from "classnames";
 import RecordLine from "./components/recordLine";
 import SnapshotModal from "./components/snapshotModal";
-// import EditBlock from "./components/editBlock";
 import cls from "./style.scss";
 import events from "../../events";
 import { workArea } from "../../entryPoint";
@@ -61,31 +60,15 @@ class WorkArea extends React.Component {
                         </Col>
                         <Col id="workArea" xs="auto" className={workAreaStyle}>
                             <Container fluid={true} className={cls.testCaseGridHeaderContainerStyle}>
-                                {/* <Row className={cls.testCaseGridHeaderStyle}>
-                                    <Col xs="auto" style={{ padding: "0", width: "8%" }} onClick={events.app.clickReportError}>
-                                        <FontAwesomeIcon icon={faExclamationCircle} title="report error" className={videoIconStyle} />
-                                    </Col>
-                                    <Col xs="auto" className={cx(cls.colDivision, cls.header, cls.name)}><span className={cls.textStyle}>Command</span></Col>
-                                    <Col xs="auto" className={cx(cls.colDivision, cls.header, cls.target)}><span className={cls.textStyle}>Target</span></Col>
-                                    <Col xs="auto" className={cx(cls.colDivision, cls.header, cls.value)}><span className={cls.textStyle}>Value</span></Col>
-                                    <Col xs="auto" className={cx(cls.colDivision, cls.header, cls.snapshot)} title={"Video"}
-                                        onClick={events.workArea.clickSnapshotVideo}
-                                    >
-                                        <FontAwesomeIcon icon={faVideo} className={videoIconStyle} />
-                                    </Col>
-                                </Row> */}
                             </Container>
                             <Container fluid={true} className={recordContainer}
                                 onContextMenu={(event) => { events.app.openContextMenu(event, "record default"); }}
                                 onClick={(event) => {
                                     events.others.setSelectedRecords([], false, false);
-                                    // workArea.setEditBlock({ isOpen: false });
                                 }}
                             >
                                 {this.createRecords(this.props.workArea)}
-                            </Container>
-                            {/* <EditBlock editBlock={this.props.workArea.editBlock} setReference={this.props.setReference}
-                                selectedRecordIdTexts={this.props.workArea.selectedRecordIdTexts}/> */}
+                            </Container> */}
                             <SnapshotModal workArea={this.props.workArea}
                                 toggleSnapshotModal={this.props.toggleSnapshotModal}
                             />

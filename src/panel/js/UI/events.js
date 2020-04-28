@@ -265,7 +265,6 @@ export default {
     workArea: {
         clickAddCommand: function (event) {
             event.stopPropagation();
-            // root.uiTools.setIsOnWorkArea(true);
             root.recorder.prepareRecord();
             let info = root.fileController.insertCommand("after", "",
                 { options: [{ type: "other", value: "" }] },
@@ -276,22 +275,9 @@ export default {
 
             workArea.syncCommands();
             fileList.syncFiles();
-            // workArea.setEditBlock({
-            //     index: info.index, isOpen: true, isSelect: false,
-            //     usedIndex: {
-            //         target: recordInfo.target.usedIndex,
-            //         value: recordInfo.value.usedIndex
-            //     },
-            //     value: {
-            //         name: recordInfo.name,
-            //         targets: recordInfo.target.options,
-            //         values: recordInfo.value.options
-            //     }
-            // });
         },
         clickDeleteCommand: function (event) {
-            event.stopPropagation();
-            // root.uiTools.setIsOnWorkArea(true);
+            event.stopPropagation();;
             let caseIdText = root.fileController.getSelectedCases()[0];
             let recordIdText = root.fileController.getSelectedRecords()[0];
             let index = parseInt(recordIdText.split('-')[1]);
@@ -301,7 +287,6 @@ export default {
         },
         clickDeleteAllCommand: function (event) {
             event.stopPropagation();
-            root.uiTools.setIsOnWorkArea(true);
             let caseIdText = root.fileController.getSelectedCases()[0];
             root.fileController.deleteAllRecords(caseIdText);
 
@@ -309,24 +294,20 @@ export default {
         },
         clickCopyCommands: function (event) {
             event.stopPropagation();
-            root.uiTools.setIsOnWorkArea(true);
             root.fileController.copyCommands();
         },
         clickCutCommands: function (event) {
             event.stopPropagation();
-            root.uiTools.setIsOnWorkArea(true);
             root.fileController.cutCommands();
         },
         clickPasteCommands: function (event) {
             event.stopPropagation();
-            root.uiTools.setIsOnWorkArea(true);
             root.fileController.pasteCommands();
 
             workArea.syncCommands();
         },
         clickPlayFromHere: function (event) {
             event.stopPropagation();
-            root.uiTools.setIsOnWorkArea(true);
             let recordIdText = root.fileController.getSelectedRecords()[0];
             if (recordIdText) {
                 root.recorder.detach();
@@ -340,7 +321,6 @@ export default {
         },
         clickToggleBreakpoint: function (event) {
             event.stopPropagation();
-            root.uiTools.setIsOnWorkArea(true);
             let index = parseInt(root.fileController.getSelectedRecord().split("-")[1]);
             root.fileController.toggleRecordBreakpoint(
                 root.fileController.getSelectedCases()[0], index
@@ -350,7 +330,6 @@ export default {
         },
         clickClearRecordsStatus: function (event) {
             event.stopPropagation();
-            root.uiTools.setIsOnWorkArea(true);
             let caseIdText = root.fileController.getSelectedCases()[0];
             let records = root.fileController.getRecords(caseIdText);
             let caseEle = root.fileController.getTestCase(caseIdText);
@@ -378,7 +357,6 @@ export default {
         },
         clickWorkArea: function (event) {
             event.stopPropagation();
-            root.uiTools.setIsOnWorkArea(true);
         }
     },
     app: {
@@ -439,9 +417,6 @@ export default {
             root.fileController.setSelectedRecords(selectedIdTexts);
             workArea.syncCommands();
         },
-        setIsOnWorkArea: function (bool) {
-            root.uiTools.setIsOnWorkArea(bool);
-        },
         shortCutEvents: function (event) {
             try {
                 if (root.playback.isPlay) {
@@ -480,7 +455,6 @@ export default {
         },
         clickApp: function (event) {
             event.stopPropagation();
-            root.uiTools.setIsOnWorkArea(false);
         },
         clickLogout: async function () {
             app.setModal({

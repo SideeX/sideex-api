@@ -71,17 +71,6 @@ export const workArea = {
             autoScroll: { ...autoScroll }
         });
     },
-    // setEditBlock: (editBlock) => {
-    //     store.dispatch({
-    //         type: "SET_EDITBLOCK",
-    //         payload: editBlock
-    //     });
-    // },
-    // updateEditBlockSelect: () => {
-    //     store.dispatch({
-    //         type: "UPDATE_EDITBLOCK_SELECT"
-    //     });
-    // },
     setVideoURL: (url) => {
         store.dispatch({
             type: "SET_VIDEO_URL",
@@ -112,15 +101,6 @@ export const workArea = {
             type: "WA_SYNC_COMMAND"
         });
     },
-    // syncEditBlock: (caseIdText, index) => {
-    //     store.dispatch({
-    //         type: "WA_SYNC_EDIT_BLOCK",
-    //         payload: {
-    //             caseIdText: caseIdText,
-    //             index: index
-    //         }
-    //     });
-    // }
 };
 export const footer = {
     setCondition: function (currentCase, status) {

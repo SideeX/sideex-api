@@ -25,7 +25,6 @@ class RecordLine extends React.Component {
                     icon={faCamera}
                     onClick={(event) => {
                         event.stopPropagation();
-                        events.others.setIsOnWorkArea(true);
                         events.workArea.clickSnapshotImage(snapshotIdText, recordInfo.name);
                     }}
                 />
@@ -88,7 +87,6 @@ class RecordLine extends React.Component {
             clickLineHandler = (event) => {
                 event.stopPropagation();
                 events.others.setSelectedRecords([idText], event.ctrlKey, event.shiftKey);
-                events.others.setIsOnWorkArea(true);
                 this.props.setReference(recordInfo.name);
                 let obj = { index: this.props.index,
                     usedIndex: {
@@ -102,7 +100,6 @@ class RecordLine extends React.Component {
                     }
                 };
                 if (!event.ctrlKey && !event.shiftKey) obj.isOpen = true;
-                // workArea.setEditBlock(obj);
             };
             contextMenuHandler = (event) => {
                 events.others.setSelectedRecords([idText], event.ctrlKey, event.shiftKey);
