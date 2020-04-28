@@ -63,51 +63,51 @@ module.exports = [
             })
         ]
     }),
-    merge(common, {
-        mode: 'development',
-        entry: {
-            react: ['./src/panel/js/UI/index.js'],
-            initial: [
-                './src/panel/js/background/initial.js'
-            ]
-        },
-        output: {
-            path: path.resolve(__dirname, 'dist/extension/panel/js/UI/build'),
-            library: 'Panel',
-            libraryTarget: 'umd',
-            filename: '[name].bundle.js'
-        },
-        devServer: {
-            contentBase: path.join(__dirname, 'dist/extension/panel/js/UI/build')
-        },
-        plugins: [
-            new HtmlWebPackPlugin({
-                template: "./src/panel/index.html",
-                filename: "../../../index.html"
-            }),
-            new webpack.ProvidePlugin({
-                browser: ["webextension-polyfill-ts", "browser"]
-            })
-        ]
-    }),
-    merge(common, {
-        mode: 'development',
-        entry: {
-            entryPoint: ['./src/panel/js/UI/entryPoint.js']
-        },
-        output: {
-            path: path.resolve(__dirname, 'dist/extension/panel/js/UI/build'),
-            library: 'EntryPoint',
-            libraryTarget: 'umd',
-            filename: '[name].bundle.js'
-        },
-        devServer: {
-            contentBase: path.join(__dirname, 'dist/extension/panel/js/UI/build')
-        },
-        plugins:[
-            new webpack.ProvidePlugin({
-                browser: ["webextension-polyfill-ts", "browser"]
-            })
-        ]
-    })
+    // merge(common, {
+    //     mode: 'development',
+    //     entry: {
+    //         react: ['./src/panel/js/UI/index.js'],
+    //         initial: [
+    //             './src/panel/js/background/initial.js'
+    //         ]
+    //     },
+    //     output: {
+    //         path: path.resolve(__dirname, 'dist/extension/panel/js/UI/build'),
+    //         library: 'Panel',
+    //         libraryTarget: 'umd',
+    //         filename: '[name].bundle.js'
+    //     },
+    //     devServer: {
+    //         contentBase: path.join(__dirname, 'dist/extension/panel/js/UI/build')
+    //     },
+    //     plugins: [
+    //         new HtmlWebPackPlugin({
+    //             template: "./src/panel/index.html",
+    //             filename: "../../../index.html"
+    //         }),
+    //         new webpack.ProvidePlugin({
+    //             browser: ["webextension-polyfill-ts", "browser"]
+    //         })
+    //     ]
+    // }),
+    // merge(common, {
+    //     mode: 'development',
+    //     entry: {
+    //         entryPoint: ['./src/panel/js/UI/entryPoint.js']
+    //     },
+    //     output: {
+    //         path: path.resolve(__dirname, 'dist/extension/panel/js/UI/build'),
+    //         library: 'EntryPoint',
+    //         libraryTarget: 'umd',
+    //         filename: '[name].bundle.js'
+    //     },
+    //     devServer: {
+    //         contentBase: path.join(__dirname, 'dist/extension/panel/js/UI/build')
+    //     },
+    //     plugins:[
+    //         new webpack.ProvidePlugin({
+    //             browser: ["webextension-polyfill-ts", "browser"]
+    //         })
+    //     ]
+    // })
 ];

@@ -20,7 +20,7 @@
 
 import { PreRecorder } from './preRecorder';
 import { boundMethod } from "autobind-decorator";
-import * as EntryPoint from "../UI/entryPoint";
+// import * as EntryPoint from "../UI/entryPoint";
 
 import { MessageController } from "../../../content/message-controller";
 
@@ -363,7 +363,7 @@ export class BackgroundRecorder {
             let caseIdText = this.root.fileController.getSelectedCases()[0];
             let index = parseInt(this.root.fileController.getSelectedRecord().split("-")[1]);
             this.root.fileController.setRecordUsedTarget(caseIdText, index, target);
-            EntryPoint.workArea.syncCommands();
+            // EntryPoint.workArea.syncCommands();
             return;
         }
 
@@ -593,7 +593,7 @@ export class BackgroundRecorder {
                 this.root.log.pushLog("error", "Unknown error");
             }
         }
-        EntryPoint.console.syncLog();
+        // EntryPoint.console.syncLog();
     }
 
     prepareSendNextFrame(infos) {

@@ -18,7 +18,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { compareTwoArray } from "../lib/utils";
 import { SaveFile } from './save-file';
 import { LoadFile } from './load-file';
-import * as EntryPoint from "../UI/entryPoint";
+// import * as EntryPoint from "../UI/entryPoint";
 
 export class FileController {
     constructor(root) {
@@ -567,9 +567,9 @@ export class FileController {
         let pos = index >= 0 ? index : this.testCase.cases[caseIdText].records.length - 1;
         this.testCase.cases[caseIdText].records.splice(pos, 0, command);
 
-        EntryPoint.workArea.setAutoScroll({ isUsed: true, idText: `records-${pos}` });
+        // EntryPoint.workArea.setAutoScroll({ isUsed: true, idText: `records-${pos}` });
         this.setCaseModified(caseIdText, true, true);
-        EntryPoint.workArea.syncCommands();
+        // EntryPoint.workArea.syncCommands();
         return { caseIdText: caseIdText, index: pos };
     }
 

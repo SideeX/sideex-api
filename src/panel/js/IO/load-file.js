@@ -1,7 +1,7 @@
 // import { FileTransformer } from './file-transformer';
 import { unescapeHtml } from '../../../common/escape';
 import { Utils } from '../../../utils/utils.common';
-import { app, fileList } from "../UI/entryPoint";
+// import { app, fileList } from "../UI/entryPoint";
 
 export class LoadFile {
     constructor(root, parent) {
