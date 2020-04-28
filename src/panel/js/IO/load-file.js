@@ -1,4 +1,4 @@
-import { FileTransformer } from './file-transformer';
+// import { FileTransformer } from './file-transformer';
 import { unescapeHtml } from '../../../common/escape';
 import { Utils } from '../../../utils/utils.common';
 import { app, fileList } from "../UI/entryPoint";
@@ -10,7 +10,7 @@ export class LoadFile {
 
         this.olderTestSuiteResult = undefined;
         this.olderTestSuiteFile = undefined;
-        this.fileTransformer = new FileTransformer(root, this);
+        // this.fileTransformer = new FileTransformer(root, this);
     }
 
     getContent(str, tag, withClass = true, isUnescape = false) {

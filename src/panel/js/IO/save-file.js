@@ -118,7 +118,7 @@ export class SaveFile {
         </html>`;
     }
 
-    async downloadSuites(suiteIdTexts) {
+    downloadSuites(suiteIdTexts) {
         let filename = this.parent.testSuite.suites[suiteIdTexts[0]].title, suiteText = "";
         let link = "";
         // for (let suiteIdText of suiteIdTexts) {

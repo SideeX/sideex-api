@@ -1,6 +1,7 @@
 import { SideeX } from './index';
 import { classBody } from '@babel/types';
 const sideex = new SideeX();
+var zero = 0;
 var input = document.getElementById('input');
 var all = document.getElementById('all');
 var suite = document.getElementById('suite');
@@ -118,13 +119,14 @@ console.log(sideex.log.clear());
 console.log(sideex.log.get("logs"));
 console.log(sideex.log.get("typeMap"));
 */
-let file = await sideex.file.testSuite.save().then((jsonString)=>{return jsonString});
+let file = sideex.file.testSuite.save();
+console.log(file);
 
 sideex.file.testSuite.load(file);
 });
 input.addEventListener("change", handlefile, false);
 all.addEventListener("click", ()=>{
-    sideex.playback.start();
+    sideex.playback.start("suite");
 }, false);
 suite.addEventListener("click", ()=>{
 
@@ -366,9 +368,14 @@ cases.addEventListener("click", ()=>{
 }, false);
 yellow.addEventListener("click", ()=>{
     console.log(sideex.recorder.start());
+    zero = 1;
 }, false);
 white.addEventListener("click", ()=>{
-    console.log(sideex.recorder.stop());
+    if(zero){
+        console.log(sideex.recorder.stop());
+        zero = 0;
+        console.log("yes");
+    }
     console.log(sideex.file.testCase.getSelected());
     console.log(sideex.file.testSuite.getSelected());
 }, false);

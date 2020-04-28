@@ -172,7 +172,6 @@ export class Playback {
             this.curPlayIndex[this.curPlayIndex.length - 1].index++;
             this.root.fileController.setSelectedSuites([suite.idText]);
             this.addLog("info", `Playing test suite ${suite.title}`);
-
             this.curPlayIndex.push({ direction: 0, index: -1 });
             this.suiteFailed = false;
             for (let caseEle of suite.cases) {
@@ -509,7 +508,6 @@ export class Playback {
 
         let frameId = this.getCurrentPlayingFrameId();
         // console.log(frameId);
-
         let action = ("waitSeries" === command ) ? "Wait" : "Command";
 
         return await MessageController.tabSendMessage({

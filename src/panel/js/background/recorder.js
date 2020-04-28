@@ -274,7 +274,6 @@ export class BackgroundRecorder {
             let speed = this.root.setting.get("networkSpeed");
             this.root.fileController.setNetworkSpeed(speed);
         }
-
         if (!this.openedTabIds[caseIdText]) {
             this.openedTabIds[caseIdText] = {};
             this.openedTabNames[caseIdText] = {};
@@ -283,24 +282,20 @@ export class BackgroundRecorder {
             this.currentRecordingWindowId[caseIdText] = sender.tab.windowId;
             this.openedTabCount[caseIdText] = 1;
         }
-
         if (Object.keys(this.openedTabIds[caseIdText]).length === 0) {
             this.currentRecordingTabId[caseIdText] = sender.tab.id;
             this.currentRecordingWindowId[caseIdText] = sender.tab.windowId;
             this.openedTabNames[caseIdText]["win_ser_local"] = sender.tab.id;
             this.openedTabIds[caseIdText][sender.tab.id] = "win_ser_local";
         }
-
         if (this.root.fileController.getRecordNum(caseIdText) === 0  && !this.root.api) {
             this.root.fileController.insertCommand("after", "open",
                 { options: [{ type: "other", value: sender.tab.url }]},
                 { options: [{ type: "other", value: "" }]}
             );
         }
-
         if (this.openedTabIds[caseIdText][sender.tab.id] === undefined)
             return;
-
         if(!this.root.api){
             if (message.frameLocation !== this.currentRecordingFrameLocation[caseIdText]) {
                 let newFrameLevels = message.frameLocation.split(':');
@@ -332,16 +327,17 @@ export class BackgroundRecorder {
             }
         }
         
-
         this.preRecorder.preProcess(message, this.selfWindowId);
         if (this.preRecorder.isReturn()) {
             return;
         }
-
         // handle choose ok/cancel confirm
         if (message.insertBeforeLastCommand) {
             this.root.fileController.addCommandBeforeLastCommand(message.command, message.target, message.value);
         } else {
+            if(message.action){
+                return;
+            }
             if(!this.root.api){ 
                 this.notification(message.command, message.target.options[0].value, message.value.options[0].value); 
             } 

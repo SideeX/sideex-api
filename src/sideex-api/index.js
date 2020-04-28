@@ -124,10 +124,9 @@ export class SideeX {
                 load: function (file) {
                     return self.root.fileController.loadFile.readFile(file);
                 },
-                save: async function () {
+                save: function () {
                     let suiteIdTexts = self.root.fileController.getSelectedSuites();
-                    let jsonString = await self.root.fileController.saveFile.downloadSuites(suiteIdTexts);
-                    return jsonString
+                    return self.root.fileController.saveFile.downloadSuites(suiteIdTexts);
                 }
             },
             testCase: {
