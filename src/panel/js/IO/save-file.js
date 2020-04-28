@@ -1,7 +1,6 @@
 import { doEscape } from '../../../common/escape';
 import { Utils } from "../../../utils/utils.common";
 import { cloneDeep } from "lodash";
-// import { fileList } from "../UI/entryPoint";
 
 export class SaveFile {
     constructor(root, parent) {

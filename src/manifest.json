@@ -53,11 +53,6 @@
         "default_icon": "icons/logo-48.png",
         "default_title": "SideeX"
     },
-    // "web_accessible_resources": [
-    //     "page/prompt.js",
-    //     "page_script.js",
-    //     "panel/js/UI/build/assets/*"
-    // ],
     "options_ui": {
         "page": "option/index.html"
     }
