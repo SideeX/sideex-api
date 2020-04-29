@@ -18,7 +18,7 @@ import { browserBot } from "./content-initialization";
 let script = document.createElement('script');
 script.src = browser.runtime.getURL('page/prompt.js');
 script.onload = script.remove;
-(document.head || document.documentElement).appendChild(script);
+// (document.head || document.documentElement).appendChild(script);
 
 window.addEventListener("message", function (event) {
     if (event.source == window && event.data && event.data.from == "sideex-page-env") {
