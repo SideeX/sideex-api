@@ -398,6 +398,7 @@ tests.addEventListener("click", ()=>{
 }, false);
 color.addEventListener("click", ()=>{
     color.style.backgroundColor = "yellow";
+    sideex.file.testCase.remove("case-0");
 }, false);
 
 function handlefile() {

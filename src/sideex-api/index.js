@@ -473,7 +473,7 @@ export class SideeX {
                 self.root.playback.isPause = false;
                 //EntryPoint.toolBar.syncButtonState();
             },
-            addCustomCommand: (cmdName, verifyLocator = true, code) => {
+            addCustomCommand: (cmdName, verifyLocator = true, commandFunction) => {
                 let isDoSnapshot = true;
                 let type = {record: "mouse", playback: "content"};
                 let isManual = false;
@@ -494,7 +494,7 @@ export class SideeX {
                     }
 
                 };
-                self.root.playback.sideex.addCommand(cmdName, code);
+                self.root.playback.sideex.addCommand(cmdName, commandFunction);
 
             },
             // commandWait: async (target) => {
