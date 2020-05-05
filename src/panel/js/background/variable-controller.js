@@ -1,4 +1,3 @@
-import * as EntryPoint from "../UI/entryPoint";
 export class VariableController {
     constructor(root) {
         this.root = root;
@@ -132,7 +131,6 @@ export class VariableController {
                     this.addVariable(variable[0], variable[1]);
                 }
             }
-            EntryPoint.console.syncVariable();
         };
 
         reader.readAsText(file);

@@ -20,10 +20,8 @@ import { FileController } from '../IO/file-controller';
 import { BackgroundRecorder } from './recorder';
 import { Playback } from './playback';
 import { VariableController } from './variable-controller';
-import { UiTools } from '../UI/uiTools';
 import { Setting } from "./setting";
 import { Log } from './log';
-// export { SideeX } from './api';
 export const root = { isDOMBased: true, isExt: true };
 
 

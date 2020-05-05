@@ -1,9 +1,7 @@
 import platform from "platform";
 import { FileController } from '../panel/js/IO/file-controller';
-// import {LoadFile} from '../panel/js/IO/load-file';
 import { BackgroundRecorder } from '../panel/js/background/recorder';
 import { Playback } from '../panel/js/background/playback';
-// import * as EntryPoint from "../panel/js/UI/entryPoint";
 import { VariableController } from '../panel/js/background/variable-controller';
 import { Setting } from "../panel/js/background/setting";
 import { Log } from '../panel/js/background/log';
@@ -371,8 +369,6 @@ export class SideeX {
                     self.root.recorder.notificationCount = 0;
 
                     self.root.recorder.isRecord = true;
-                    //EntryPoint.toolBar.syncButtonState();
-                    //EntryPoint.fileList.syncFiles();
                 } else {
                     if (caseIdText)
                         throw new Error(`${caseIdText} doesen't exist`);
@@ -382,9 +378,6 @@ export class SideeX {
             stop: () => {
                 self.root.recorder.detach();
                 self.root.recorder.isRecord = false;
-
-                //EntryPoint.toolBar.syncButtonState();
-                //EntryPoint.fileList.syncFiles();
             }
         };
         this.setting = {
@@ -393,7 +386,6 @@ export class SideeX {
                     return this.root.log.pushLog('error', 'speed should be set from range 1 to 5');
                 } else {
                     self.root.setting.set({ delay: 500 * (5 - value) });
-                    //EntryPoint.toolBar.updateSpeed(parseInt(value));
                     return value;
                 }
             },
@@ -441,7 +433,6 @@ export class SideeX {
                         }
                     }
                     case "all": {
-                        // console.log("all");
                         let caseIdText = idText === undefined ? self.root.fileController.getSelectedCases()[0] : idText;
                         if (self.root.fileController.getTestCase(caseIdText) === undefined) {
                             throw new Error("There is no suites available, please record one first");
@@ -450,28 +441,24 @@ export class SideeX {
                         break;
                     }
                 }
-                //EntryPoint.toolBar.syncButtonState();
 
             },
             stop: () => {
                 self.root.playback.stop();
 
                 self.root.playback.isPlay = false;
-                //EntryPoint.toolBar.syncButtonState();
             },
             pause: () => {
                 self.root.playback.pause();
 
                 self.root.playback.isPlay = false;
                 self.root.playback.isPause = true;
-                //EntryPoint.toolBar.syncButtonState();
             },
             resume: () => {
                 self.root.playback.resume();
 
                 self.root.playback.isPlay = true;
                 self.root.playback.isPause = false;
-                //EntryPoint.toolBar.syncButtonState();
             },
             addCustomCommand: (cmdName, verifyLocator = true, commandFunction) => {
                 let isDoSnapshot = true;
@@ -497,12 +484,6 @@ export class SideeX {
                 self.root.playback.sideex.addCommand(cmdName, commandFunction);
 
             },
-            // commandWait: async (target) => {
-            //     // console.log(self.root.playback.sideex.commandWait(target))
-            //     // console.log(target)
-            //     // console.log(self.root.playback.sideex.commandWait(target))
-            //     return (self.root.playback.sideex.commandWait(target));
-            // },
 
             findElement: (locator) => {
                 // console.log(locator)

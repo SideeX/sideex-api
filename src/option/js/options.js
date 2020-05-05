@@ -17,11 +17,6 @@
 import storage from "../../common/storage";
 
 $(document).ready(function () {
-    browser.storage.sync.get()
-        .then(results => setUIStatus("init", results))
-        .catch((e) => { console.error(e); });
-    browser.storage.onChanged.addListener(changes => setUIStatus("change", changes));
-
     $("#periodical").change(function (event) {
         document.querySelector(".period-select").classList.toggle("display-none");
         storage.set("periodical", event.target.checked);
@@ -31,17 +26,3 @@ $(document).ready(function () {
         storage.set("period", Number(event.target.value));
     });
 });
-
-function setUIStatus(type, results) {
-    for (let key in results) {
-        let value = type === "change" ? results[key].newValue : results[key];
-        if (key == "periodical") {
-            document.querySelector("#periodical").checked = value;
-            value ?
-                document.querySelector(".period-select").classList.remove("display-none") :
-                document.querySelector(".period-select").classList.add("display-none");
-        } else if (key == "period") {
-            $('#period-select.selectpicker').selectpicker('val', value);
-        }
-    }
-}

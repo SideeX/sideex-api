@@ -25,13 +25,6 @@ module.exports = merge(common, {
         open: true,
         openPage: 'index.html'
     },
-    plugins: [
-        new webpack.NormalModuleReplacementPlugin(/entryPoint\.js$/, path.resolve("./src/panel/js/UI/entryPoint-empty.js")),
-        new HtmlWebPackPlugin({
-            template: "./src/sideex-api/index.html",
-            filename: "index.html"
-        })
-    ],
     module: {
         rules: [
             {

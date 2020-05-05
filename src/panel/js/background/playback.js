@@ -18,7 +18,6 @@ import { MessageController } from "../../../content/message-controller";
 import { WindowController } from './window-controller';
 import { Preprocessor } from './preprocessor';
 import { Utils } from "../../../common/utils";
-import * as EntryPoint from "../UI/entryPoint";
 import { commandReferences } from "../../../common/command";
 import { sideex } from "../../../content/content-initialization";
 
@@ -94,9 +93,6 @@ export class Playback {
     setPlayFlag(bool, playMode) {
         this.isPlay = bool;
         this.playMode = playMode;
-        if (bool) {
-            EntryPoint.footer.setCondition(this.curCaseIdText, "is playing...");
-        }
     }
 
     setStopFlags(bool) {
@@ -142,7 +138,6 @@ export class Playback {
         this.setPlayFlag(true, playMode);
         this.setStopFlags(false);
 
-        EntryPoint.footer.setProgressAnimation(true);
         return;
     }
 
@@ -153,17 +148,12 @@ export class Playback {
         this.playSuites = [ ...preprocessResult.playSuites ];
         this.root.variables.initLocalVars();
         this.root.recorder.preRecorder.flushBuffer(false);
-        // console.log(preprocessResult);
 
-        EntryPoint.footer.setResultValue("run", preprocessResult.caseNum);
-        EntryPoint.footer.setResultValue("success", 0);
-        EntryPoint.footer.setResultValue("failure", 0);
         return preprocessResult;
     }
 
     finishPlay(playMode) {
         this.setPlayFlag(false, playMode);
-        EntryPoint.footer.setCondition(this.curCaseIdText, "is finished");
     }
 
     async doPlayLoop(playSuites, startIndex) {
@@ -178,12 +168,10 @@ export class Playback {
                 this.curPlayIndex[this.curPlayIndex.length - 1].index++;
                 this.root.fileController.setSelectedCases([caseEle.idText]);
                 this.addLog("info", `Playing test case ${caseEle.title}`);
-                EntryPoint.fileList.syncFiles();
 
                 this.curCaseIdText = caseEle.idText;
                 await this.playCommands(caseEle, startIndex);
 
-                // await this.waitForResumption();
             }
             this.curPlayIndex.pop();
             if (this.isStop) { this.stop(); break; }
@@ -199,8 +187,6 @@ export class Playback {
             await this.doPlayLoop(this.playSuites, startIndex);
         } while (await this.periodPlay(mode));
         this.finishPlay(mode);
-        EntryPoint.footer.setProgressAnimation(false);
-        EntryPoint.toolBar.syncButtonState();
     }
 
     async waitForResumption() {
@@ -241,12 +227,8 @@ export class Playback {
             return false;
         }
         let records = this.root.fileController.getRecords(caseIdText);
-        // this.root.fileController.clearIncludedRecords(records);
         this.root.fileController.clearRecordsStatus("snapshot", records, true);
         this.root.fileController.clearRecordsStatus("status", records, true);
-
-        EntryPoint.footer.setCondition(caseIdText, "is playing...");
-        EntryPoint.workArea.syncCommands();
 
         return true;
     }
@@ -347,16 +329,12 @@ export class Playback {
             this.addLog("info", `Executing: | ${name} | ${selectTarget.value} | ${selectValue.value} |`);
             let index = 0;
             for (let temp of this.curPlayIndex) { index += temp.index; }
-            EntryPoint.workArea.setAutoScroll({ isUsed: true, idText: `records-${index}` });
-            EntryPoint.workArea.syncCommands();
-            EntryPoint.console.syncLog();
         }
 
         return {
             name: name,
             target: target,
             value: value
-            // preWaitTime: preWaitTime
         };
     }
 
@@ -401,24 +379,11 @@ export class Playback {
                 }
             }
         } while (!this.commandFailed);
-        // if (this.determineCommandType(command.name) == Playback.COMMAND_TYPE_CONTENT ||
-        //     this.determineCommandType(command.name) == Playback.COMMAND_TYPE_EXTENSION_SELECT) {
-        //     while (!this.commandFailed) {
-        //         try {
-        //             await this.doAutoWaitSeries(command.preWaitTime);
-        //             break;
-        //         } catch (e) {
-        //             console.log(e);
-        //             continue;
-        //         }
-        //     }
-        // }
     }
 
     finishCommand(isFail, record) {
         let status = isFail ? "fail" : "success";
         this.root.fileController.setRecordStatus(record, status);
-        EntryPoint.workArea.syncCommands();
     }
 
     async finishCommands(index, isFail, records) {
@@ -447,19 +412,14 @@ export class Playback {
         this.isPause = false;
         this.setPlayFlag(false, this.playMode);
         this.addLog("info", "Stop executing");
-        // this.root.uiTools.setGridClick(false);
-        EntryPoint.footer.setCondition(this.curCaseIdText, "is stopped");
-        EntryPoint.toolBar.syncButtonState();
+        this.root.uiTools.setGridClick(false);
         clearTimeout(this.idOfTimeout);
     }
 
     pause() {
         this.isPause = true;
         this.setPlayFlag(false, this.playMode);
-
         this.addLog("info", "Pausing");
-        EntryPoint.toolBar.syncButtonState();
-        EntryPoint.footer.setCondition(this.curCaseIdText, "is paused");
     }
 
     async resume() {
@@ -471,10 +431,7 @@ export class Playback {
             if (this.root.isDOMBased) {
                 this.windowController.attach();
             }
-            // this.root.uiTools.setGridClick(true);
             this.addLog("info", "Resuming");
-            EntryPoint.toolBar.syncButtonState();
-            EntryPoint.footer.setCondition(this.curCaseIdText, "is resuming");
         }
     }
 
@@ -486,9 +443,6 @@ export class Playback {
     }
 
     preprocessValue(str) {
-        // if (!isKeyBoardVars(str)) {
-        //     return str.supplant(this.root.variables.localVars);
-        // }
         return str;
     }
 
