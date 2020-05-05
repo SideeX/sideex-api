@@ -130,7 +130,6 @@ export class LoadFile {
         //         this.parent.setSelectedCases([caseIdTexts[0]]) :
         //         this.parent.setSelectedSuites(selectedSuites);
         // }
-        // console.log(fileText);
         let obj = JSON.parse(fileText);
         for (let suite of obj.suites) {
             let cases = suite.cases;
@@ -154,41 +153,13 @@ export class LoadFile {
     }
 
     readFile(file) {
-        // console.log(file);
         if(!this.root.api){
             if (!file.type.includes("json")) return;
-        }
-        let reader = new FileReader();
-        if(!this.root.api){
+            let reader = new FileReader();
             reader.readAsText(file);
         }
-        reader.onload = () => {
-            if(this.root.api){
-                var fileText = file;
-            }else{
-                var fileText = reader.result;
-            }
-            // check for input file version
-            // if it is not SideeX2, transforming it
-            // if (!this.checkIsVersion2(fileText)) {
-            //     // TODO: write a non-blocked confirm window
-            //     // confirm user if want to transform input file for loading it
-            //     if (!window.confirm(`"${file.name}" is of the format of an early version of Selenium IDE. Some commands may not work. Do you still want to open it?`)) {
-            //         return;
-            //     }
-            //     // parse for testCase or testSuite
-            //     if (this.fileTransformer.checkIsTestSuite(fileText)) {
-            //         // alert("Sorry, we do not support test suite of the format of an early version of Selenium IDE now.");
-            //         this.olderTestSuiteResult = fileText.substring(0, fileText.indexOf("<table")) + fileText.substring(fileText.indexOf("</body>"));
-            //         this.olderTestSuiteFile = file;
-            //         this.fileTransformer.loadCaseIntoSuite(fileText);
-            //         return;
-            //     } else {
-            //         fileText = this.fileTransformer.transformVersion(fileText);
-            //     }
-            // }
-            let result = this.checkLoadedFile(fileText);
-            // console.log(result);
+        if(this.root.api){
+            let result = this.checkLoadedFile(file);
             if (!result.isSideex || !(result.version.format.length > 0 && result.version.format[0] >= 2)) {
                 app.setModal({
                     isOpen: true, type: "alert",
@@ -199,13 +170,48 @@ export class LoadFile {
             }
             // append on test grid
             // this.fileTransformer.appendTestSuite(file, fileText);
-            this.readSuites(fileText);
+            this.readSuites(file);
             fileList.syncFiles();
-        };
-
-        reader.onerror = (event) => {
-            this.root.log.pushLog("error", `Error on loading ${file.name}. (${event.message})`);
-        };
+        }else{
+            reader.onload = () => {
+                var fileText = reader.result;
+                // check for input file version
+                // if it is not SideeX2, transforming it
+                // if (!this.checkIsVersion2(fileText)) {
+                //     // TODO: write a non-blocked confirm window
+                //     // confirm user if want to transform input file for loading it
+                //     if (!window.confirm(`"${file.name}" is of the format of an early version of Selenium IDE. Some commands may not work. Do you still want to open it?`)) {
+                //         return;
+                //     }
+                //     // parse for testCase or testSuite
+                //     if (this.fileTransformer.checkIsTestSuite(fileText)) {
+                //         // alert("Sorry, we do not support test suite of the format of an early version of Selenium IDE now.");
+                //         this.olderTestSuiteResult = fileText.substring(0, fileText.indexOf("<table")) + fileText.substring(fileText.indexOf("</body>"));
+                //         this.olderTestSuiteFile = file;
+                //         this.fileTransformer.loadCaseIntoSuite(fileText);
+                //         return;
+                //     } else {
+                //         fileText = this.fileTransformer.transformVersion(fileText);
+                //     }
+                // }
+                let result = this.checkLoadedFile(fileText);
+                if (!result.isSideex || !(result.version.format.length > 0 && result.version.format[0] >= 2)) {
+                    app.setModal({
+                        isOpen: true, type: "alert",
+                        title: "Error on loading file",
+                        content: `"${file.name}" is of the format of an early version of SideeX.`
+                    });
+                    return;
+                }
+                // append on test grid
+                // this.fileTransformer.appendTestSuite(file, fileText);
+                this.readSuites(fileText);
+                fileList.syncFiles();
+            };
+            reader.onerror = (event) => {
+                this.root.log.pushLog("error", `Error on loading ${file.name}. (${event.message})`);
+            };
+        }
     }
 
     checkIsVersion2(input) {

@@ -211,7 +211,7 @@ export class SideeX {
                     return self.root.fileController.getSelectedCases();
                 }
             },
-            record: {
+            command: {
                 add: function (recordData = {
                     name: "Untitled Record",
                     target: { options: [{ type: "other", value: "" }] },
