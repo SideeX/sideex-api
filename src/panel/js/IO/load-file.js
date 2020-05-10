@@ -170,7 +170,6 @@ export class LoadFile {
             // append on test grid
             // this.fileTransformer.appendTestSuite(file, fileText);
             this.readSuites(file);
-            fileList.syncFiles();
         }else{
             reader.onload = () => {
                 var fileText = reader.result;
@@ -205,7 +204,6 @@ export class LoadFile {
                 // append on test grid
                 // this.fileTransformer.appendTestSuite(file, fileText);
                 this.readSuites(fileText);
-                fileList.syncFiles();
             };
             reader.onerror = (event) => {
                 this.root.log.pushLog("error", `Error on loading ${file.name}. (${event.message})`);

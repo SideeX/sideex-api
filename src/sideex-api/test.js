@@ -132,7 +132,7 @@ suite.addEventListener("click", ()=>{
 
     const converCommand = (recordNum, cmdName, value) =>{
         let caseIdText = sideex.file.testCase[0];
-        let record = sideex.file.record.get(recordNum, caseIdText);
+        let record = sideex.file.command.get(recordNum, caseIdText);
         record.name = cmdName;
         let passstr = "";
         var passValue = {
@@ -363,8 +363,8 @@ suite.addEventListener("click", ()=>{
 cases.addEventListener("click", ()=>{
     console.log(sideex.file.testCase.get("case-0"));
     console.log(sideex.file.testCase.get("case-1"));
-    console.log(sideex.file.record.get(0));
-    console.log(sideex.file.record.get(1));
+    console.log(sideex.fil.command.get(0));
+    console.log(sideex.file.command.get(1));
 }, false);
 yellow.addEventListener("click", ()=>{
     console.log(sideex.recorder.start());
@@ -381,6 +381,13 @@ white.addEventListener("click", ()=>{
 }, false);
 tests.addEventListener("click", ()=>{
     color.style.backgroundColor = "white";
+    console.log(sideex.file.command.get(0));
+    let jsonString = sideex.file.testSuite.save();//serialize the recorded commands to a JSON string
+    console.log(jsonString);
+    console.log(sideex.file.testSuite.closeAll());
+    console.log(sideex.file.testSuite.getSuitesOrdr());
+    console.log(sideex.file.testSuite.load(jsonString));//load the jsonString
+    console.log(sideex.file.testSuite.getSuitesOrder());
     // console.log(sideex.file.record.get(0));
     // let record = sideex.file.record.get(0);
     // record.name = "Hello";

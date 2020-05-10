@@ -170,7 +170,6 @@ export class SaveFile {
             if (file) {
                 if (file.type === "file") {
                     this.parent.setSuiteModified(file.suiteIdTexts[0], false, true);
-                    fileList.syncFiles();
                 }
 
 

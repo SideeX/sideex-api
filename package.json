@@ -1,21 +1,9 @@
 {
-    "name": "sideex",
-    "version": "2.3.3",
-    "description": "Smart Record-Playback Browser Automation",
+    "name": "SideeX-API",
+    "version": "1.0.0",
+    "description": "SideeX API - Open Source Record Playback Web Test Automation JS API",
     "scripts": {
-        "test": "jest --config jest.config.js",
-        "fix-cs": "eslint --fix",
-        "start": "webpack-dev-server -w --config webpack.ui.config.js --hot --progress --colors",
-        "build": "webpack --config webpack.config.js",
-        "build-libs": "webpack --config webpack.libs.js",
-        "build-prod": "webpack --config webpack.config.prod.js",
-        "build-runner": "webpack --config webpack.runner.config.js",
-        "build-ui": "webpack --config webpack.ui.config.js",
-        "build-webdriver": "webpack --config webpack.webdriver.config.js",
-        "build-api": "webpack --config webpack.api.config.js",
-        "dev": "concurrently --kill-others \"npm run build\" \"npm run build-webdriver\"",
-        "dev:api": "webpack-dev-server --config webpack.api.config.js",
-        "dev:ui": "concurrently --kill-others \"npm run build-libs\" \"npm run start\""
+        "build-api": "webpack --config webpack.api.config.js"
     },
     "repository": {
         "type": "git",
