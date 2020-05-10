@@ -385,7 +385,7 @@ tests.addEventListener("click", ()=>{
     let jsonString = sideex.file.testSuite.save();//serialize the recorded commands to a JSON string
     console.log(jsonString);
     console.log(sideex.file.testSuite.closeAll());
-    console.log(sideex.file.testSuite.getSuitesOrdr());
+    console.log(sideex.file.testSuite.getSuitesOrder());
     console.log(sideex.file.testSuite.load(jsonString));//load the jsonString
     console.log(sideex.file.testSuite.getSuitesOrder());
     // console.log(sideex.file.record.get(0));
