@@ -12,113 +12,7 @@ var color = document.getElementById('color');
 var tests = document.getElementById('test');
 var cc = document.getElementById('cc');
 cc.addEventListener("click", async () => {
-    /*testsuite
-    console.log(sideex.file.testSuite.add());
-    console.log(sideex.file.testSuite.get("suite-0"));
-    console.log(sideex.file.testSuite.rename("suite-0", "tyler"));
-    console.log(sideex.file.testSuite.getSuiteIdText("tyler"));
-    console.log(sideex.file.testSuite.copy());
-    console.log(sideex.file.testSuite.checkSuitesOrder());
-    console.log(sideex.file.testSuite.close("suite-0"));
-    console.log(sideex.file.testSuite.checkSuitesOrder());
-    console.log(sideex.file.testSuite.add());
-    console.log(sideex.file.testSuite.add());
-    console.log(sideex.file.testSuite.add());
-    console.log(sideex.file.testSuite.add());
-    console.log(sideex.file.testSuite.add());
-    console.log(sideex.file.testSuite.close("suite-1"));
-    console.log(sideex.file.testSuite.getSelected());
-    console.log(sideex.file.testSuite.close("suite-3"));
-    console.log(sideex.file.testSuite.checkSuitesOrder());
-    console.log(sideex.file.testSuite.setSelected(["suite-2"]));
-    console.log(sideex.file.testSuite.getSelected());
-    console.log(sideex.file.testSuite.setSelected(["suite-2", "suite-4"]));
-    console.log(sideex.file.testSuite.getSelected());
-    console.log(sideex.file.testSuite.setSelected(["suite-3"]));
-    console.log(sideex.file.testSuite.getSelected());
-    // console.log(sideex.file.testSuite.close("suite-1"));
-    console.log(sideex.file.testSuite.checkSuitesOrder());
-    console.log(sideex.file.testSuite.getSelected());
-    console.log(sideex.file.testSuite.closeAll());
-    console.log(sideex.file.testSuite.getSelected());
-    console.log(sideex.file.testSuite.checkSuitesOrder());
-    */
-    /*testcase
-   console.log(sideex.file.testSuite.add());
-   console.log(sideex.file.testCase.add());
-   console.log(sideex.file.testCase.get("case-0"));
-   console.log(sideex.file.testCase.rename("case-0", "tt"));
-   console.log(sideex.file.testCase.getCaseIdText("tt"));
-   console.log(sideex.file.testCase.add());
-   console.log(sideex.file.testCase.getCasesOrder());
-   console.log(sideex.file.testCase.getSelected());
-   console.log(sideex.file.testCase.copy());
-   console.log(sideex.file.testCase.getCasesOrder());
-   console.log(sideex.file.testCase.cut(["case-1"]));
-   console.log(sideex.file.testCase.getCasesOrder());
-   console.log(sideex.file.testCase.remove("case-1"));
-   console.log(sideex.file.testCase.getSelected());
-   console.log(sideex.file.testCase.add());
-   console.log(sideex.file.testCase.add());
-   console.log(sideex.file.testCase.getSelected());
-   console.log(sideex.file.testCase.add());
-   console.log(sideex.file.testCase.getSelected());
-   console.log(sideex.file.testCase.getCasesOrder());
-   */
-    /*record
-  console.log(sideex.file.testSuite.add());
-  console.log(sideex.file.testCase.add());
-  console.log(sideex.file.record.add({name:"1"}));
-  console.log(sideex.file.record.add({name:"2"}));
-  console.log(sideex.file.record.add({name:"3"}));
-  console.log(sideex.file.testCase.get("case-0"));
-  console.log(sideex.file.record.delete(0));
-  console.log(sideex.file.record.get(0));
-  console.log(sideex.file.testCase.get("case-0"));
-  console.log(sideex.file.record.add());
-  console.log(sideex.file.record.add());
-  console.log(sideex.file.record.add());
-  console.log(sideex.file.testCase.get("case-0"));
-  console.log(sideex.file.record.deleteAll());
-  console.log(sideex.file.testCase.get("case-0"));
-  console.log(sideex.file.record.add({name:"1"}));
-  console.log(sideex.file.record.add({name:"2"}));
-  console.log(sideex.file.record.add({name:"3"}));
-  console.log(sideex.file.record.getSelected());
-  console.log(sideex.file.record.setSelected(["records-0"]));
-  console.log(sideex.file.record.getSelected());
-  console.log(sideex.file.record.delete(0));
-  console.log(sideex.file.record.getSelected());
-  console.log(sideex.file.record.add());
-  console.log(sideex.file.record.getSelected());
-  console.log(sideex.file.testCase.get("case-0"));
-  */
-    /* variables
-    console.log(sideex.variables.add("tyler", 5646));
-    console.log(sideex.variables.add("terry", 46));
-    console.log(sideex.variables.add("asd", 123));
-    console.log(sideex.variables.get("vars"));
-    console.log(sideex.variables.get("count"));
-    console.log(sideex.variables.get("startNum"));
-    console.log(sideex.variables.get("varNames"));
-    console.log(sideex.variables.delete("var-1"));
-    console.log(sideex.variables.get("vars"));
-    console.log(sideex.variables.clearAll());
-    console.log(sideex.variables.get("vars"));
-    console.log(sideex.variables.add("tyler", 5646));
-    console.log(sideex.variables.add("terry", 46));
-    console.log(sideex.variables.add("asd", 123));
-    console.log(sideex.variables.changeName("var-1","zz"));
-    console.log(sideex.variables.changeValue("var-1",11111));
-    console.log(sideex.variables.get("vars"));
-*/
-/*log
-console.log(sideex.log.get("logs"));
-console.log(sideex.log.get("typeMap"));
-console.log(sideex.log.clear());
-console.log(sideex.log.get("logs"));
-console.log(sideex.log.get("typeMap"));
-*/
+    
 let file = sideex.file.testSuite.save();
 console.log(file);
 
@@ -361,47 +255,21 @@ suite.addEventListener("click", ()=>{
 
 }, false);
 cases.addEventListener("click", ()=>{
-    console.log(sideex.file.testCase.get("case-0"));
-    console.log(sideex.file.testCase.get("case-1"));
-    console.log(sideex.fil.command.get(0));
-    console.log(sideex.file.command.get(1));
+     sideex.file.testSuite.add();
+     sideex.file.testSuite.setSelected("suite-0");
+     console.log(sideex.file.testSuite.getSelected());
+    
 }, false);
 yellow.addEventListener("click", ()=>{
     console.log(sideex.recorder.start());
-    zero = 1;
 }, false);
 white.addEventListener("click", ()=>{
-    if(zero){
-        console.log(sideex.recorder.stop());
-        zero = 0;
-        console.log("yes");
-    }
-    console.log(sideex.file.testCase.getSelected());
-    console.log(sideex.file.testSuite.getSelected());
+
+    console.log(sideex.recorder.stop());
+
 }, false);
 tests.addEventListener("click", ()=>{
-    color.style.backgroundColor = "white";
-    console.log(sideex.file.command.get(0));
-    let jsonString = sideex.file.testSuite.save();//serialize the recorded commands to a JSON string
-    console.log(jsonString);
-    console.log(sideex.file.testSuite.closeAll());
-    console.log(sideex.file.testSuite.getSuitesOrder());
-    console.log(sideex.file.testSuite.load(jsonString));//load the jsonString
-    console.log(sideex.file.testSuite.getSuitesOrder());
-    // console.log(sideex.file.record.get(0));
-    // let record = sideex.file.record.get(0);
-    // record.name = "Hello";
-    // console.log(sideex.file.record.get(0));
-    // sideex.playback.addCustomCommand("Hello", true, (target, value) => {
-    //     console.log(target);
-    //     console.log(value);
-    //     var element = sideex.playback.findElement(target);
-    //     var clientXY = sideex.playback.getClientXY(element, value);
-    //     console.log(element, clientXY);
-    //     console.log("Welcome to SideeX Api!!!");
-    // }
-    // );
-    // sideex.playback.start();
+    
 }, false);
 color.addEventListener("click", ()=>{
     color.style.backgroundColor = "yellow";
