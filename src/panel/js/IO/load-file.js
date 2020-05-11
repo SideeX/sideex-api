@@ -160,15 +160,8 @@ export class LoadFile {
         if(this.root.api){
             let result = this.checkLoadedFile(file);
             if (!result.isSideex || !(result.version.format.length > 0 && result.version.format[0] >= 2)) {
-                app.setModal({
-                    isOpen: true, type: "alert",
-                    title: "Error on loading file",
-                    content: `"${file.name}" is of the format of an early version of SideeX.`
-                });
                 return;
             }
-            // append on test grid
-            // this.fileTransformer.appendTestSuite(file, fileText);
             this.readSuites(file);
         }else{
             reader.onload = () => {
@@ -194,15 +187,8 @@ export class LoadFile {
                 // }
                 let result = this.checkLoadedFile(fileText);
                 if (!result.isSideex || !(result.version.format.length > 0 && result.version.format[0] >= 2)) {
-                    app.setModal({
-                        isOpen: true, type: "alert",
-                        title: "Error on loading file",
-                        content: `"${file.name}" is of the format of an early version of SideeX.`
-                    });
                     return;
                 }
-                // append on test grid
-                // this.fileTransformer.appendTestSuite(file, fileText);
                 this.readSuites(fileText);
             };
             reader.onerror = (event) => {

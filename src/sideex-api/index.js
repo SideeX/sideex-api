@@ -442,21 +442,19 @@ export class SideeX {
                     }
                 }
 
+
             },
             stop: () => {
                 self.root.playback.stop();
-
                 self.root.playback.isPlay = false;
             },
             pause: () => {
                 self.root.playback.pause();
-
                 self.root.playback.isPlay = false;
                 self.root.playback.isPause = true;
             },
             resume: () => {
                 self.root.playback.resume();
-
                 self.root.playback.isPlay = true;
                 self.root.playback.isPause = false;
             },

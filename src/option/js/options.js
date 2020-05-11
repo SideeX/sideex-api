@@ -15,14 +15,3 @@
  *
  */
 import storage from "../../common/storage";
-
-$(document).ready(function () {
-    $("#periodical").change(function (event) {
-        document.querySelector(".period-select").classList.toggle("display-none");
-        storage.set("periodical", event.target.checked);
-    });
-
-    $("#period-select").change(function (event) {
-        storage.set("period", Number(event.target.value));
-    });
-});

@@ -15,11 +15,11 @@
  *
  */
 
-// TODO: separate UI
 // TODO: check multiple-panel support
 
 import { PreRecorder } from './preRecorder';
 import { boundMethod } from "autobind-decorator";
+
 import { MessageController } from "../../../content/message-controller";
 
 /**
@@ -351,7 +351,6 @@ export class BackgroundRecorder {
      * @param {Object} sender Details about message sender
      */
     targetHandler(message, sender) {
-        // TODO: call UI function(or data-binding)
         if (message.selectTarget) {
             let target = {
                 type: message.target[0][1],

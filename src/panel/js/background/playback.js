@@ -137,7 +137,6 @@ export class Playback {
         this.timesOfPlay = 0;
         this.setPlayFlag(true, playMode);
         this.setStopFlags(false);
-
         return;
     }
 
@@ -148,7 +147,6 @@ export class Playback {
         this.playSuites = [ ...preprocessResult.playSuites ];
         this.root.variables.initLocalVars();
         this.root.recorder.preRecorder.flushBuffer(false);
-
         return preprocessResult;
     }
 
@@ -329,6 +327,7 @@ export class Playback {
             this.addLog("info", `Executing: | ${name} | ${selectTarget.value} | ${selectValue.value} |`);
             let index = 0;
             for (let temp of this.curPlayIndex) { index += temp.index; }
+            
         }
 
         return {
@@ -412,7 +411,6 @@ export class Playback {
         this.isPause = false;
         this.setPlayFlag(false, this.playMode);
         this.addLog("info", "Stop executing");
-        this.root.uiTools.setGridClick(false);
         clearTimeout(this.idOfTimeout);
     }
 
