@@ -15,7 +15,7 @@ npm i sideex-api
 
 #    Import
 ```javascript
-var {SideeX} = require('@tyler8812/sideex-api')
+var {SideeX} = require('sideex-api')
 var sideex = new SideeX();
 ```
 
