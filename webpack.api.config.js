@@ -6,7 +6,7 @@ var nodeExternals = require('webpack-node-externals');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = merge(common, {
-    // externals: [nodeExternals()],
+    externals: [nodeExternals()],
     entry: {
         index: ['./src/sideex-api/index.js'],
         test: ['./src/sideex-api/test.js']

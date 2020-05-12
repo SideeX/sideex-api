@@ -1,9 +1,9 @@
 {
-    "name": "SideeX-API",
+    "name": "sideex-api",
     "version": "1.0.0",
-    "description": "SideeX API - Open Source Record Playback Web Test Automation JS API",
+    "description": "This is SideeX JavaScript API for recording and playing web browsing behavior. The API can be embeded in a webpage without installing a browser web extension.",
     "scripts": {
-        "build-api": "webpack --config webpack.api.config.js"
+        "build-api": "webpack --mode=production --config webpack.api.config.js"
     },
     "repository": {
         "type": "git",

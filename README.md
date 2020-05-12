@@ -20,7 +20,7 @@ var sideex = new SideeX();
 ```
 
 ```javascript
-import {SideeX} from "@tyler8812/sideex-api"
+import {SideeX} from "sideex-api"
 var sideex = new SideeX();
 ```
 
@@ -34,7 +34,7 @@ var sideex = new SideeX();
 #    Usage Example
 ####  Record and playback
 ```javascript
-import {SideeX} from "@tyler8812/sideex-api"
+import {SideeX} from "sideex-api"
 var sideex = new SideeX();
 
 sideex.recorder.start();//start recording
@@ -50,7 +50,7 @@ sideex.playback.start();//replay the recorded commands
 
 ####  Change a recorded command to a user-defined action
 ```javascript
-import {SideeX} from "@tyler8812/sideex-api"
+import {SideeX} from "sideex-api"
 var sideex = new SideeX();
 
 sideex.recorder.start();//start recording
@@ -75,7 +75,7 @@ sideex.playback.start();//replay the modified recorded commands
 
 ####  Save the file and load it
 ```javascript
-import {SideeX} from "@tyler8812/sideex-api"
+import {SideeX} from "sideex-api"
 var sideex = new SideeX();
 
 sideex.recorder.start();//start recording
