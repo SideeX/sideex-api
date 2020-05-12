@@ -25,7 +25,7 @@ var sideex = new SideeX();
 ```
 
 #    API Docs
-#### [*SideeX-API document*](https://tyler8812.github.io/sideex-api-document/index.html)
+#### [*SideeX-API document*](https://sideex.github.io/sideex-api)
 
 
 
