@@ -14,7 +14,6 @@
  *  limitations under the License.
  *
  */
-import { Utils } from "../common/utils";
 import { LocatorBuilders } from "./locatorBuilders";
 import { recorderHandlersInit } from "./recorder-handlers";
 import { MessageController } from "../content/message-controller";

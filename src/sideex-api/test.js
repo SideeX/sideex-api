@@ -1,5 +1,4 @@
 import { SideeX } from './index';
-import { classBody } from '@babel/types';
 const sideex = new SideeX();
 var zero = 0;
 var input = document.getElementById('input');

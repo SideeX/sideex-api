@@ -1,4 +1,3 @@
-// import { FileTransformer } from './file-transformer';
 import { unescapeHtml } from '../../../common/escape';
 import { Utils } from '../../../utils/utils.common';
 

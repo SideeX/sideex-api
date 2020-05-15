@@ -1,4 +1,3 @@
-import platform from "platform";
 import { FileController } from '../panel/js/IO/file-controller';
 import { BackgroundRecorder } from '../panel/js/background/recorder';
 import { Playback } from '../panel/js/background/playback';
@@ -7,8 +6,6 @@ import { Setting } from "../panel/js/background/setting";
 import { Log } from '../panel/js/background/log';
 import "../content/command-receiver-for-api";
 import "../content/recorder-handlers";
-import { Recorder } from "../content/recorder";
-import { locatorBuilders } from "../content/content-initialization";
 
 export class SideeX {
     constructor() {

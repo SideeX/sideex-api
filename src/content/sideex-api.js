@@ -18,10 +18,7 @@
 import sendkeysMap from "./sendkeysMap";
 import { Utils } from "../common/utils";
 import { PatternMatcher } from "../common/patternMatcher";
-// import storage from "../common/storage";
 import { escapeHTML } from "../common/escape.js";
-import { MessageController } from "../content/message-controller";
-import { sideex } from "./content-initialization";
 
 export class Sideex {
     constructor(browserBot) {
