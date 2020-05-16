@@ -18,6 +18,12 @@ import cloneDeep from "lodash/cloneDeep";
 import { compareTwoArray } from "../lib/utils";
 import { SaveFile } from './save-file';
 import { LoadFile } from './load-file';
+import "./../../../page/autoWait";
+import "./../../../page/getListener";
+import "./../../../page/keys";
+import "./../../../page/onsubmit";
+import "./../../../page/prompt";
+import "./../../../page/runScript";
 
 export class FileController {
     constructor(root) {
