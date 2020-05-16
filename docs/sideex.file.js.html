@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>sideex.file.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="log.html">log</a><ul class='methods'><li data-type='method'><a href="log.html#clear">clear</a></li><li data-type='method'><a href="log.html#get">get</a></li></ul></li><li><a href="module-file-record.html">record</a><ul class='methods'><li data-type='method'><a href="module-file-record.html#add">add</a></li><li data-type='method'><a href="module-file-record.html#changeUsedIndex">changeUsedIndex</a></li><li data-type='method'><a href="module-file-record.html#clearAllStatus">clearAllStatus</a></li><li data-type='method'><a href="module-file-record.html#clearStatus">clearStatus</a></li><li data-type='method'><a href="module-file-record.html#copy">copy</a></li><li data-type='method'><a href="module-file-record.html#delete">delete</a></li><li data-type='method'><a href="module-file-record.html#deleteAll">deleteAll</a></li><li data-type='method'><a href="module-file-record.html#get">get</a></li><li data-type='method'><a href="module-file-record.html#getBreakPoint">getBreakPoint</a></li><li data-type='method'><a href="module-file-record.html#getSelected">getSelected</a></li><li data-type='method'><a href="module-file-record.html#setBreakPoint">setBreakPoint</a></li><li data-type='method'><a href="module-file-record.html#setSelected">setSelected</a></li></ul></li><li><a href="module-file-testCase.html">testCase</a><ul class='methods'><li data-type='method'><a href="module-file-testCase.html#add">add</a></li><li data-type='method'><a href="module-file-testCase.html#copy">copy</a></li><li data-type='method'><a href="module-file-testCase.html#cut">cut</a></li><li data-type='method'><a href="module-file-testCase.html#get">get</a></li><li data-type='method'><a href="module-file-testCase.html#getCaseIdText">getCaseIdText</a></li><li data-type='method'><a href="module-file-testCase.html#getSelected">getSelected</a></li><li data-type='method'><a href="module-file-testCase.html#remove">remove</a></li><li data-type='method'><a href="module-file-testCase.html#rename">rename</a></li><li data-type='method'><a href="module-file-testCase.html#setSelected">setSelected</a></li></ul></li><li><a href="module-file-testSuite.html">testSuite</a><ul class='methods'><li data-type='method'><a href="module-file-testSuite.html#add">add</a></li><li data-type='method'><a href="module-file-testSuite.html#close">close</a></li><li data-type='method'><a href="module-file-testSuite.html#closeAll">closeAll</a></li><li data-type='method'><a href="module-file-testSuite.html#copy">copy</a></li><li data-type='method'><a href="module-file-testSuite.html#get">get</a></li><li data-type='method'><a href="module-file-testSuite.html#getSelected">getSelected</a></li><li data-type='method'><a href="module-file-testSuite.html#getSuiteIdText">getSuiteIdText</a></li><li data-type='method'><a href="module-file-testSuite.html#load">load</a></li><li data-type='method'><a href="module-file-testSuite.html#rename">rename</a></li><li data-type='method'><a href="module-file-testSuite.html#setSelected">setSelected</a></li></ul></li><li><a href="playback.html">playback</a><ul class='methods'><li data-type='method'><a href="playback.html#Pause">Pause</a></li><li data-type='method'><a href="playback.html#resume">resume</a></li><li data-type='method'><a href="playback.html#start">start</a></li><li data-type='method'><a href="playback.html#stop">stop</a></li></ul></li><li><a href="recorder.html">recorder</a><ul class='methods'><li data-type='method'><a href="recorder.html#start">start</a></li><li data-type='method'><a href="recorder.html#stop">stop</a></li></ul></li><li><a href="setting.html">setting</a><ul class='methods'><li data-type='method'><a href="setting.html#getSpeed">getSpeed</a></li><li data-type='method'><a href="setting.html#setSpeed">setSpeed</a></li></ul></li><li><a href="variables.html">variables</a><ul class='methods'><li data-type='method'><a href="variables.html#add">add</a></li><li data-type='method'><a href="variables.html#changeName">changeName</a></li><li data-type='method'><a href="variables.html#changeValue">changeValue</a></li><li data-type='method'><a href="variables.html#clearAll">clearAll</a></li><li data-type='method'><a href="variables.html#delete">delete</a></li><li data-type='method'><a href="variables.html#get">get</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-file.html">file</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-sideex-tutorial.html">sideex</a></li></ul><h3>Global</h3><ul><li><a href="global.html#selectedCaseId">selectedCaseId</a></li><li><a href="global.html#selectedSuitesId">selectedSuitesId</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">sideex.file.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * file Module - See {@tutorial sideex-tutorial}
+ * @module file
+ */
+//@ts-check
+
+/**
+ * aa
+ * @type {string}
+ */
+var aa;
+
+
+/**
+ * sideex.file.testSuite
+ */
+class testSuite {
+    /**
+     * 
+     */
+    constructor(){
+
+    }
+
+    /**
+     * @property {object} suiteData
+     * @property {string} suiteData.filename
+     * @property {string} suiteData.title
+     * @property {Array&lt;string>} suiteData.cases
+     * @property {boolean} suiteData.modified
+     * @property {string} suiteData.status
+     * @property {number} suiteData.copycount
+     */
+    suiteData; 
+
+    /**
+     * @property {object} file
+     * @property {string} file.name
+     * @property {number} file.lastModified
+     * @property {Date} file.lastModifiedDate
+     * @property {string} file.webkitRelativePath
+     * @property {number} file.size
+     * @property {string} file.type
+     */
+    file; 
+
+    /**
+     * @property {string} suiteIdText
+     */     
+    suiteIdText; 
+
+    /**
+     * @property {string} suiteName
+     */ 
+    suiteName; 
+
+    /**
+     * @property {string} newSuiteName
+     */ 
+    newSuiteName; 
+    
+    /**
+     * @property {Array&lt;string>} suiteIdTexts
+     */
+    suiteIdTexts; 
+    
+    /**
+     * Add a test suite
+     * @property {function} add
+     * @param {object} suiteData - See {@link testSuite#suiteData}
+     * @returns {string} suiteIdText - See {@link testSuite#suiteIdText}
+     */
+    add(suiteData){
+        return this.suiteIdText
+    }
+
+    /**
+     * Get the detail of the suite
+     * @property {function} get
+     * @param {string} suiteIdText - See {@link testSuite#suiteIdText}
+     * @returns {object} suiteData - See {@link testSuite#suiteData}
+     */
+    get(suiteIdText){
+        return this.suiteData
+    }
+
+    /**
+     * Get the Id of the suite
+     * @property {function} getSuiteIdText
+     * @param {string} suiteName - See {@link testSuite#suiteName}
+     * @returns {string} suiteIdText - See {@link testSuite#suiteIdText}
+     */
+    getSuiteIdText(suiteName){
+        return this.suiteData
+    }
+
+    /**
+     * Rename the suite
+     * @property {function} rename
+     * @param {string} suiteIdText - See {@link testSuite#suiteIdText}
+     * @param {string} newSuiteName - See {@link testSuite#suiteName}
+     * @returns {string} newSuiteName - See {@link testSuite#newSuiteName}
+     */
+    rename(suiteIdText, newSuiteName){
+        return newSuiteName
+    }
+
+    /**
+     * Copy the suite
+     * @property {function} copy
+     * @param {Array&lt;string>} [suiteIdTexts = selectedSuitesId] - See {@link file#aa} and See {@link selectedSuitesId}
+     */
+    copy(suiteIdTexts = selectedSuitesId){
+
+    }
+
+    /**
+     * Close the suite
+     * @property {function} close
+     * @param {Array&lt;string>} suiteIdTexts
+     */
+    close(suiteIdTexts){
+
+    }
+
+    /**
+     * Close all of the suite
+     * @property {function} closeAll
+     */
+    closeAll(){
+
+    }
+
+    /**
+     * Change selected suites
+     * @property {function} setSelected
+     * @param {Array&lt;string>} SuiteIdTexts
+     */
+    setSelected(SuiteIdTexts){
+
+    }
+
+    /**
+     * Get selected suites
+     * @property {function} getSelected
+     * @returns {Array&lt;string>} SuiteIdTexts
+     */
+    getSelected(){
+        return this.SuiteIdTexts
+    }
+
+    /**
+     * Load the file
+     * @property {function} load
+     * @param {object} file
+     */
+    load(file){
+
+    }  
+}
+
+
+/**
+ * sideex.file.testCase
+ */
+class testCase {
+    
+    /**
+     * 
+     */
+    constructor(){
+
+    }
+
+    /**
+     * @property {object} caseData
+     * @property {string} caseData.title
+     * @property {Array&lt;string>} caseData.records
+     * @property {string} caseData.suiteIdText
+     * @property {boolean} caseData.modified
+     * @property {string} caseData.status
+     * @property {number} caseData.copycount
+     */
+    caseData; 
+
+    /**
+     * @property {string} caseIdText
+     */     
+    caseIdText; 
+
+    /**
+     * @property {string} caseName
+     */ 
+    caseName;  
+
+        /**
+     * @property {string} suiteIdText
+     */     
+    suiteIdText;
+
+    /**
+     * @property {string} newCaseName
+     */ 
+    newCaseName; 
+
+    /**
+     * @property {Array&lt;string>} caseIdTexts
+     */
+    caseIdTexts; 
+
+    /**
+     * @property {Array&lt;string>} srcCaseIdTexts
+     */
+    srcCaseIdTexts; 
+
+    /**
+     * @property {string} dstSuiteIdText
+     */
+    dstSuiteIdText; 
+    
+
+    /**
+     * Add a test case
+     * @property {function} add
+     * @param {object} caseData
+     * @returns {string} caseIdText
+     */
+    add(caseData){
+        return this.caseIdText
+    }
+
+    /**
+     * Get the detail of the case
+     * @property {function} get
+     * @param {string} caseIdText
+     * @returns {object} caseData
+     */
+    get(caseIdText){
+        return this.caseData
+    }
+
+    /**
+     * Get the Id of the case
+     * @property {function} getCaseIdText
+     * @param {string} caseName
+     * @param {string} [suiteIdText = selectedSuiteId]
+     * @returns {string} caseIdText
+     */
+    getCaseIdText(caseName, suiteIdText = selectedSuiteId){
+        return this.caseIdText
+    }
+
+    /**
+     * Rename the case
+     * @property {function} rename
+     * @param {string} caseIdText
+     * @param {string} newCaseName
+     * @returns {string} newCaseName
+     */
+    rename(caseIdText, newCaseName){
+        return newCaseName
+    }
+
+    /**
+     * Copy the case after selected case
+     * @property {function} copy
+     * @param {Array&lt;string>} [srcCaseIdTexts = selectedCasesId]
+     * @param {string} [dstSuiteIdText = selectedSuiteId]
+     */
+    copy(srcCaseIdTexts = selectedCasesId, dstSuiteIdText = selectedSuiteId){
+
+    }
+
+    /**
+     * Cut the case after selected case
+     * @property {function} copy
+     * @param {Array&lt;string>} [srcCaseIdTexts = selectedcasesid]
+     * @param {string} [dstSuiteIdText = selectedsuiteId]
+     */
+    cut(srcCaseIdTexts = selectedcasesid, dstSuiteIdText = selectedsuiteId){
+
+    }
+
+    /**
+     * Remove the case
+     * @property {function} remove
+     * @param {string} caseIdText
+     */
+    remove(caseIdText){
+
+    }
+
+    /**
+     * Change selected cases
+     * @property {function} setSelected
+     * @param {Array&lt;string>} caseIdTexts
+     */
+    setSelected(caseIdTexts){
+
+    }
+
+    /**
+     * Get selected cases
+     * @property {function} getSelected
+     * @returns {Array&lt;string>} CaseIdTexts
+     */
+    getSelected(){
+        return this.CaseIdTexts
+    }   
+}
+
+
+/**
+ * sideex.file.record
+ */
+class record {
+    
+    /**
+     * 
+     */
+    constructor(){
+
+    }
+
+    /**
+     * @property {object} recordData
+     * @property {string} recordData.id
+     * @property {string} recordData.name
+     * @property {object} recordData.target
+     * @property {number} recordData.target.usedIndex
+     * @property {} recordData.target.options
+     * @property {string} recordData.target.tac
+     * @property {object} recordData.value
+     * @property {number} recordData.value.usedIndex
+     * @property {} recordData.value.options
+     * @property {string} recordData.value.tac
+     * @property {string} recordData.screenshot
+     * @property {boolean} recordData.breakpoint
+     * @property {string} recordData.status
+     */
+    recordData; 
+
+    /**
+     * @property {number} recordIndex
+     */     
+    recordIndex; 
+
+    /**
+     * @property {string} caseIdText
+     */     
+    caseIdText; 
+
+    /**
+     * @property {string} srcCaseIdText
+     */
+    srcCaseIdTex; 
+
+    /**
+     * @property {number} srcRecordIndex
+     */
+    srcRecordIndex; 
+
+    /**
+     * @property {string} destCaseIdText
+     */
+    destCaseIdText; 
+
+    /**
+     * @property {number} destRecordIndex
+     */ 
+    destRecordIndex;  
+
+        /**
+     * @property {number} usedIndex
+     */     
+    usedIndex;
+
+    /**
+     * @property {string} type
+     */ 
+    type; 
+
+
+    /**
+     * Add a record
+     * @property {function} add
+     * @param {object} recordData
+     */
+    add(recordData){
+
+    }
+
+    /**
+     * Get the detail of the record
+     * @property {function} get
+     * @param {string} recordIndex
+     * @param {string} caseIdText
+     * @returns {object} recordData
+     */
+    get(recordIndex, caseIdText){
+        return this.recordData
+    }
+
+    /**
+     * Delete the record
+     * @property {function} delete
+     * @param {string} recordIndex
+     * @param {string} [caseIdText = selectedCaseId]
+     */
+    delete(recordIndex, caseIdText = selectedCaseId){
+
+    }
+
+    /**
+     * Delete all the record
+     * @property {function} delete
+     * @param {string} [caseIdText = selectedCaseId]
+     */
+    deleteAll(caseIdText = selectedCaseId){
+
+    }
+
+    /**
+     * Copy the record after selected record
+     * @property {function} copy
+     * @param {string} [srcCaseIdText = selectedCaseId]
+     * @param {numbet} [srcRecordIndex = selectedRecordIndex]
+     * @param {string} [destCaseIdText = selectedCaseId]
+     * @param {number} [destRecordIndex = selectedRecordIndex]
+     */
+    copy(srcCaseIdText = selectedCaseId, srcRecordIndex = selectedRecordIndex, destCaseIdText = selectedCaseId, destRecordIndex = selectedRecordIndex){
+
+    }
+
+    /**
+     * Set the breakpoint
+     * @property {function} setBreakPoint
+     * @param {boolean} bool
+     * @param {number} [recordIndex = selectedRecordIndex]
+     * @param {string} [caseIdText = selectedCaseId]
+     */
+    setBreakPoint(bool, recordIndex = selectedRecordIndex, caseIdText = selectedCaseId){
+
+    }
+
+    /**
+     * Get the breakpoint
+     * @property {function} getBreakPoint
+     * @param {number} recordIndex
+     * @param {string} [caseIdText = selectedCaseId]
+     * @returns {boolean} breakpoint
+     */
+    getBreakPoint(recordIndex, caseIdText = selectedCaseId){
+        return this.breakpoint
+    }
+
+    /**
+     * Change the used index of the target or value in the record
+     * @property {function} changeUsedIndex
+     * @param {number} usedIndex
+     * @param {string} [type = target|value]
+     * @param {number} [recordIndex = selectedRecordIndex]
+     * @param {string} [caseIdText = selectedCaseId]
+     */
+    changeUsedIndex(usedIndex, type, recordIndex = selectedRecordIndex, caseIdText = selectedCaseId){
+
+    }
+
+    /**
+     * Clear the status in the case
+     * @property {function} clearStatus
+     * @param {string} [caseIdText = selectedCaseId]
+     */
+    clearStatus(caseIdText = selectedCaseId){
+
+    }
+
+    /**
+     * Clear all the status
+     * @property {function} clearStatus
+     */
+    clearAllStatus(){
+
+    }
+
+    /**
+     * Set the selected records
+     * @property {function} setSelected
+     * @param {Array&lt;string>} recordIdTexts
+     */
+    setSelected(recordIdTexts){
+
+    }
+
+     /**
+     * Get the selected records
+     * @property {function} getSelected
+     */
+    getSelected(){
+
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Mar 02 2020 21:38:11 GMT+0800 (GMT+08:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
