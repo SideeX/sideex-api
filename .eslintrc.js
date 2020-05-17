@@ -1,12 +1,10 @@
 module.exports = {
     "plugins": [
         "promise",
-        "react"
     ],
     "extends": [
         "eslint:recommended",
         "plugin:promise/recommended",
-        "plugin:react/recommended",
     ],
     "parserOptions": {
         "ecmaVersion": 2018,
