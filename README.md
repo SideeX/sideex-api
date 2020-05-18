@@ -86,5 +86,5 @@ sideex.playback.start();//replay the modified recorded commands
 ```
 
 
- #    [API Docs](https://sideex.github.io/sideex-api)
+#    [API Docs](https://sideex.github.io/sideex-api)
 
