@@ -1,6 +1,6 @@
 
 import { v4 as uuidv4 } from 'uuid';
-import { Utils } from '../common/utils';
+import { Utils } from '../utils/index';
 import { TimeoutError } from './timeoutError';
 type MessageListener<T = {}> = (data: MessageData<T>, source?: CrossOriginWindow) => Promise<any>;
 declare global {

@@ -17,7 +17,7 @@
 import { MessageController } from "../../../content/message-controller";
 import { WindowController } from './window-controller';
 import { Preprocessor } from './preprocessor';
-import { Utils } from "../../../common/utils";
+import { Utils } from "../../../utils/index";
 import { commandReferences } from "../../../common/command";
 import { sideex } from "../../../content/content-initialization";
 

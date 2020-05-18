@@ -16,7 +16,6 @@
  */
 import TargetSelecter from "./targetSelecter";
 import { sideex, locatorBuilders, browserBot, recorder} from "./content-initialization";
-import "../common/utils";
 import { MessageController } from "../content/message-controller";
 
 var targetSelecter = null;

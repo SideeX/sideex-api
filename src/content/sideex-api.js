@@ -16,7 +16,7 @@
  *
  */
 import sendkeysMap from "./sendkeysMap";
-import { Utils } from "../common/utils";
+import { Utils } from "../utils/index";
 import { PatternMatcher } from "../common/patternMatcher";
 import { escapeHTML } from "../common/escape.js";
 

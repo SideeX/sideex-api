@@ -1,20 +1,57 @@
 import isEqual from "lodash/isEqual";
 export * from "./Point";
 export * from "./Rectangle";
-export * from "./escape";
-export * from "./exposedPromise";
-export * from "./patternMatcher";
-export * from "./seleniumError";
-export * from "./timeoutError";
-export * from "./toggleable";
-export * from "./asyncFunction";
-
+import Sizzle from "sizzle";
 declare global {
+    interface CSSStyleDeclaration {
+        src: string
+    }
+    interface String {
+        supplant<T>(o1: { [key: string]: T }, o2: { [key: string]: T }): string
+        lcfirst(): string
+        ucfirst(): string
+    }
     interface Array<T> {
-        /** @returns `true` if removed, `false` if item is not in array */
-        remove(item: T): boolean
+        remove(item: T): this
         insert(index: number, item: T): this
     }
+    /** @summary To expose all window.something */
+    interface Window {
+        HTMLElement: typeof HTMLElement
+        HTMLBodyElement: typeof HTMLBodyElement
+        HTMLImageElement: typeof HTMLImageElement
+        SVGSVGElement: typeof SVGSVGElement
+        CSSStyleSheet: typeof CSSStyleSheet
+    }
+    
+}
+
+String.prototype.supplant = function <T>(localVarsObj: { [key: string]: T }, globalVarsObj: { [key: string]: T }) {
+    return this.replace(/\${([^{}]*)}/g, (match: string, p1: string) => {
+        for (let vars of [localVarsObj, globalVarsObj]) {
+            let r = vars[p1.trim()];
+            if (typeof r == "string" || typeof r == "number") {
+                return r.toString();
+            }
+        }
+        throw new TypeError("Variable " + match + " does not defined")
+    })
+}
+String.prototype.lcfirst = function () {
+    return this.charAt(0).toLowerCase() + this.substr(1)
+}
+String.prototype.ucfirst = function () {
+    return this.charAt(0).toUpperCase() + this.substr(1)
+}
+Array.prototype.remove = function <T>(item: T) {
+    const index = this.indexOf(item)
+    if (index > -1) {
+        this.splice(index, 1)
+    }
+    return this
+}
+Array.prototype.insert = function <T>(index: number, item: T) {
+    return this.splice(index, 0, item)
 }
 /*
  * Do not use Array.prototype.something = <function> to polyfill directly, may break some website which use `for ... in` loop
@@ -137,6 +174,19 @@ export abstract class Utils {
             value = element.value;
         }
         return value;
+    }
+
+    //api, recorder-handler
+    /** @summary Get the value of an <input> element */
+    static getInputValue(inputElement: HTMLInputElement): string {
+        try {
+            if (inputElement.type.match("^(checkbox|radio)$")) {
+                return (inputElement.checked ? 'on' : 'off')
+            }
+        } catch (error) {
+
+        }
+        return inputElement.value
     }
 
     //browserbot
@@ -363,4 +413,62 @@ export abstract class Utils {
             throw new Error(`The name cannot contain . / \\ : * ? " < > |`);
         }
     }
+    
+    static SeleniumError = class extends Error {
+        isSeleniumError: boolean = true
+        constructor(message: string) {
+            super(message)
+        }
+    }
+
+    /** @summary Returns the full resultset of a CSS selector evaluation. */
+    static eval_css(locator: string, inDocument: Document) {
+        return Sizzle(locator, inDocument);
+    }
 }
+
+export class PatternMatcher {
+    private matcher: RegexMatcher
+    static strategies: { [key: string]: RegexMatcherConstructor }
+    constructor(pattern: string) {
+        this.selectStrategy(pattern);
+    }
+    selectStrategy(pattern: string): void {
+        let strategyName = 'glob';
+        // by default
+        if (/^([a-z-]+):(.*)/.test(pattern)) {
+            var possibleNewStrategyName = RegExp.$1;
+            var possibleNewPattern = RegExp.$2;
+            if (PatternMatcher.strategies[possibleNewStrategyName]) {
+                strategyName = possibleNewStrategyName;
+                pattern = possibleNewPattern;
+            }
+        }
+        const matchStrategy = PatternMatcher.strategies[strategyName];
+        if (!matchStrategy) {
+            throw new Utils.SeleniumError("cannot find PatternMatcher.strategies." + strategyName);
+        }
+        this.matcher = new matchStrategy(pattern);
+    }
+    matches(actual: string) {
+        // Note: appending an empty string avoids a Konqueror bug
+        return this.matcher.matches(actual + '');
+    }
+    /** @summary A "static" convenience method for easy matching */
+    static matches(pattern: string, actual: string) {
+        return new PatternMatcher(pattern).matches(actual);
+    }
+
+    static convertGlobMetaCharsToRegexpMetaChars(glob: string) {
+        return glob.replace(/([.^$+(){}[\]\\|])/g, "\\$1")
+            .replace(/\?/g, "(.|[\r\n])")
+            .replace(/\*/g, "(.|[\r\n])*");
+    }
+    static regexpFromGlobContains(globContains: string) {
+        return PatternMatcher.convertGlobMetaCharsToRegexpMetaChars(globContains);
+    }
+    static regexpFromGlob = function (glob: string) {
+        return "^" + PatternMatcher.convertGlobMetaCharsToRegexpMetaChars(glob) + "$";
+    }
+}
+

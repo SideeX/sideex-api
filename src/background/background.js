@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-import { Utils } from "../common/utils";
+import { Utils } from "../utils/index";
 import { MessageController } from "../content/message-controller";
 
 let master = {};

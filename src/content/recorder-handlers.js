@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Recorder } from "./recorder";
-import { Utils } from "../common/utils";
+import { Utils } from "../utils/index";
 import { MessageController } from "../content/message-controller";
 
 export function recorderHandlersInit() {

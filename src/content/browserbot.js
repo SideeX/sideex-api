@@ -26,7 +26,7 @@
 
 // The window to which the commands will be sent.  For example, to click on a
 // popup window, first select that window, and then do a normal click command.
-import { Utils, PatternMatcher } from "../common/utils";
+import { Utils, PatternMatcher } from "../utils/index";
 export class BrowserBot {
     constructor() {
         this.altKeyDown = false;

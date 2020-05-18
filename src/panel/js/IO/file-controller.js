@@ -15,7 +15,7 @@
  *
  */
 import cloneDeep from "lodash/cloneDeep";
-import { compareTwoArray } from "../lib/utils";
+import { Utils } from "../../../utils/index";
 import { SaveFile } from './save-file';
 import { LoadFile } from './load-file';
 import "./../../../page/autoWait";
@@ -495,8 +495,8 @@ export class FileController {
 
         if (
             (!name || command1.name === command2.name) &&
-            (!target || compareTwoArray(command1.target.options, command2.target.options)) &&
-            (!value || compareTwoArray(command1.value.options, command2.value.options))
+            (!target || Utils.compareTwoArray(command1.target.options, command2.target.options)) &&
+            (!value || Utils.compareTwoArray(command1.value.options, command2.value.options))
         ) {
             return true;
         }

@@ -15,7 +15,7 @@
  */
 // @ts-ignore
 import { BrowserBot } from "./browserbot"
-import { Utils } from "../common/utils"
+import { Utils } from "../utils/index"
 
 export class LocatorBuilders {
     window: Window
