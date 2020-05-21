@@ -161,10 +161,9 @@ h6 {
   color: #666;
 }
 
-
 tt, code, kbd, samp {
   font-family: Consolas, Monaco, 'Andale Mono', monospace;
-  background: #e4eaf4;
+  background: #c9d5e8;
   padding: 1px 5px;
 }
 

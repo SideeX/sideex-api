@@ -7,6 +7,15 @@ import { Log } from '../panel/js/background/log';
 import "../content/command-receiver-for-api";
 import "../content/recorder-handlers";
 
+/**
+ * @file SideeX-API
+ * @author SideeX Team
+ * @see <a href="https://sideex.io/">sideex.io</a>
+ */
+
+ /**
+  * 
+  */
 export class SideeX {
     constructor() {
         this.root = { isDOMBased: false };
@@ -31,8 +40,67 @@ export class SideeX {
 
     init() {
         let self = this;
+        /**
+         * @namespace
+         */
         this.file = {
+            /**
+             * @namespace
+             */
             testSuite: {
+                /**
+                 * suiteData 
+                 * - The detail of test suite
+                 * @memberof SideeX#file.testSuite
+                 * @typedef {object} suiteData
+                 * @property {string} suiteData.filename - The filename of test suite
+                 * @property {string} suiteData.title - The title of test suite
+                 * @property {Array<string>} suiteData.cases - The test cases in the test suite
+                 * @property {boolean} suiteData.modified - Is this test suite modified
+                 * @property {string} suiteData.status - The status of test suite
+                 */
+                /**
+                 * suiteIdString
+                 * - The id of test suite
+                 * @memberof SideeX#file.testSuite
+                 * @typedef {string} suiteIdString
+                 */
+
+                /**
+                 * suiteIdStrings
+                 * - The id of test suites
+                 * @memberof SideeX#file.testSuite
+                 * @typedef {Array<string>} suiteIdStrings
+                 */
+
+
+                /**
+                 * selectedSuitesId 
+                 * - The test suites' id that currently selected
+                 * @memberof SideeX#file.testSuite
+                 * @typedef {Array<string>} selectedSuitesId
+                 */
+
+
+                /**
+                 * jsonString
+                 * - String of JSON object
+                 * @memberof SideeX#file.testSuite
+                 * @typedef {string} jsonString
+                 */
+                
+                 
+                /**
+                 * @memberof SideeX#file.testSuite
+                 * @method add
+                 * @description Add a new test test suite 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * console.log(sideex.file.testSuite.add());
+                 * @param {object} [suiteData] - The detail of test suite [suiteData]{@link SideeX#file.testSuite.suiteData}
+                 * @returns {string} suiteIdString - The id of test suite [suiteIdString]{@link SideeX#file.testSuite.suiteIdString}
+                 */
                 add: function (suiteData = { title: self.root.fileController.newUntitledName("suite") }) {
                     let checkResult = self.root.fileController.checkNameValid(suiteData.title);
                     if (checkResult.result) {
@@ -45,12 +113,39 @@ export class SideeX {
                         throw new Error(checkResult.message);
                     }
                 },
+                /**
+                 * @memberof SideeX#file.testSuite
+                 * @method get
+                 * @description Get the detail of the test suite 
+                 * @param {string} suiteIdString - The id of test suite
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testSuite.get("suite-0");
+                 * @returns {object} suiteData - The detail of test suite [suiteData]{@link SideeX#file.testSuite.suiteData}
+                 */
                 get: function (suiteIdText) {
                     return self.root.fileController.getTestSuite(suiteIdText);
                 },
+                /**
+                 * @memberof SideeX#file.testSuite
+                 * @method getSuiteIdText
+                 * @description Get id by test suite name  
+                 * @param {string} suiteName - The name of test suite
+                 * @returns {string} suiteIdString - The id of test suite [suiteIdString]{@link SideeX#file.testSuite.suiteIdString}
+                 */
                 getSuiteIdText: function (suiteName) {
                     return self.root.fileController.getSuiteKey(suiteName);
                 },
+                /**
+                 * @memberof SideeX#file.testSuite
+                 * @method rename
+                 * @description Rename the test suite 
+                 * @param {string} suiteIdString - The id of test suite [suiteIdString]{@link SideeX#file.testSuite.suiteIdString}
+                 * @param {string} newSuiteName - The new name for test suite
+                 * @returns {string} newSuiteName - The new name for test suite
+                 */
                 rename: function (suiteIdText, newSuiteName) {
                     let checkResult = self.root.fileController.checkNameValid(newSuiteName);
                     if (checkResult.result) {
@@ -64,15 +159,52 @@ export class SideeX {
                         throw new Error(checkResult.message);
                     }
                 },
+                /**
+                 * @memberof SideeX#file.testSuite
+                 * @method copy
+                 * @description Copy the test suite 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testSuite.copy("suite-0");
+                 * console.log(sideex.file.testSuite.getSuitesOrder());
+                 * @param {Array<string>} [suiteIdStrings = selectedSuitesId] - The id of test case to copy and paste [selectedSuitesId]{@link SideeX#file.testSuite.selectedSuitesId}
+                 */
                 copy: function (suiteIdTexts = self.root.fileController.getSelectedSuites()[0]) {
                     self.root.fileController.copySuites(suiteIdTexts);
                 },
+                /**
+                 * @memberof SideeX#file.testSuite
+                 * @method getSuitesOrder
+                 * @description Get the test suites' order
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testSuite.add();
+                 * console.log(sideex.file.testSuite.getSuitesOrder());
+                 * @returns {Array<string>} suiteIdStrings - The ids of test suites [suiteIdStrings]{@link SideeX#file.testSuite.suiteIdStrings}
+                 */
                 getSuitesOrder: function () {
                     return self.root.fileController.testSuite.order;
                 },
                 // checkSuitesLength: function () {
                 //     return self.root.fileController.testSuite.count;
                 // },
+                /**
+                 * @memberof SideeX#file.testSuite
+                 * @method close
+                 * @description Close test suites 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * console.log(sideex.file.testSuite.getSuitesOrder());
+                 * sideex.file.testSuite.close("suite-0");
+                 * console.log(sideex.file.testSuite.getSuitesOrder());
+                 * @param {Array<string>} suiteIdStrings - The ids of test suites [suiteIdStrings]{@link SideeX#file.testSuite.suiteIdStrings}
+                 */
                 close: function (suiteIdTexts) {
                     suiteIdTexts = typeof (suiteIdTexts) === "string" ?
                         [suiteIdTexts] : suiteIdTexts;
@@ -100,6 +232,19 @@ export class SideeX {
                         }
                     }
                 },
+                /**
+                 * @memberof SideeX#file.testSuite
+                 * @method closeAll
+                 * @description Close all of the test suites
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testSuite.add();
+                 * console.log(sideex.file.testSuite.getSuitesOrder());
+                 * sideex.file.testSuite.closeAll();
+                 * console.log(sideex.file.testSuite.getSuitesOrder());
+                 */
                 closeAll: function () {
                     let suiteIdTexts = self.root.fileController.getAllSuiteIdTexts();
                     if (suiteIdTexts.length > 0) {
@@ -110,21 +255,132 @@ export class SideeX {
                     self.root.fileController.setSelectedCases([]);
                     self.root.fileController.setSelectedSuites([]);
                 },
+                /**
+                 * @memberof SideeX#file.testSuite
+                 * @method setSelected
+                 * @description Change selected test suites 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testSuite.setSelected("suite-0");
+                 * console.log(sideex.file.testSuite.getSelected()); 
+                 * @param {Array<string>} suiteIdStrings - The ids of test suites [suiteIdStrings]{@link SideeX#file.testSuite.suiteIdStrings}
+                 */
                 setSelected: function (suiteIdTexts) {
                     self.root.fileController.setSelectedSuites(suiteIdTexts);
                 },
+                /**
+                 * @memberof SideeX#file.testSuite
+                 * @method getSelected
+                 * @description Get selected test suites 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testSuite.setSelected("suite-0");
+                 * console.log(sideex.file.testSuite.getSelected());
+                 * @returns {Array<string>} suiteIdStrings - The ids of test suites [suiteIdStrings]{@link SideeX#file.testSuite.suiteIdStrings}
+                 */
                 getSelected: function () {
                     return self.root.fileController.getSelectedSuites();
                 },
+                /**
+                 * @memberof SideeX#file.testSuite
+                 * @method load
+                 * @description Load the file for playback 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.recorder.start();
+                 * //record commands.
+                 * sideex.recorder.stop();
+                 * //you have to have a test suite first, or just record one.
+                 * let jsonString = sideex.file.testSuite.save();
+                 * sideex.file.testSuite.load(jsonString);
+                 * sideex.playback.start();
+                 * @param {string} jsonString - String of JSON object [jsonString]{@link SideeX#file.testSuite.jsonString}
+                 */
                 load: function (file) {
                     return self.root.fileController.loadFile.readFile(file);
                 },
+                /**
+                 * @memberof SideeX#file.testSuite
+                 * @method save
+                 * @description Save the file
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * //you have to have a test suite first, or just record one.
+                 * let jsonString = sideex.file.testSuite.save();
+                 * sideex.file.testSuite.load(jsonString);
+                 * sideex.playback.start();
+                 * @returns {string} - String of JSON object
+                 */
                 save: function () {
                     let suiteIdTexts = self.root.fileController.getSelectedSuites();
                     return self.root.fileController.saveFile.downloadSuites(suiteIdTexts);
                 }
             },
+            /**
+             * @namespace
+             */
             testCase: {
+                /** 
+                 * caseData 
+                 * - The detail of test case
+                 * @memberof SideeX#file.testCase
+                 * @typedef {object} caseData
+                 * @property {string} caseData.title - The title of test case
+                 * @property {Array<string>} caseData.commands - The commands of test case
+                 * @property {string} caseData.suiteIdString - The suite id where it belongs to
+                 * @property {boolean} caseData.modified - Is this case modified
+                 * @property {string} caseData.status - The status of test case
+                 */
+                /**
+                 * caseIdString 
+                 * - The id of test case
+                 * @memberof SideeX#file.testCase
+                 * @typedef {string} caseIdString
+                 */
+                /**
+                 * caseIdStrings
+                 * - The id of test cases
+                 * @memberof SideeX#file.testCase
+                 * @typedef {Array<string>} caseIdStrings
+                 */
+                /**
+                 * suiteIdString 
+                 * - The id of test suite
+                 * @memberof SideeX#file.testCase
+                 * @typedef {string} suiteIdString
+                 */
+
+                /**
+                 * selectedSuiteId
+                 * - The test suite id that currently selected
+                 * @memberof SideeX#file.testCase
+                 * @typedef {string} selectedSuiteId
+                 */
+                /**
+                 * selectedCasesId
+                 * - The test cases' id that currently selected
+                 * @memberof SideeX#file.testCase
+                 * @typedef {Array<string>} selectedCasesId
+                 */
+
+                /**
+                 * @memberof SideeX#file.testCase
+                 * @method add
+                 * @description Add a new test test case 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * @param {object} [caseData] - The detail of test case [caseData]{@link SideeX#file.testCase.caseData}
+                 * @returns {string} caseIdString - The id of test case [caseIdString]{@link SideeX#file.testCase.caseIdString}
+                 */
                 add: function (caseData = {
                     title: self.root.fileController.newUntitledName("case"),
                     suiteIdText: self.root.fileController.getSelectedSuites()[0]
@@ -140,12 +396,48 @@ export class SideeX {
                         throw new Error(checkResult.message);
                     }
                 },
+                /**
+                 * @memberof SideeX#file.testCase
+                 * @method get
+                 * @description Get the details of the test case 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * console.log(sideex.file.testCase.get("case-0"));
+                 * @param {string} caseIdString - The id of test case [caseIdString]{@link SideeX#file.testCase.caseIdString}
+                 * @returns {object} caseData - The detail of test case [caseData]{@link SideeX#file.testCase.caseData}
+                 */
                 get: function (caseIdText) {
                     return self.root.fileController.getTestCase(caseIdText);
                 },
+                /**
+                 * @memberof SideeX#file.testCase
+                 * @method getCaseIdText
+                 * @description Get id by test case name 
+                 * @param {string} caseName - The name of test case
+                 * @param {string} [suiteIdString = selectedSuiteId] - The id of test suite [selectedSuiteId]{@link SideeX#file.testCase.selectedSuiteId}
+                 * @returns {string} caseIdString - The id of test case [caseIdString]{@link SideeX#file.testCase.caseIdString}
+                 */
                 getCaseIdText: function (caseName, suiteIdText = self.root.fileController.getSelectedSuites()[0]) {
                     return self.root.fileController.getCaseKey(suiteIdText, caseName);
                 },
+                /**
+                 * @memberof SideeX#file.testCase
+                 * @method rename
+                 * @description Rename the test case 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * console.log(sideex.file.testCase.rename("case-0", "sideex"));
+                 * console.log(sideex.file.testCase.get("case-0"));
+                 * @param {string} caseIdString - The id of test case [caseIdString]{@link SideeX#file.testCase.caseIdString}
+                 * @param {string} newCaseName - The new name for test case
+                 * @returns {string} newCaseName
+                 */
                 rename: function (caseIdText, newCaseName) {
                     let suiteIdText = self.root.fileController.getTestCase(caseIdText).suiteIdText;
                     let checkResult = self.root.fileController.checkNameValid(newCaseName);
@@ -161,6 +453,20 @@ export class SideeX {
                         throw new Error(checkResult.message);
                     }
                 },
+                /**
+                 * @memberof SideeX#file.testCase
+                 * @method copy
+                 * @description Copy the test case 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.testCase.copy("case-0", "suite-0");
+                 * console.log(sideex.file.testCase.getCasesOrder());
+                 * @param {Array<string>} [srcCaseIdStrings = selectedCasesId] - The id of test cases for source [selectedCasesId]{@link SideeX#file.testCase.selectedCasesId}
+                 * @param {string} [dstSuiteIdString = selectedSuiteId] - The id of test suite for destination [selectedSuiteId]{@link SideeX#file.testCase.selectedSuiteId}
+                 */
                 copy: function (srcCaseIdTexts = self.root.fileController.getSelectedCases(),
                     dstSuiteIdText = self.root.fileController.getSelectedSuites()[0]) {
                     if (self.root.fileController.isSuiteExist(dstSuiteIdText)) {
@@ -169,6 +475,20 @@ export class SideeX {
                         throw new Error(`Suite "${dstSuiteIdText}" not found.`);
                     }
                 },
+                /**
+                 * @memberof SideeX#file.testCase
+                 * @method cut
+                 * @description Cut the test case 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.testCase.cut("case-0", "suite-0");
+                 * console.log(sideex.file.testCase.getCasesOrder());
+                 * @param {Array<string>} [srcCaseIdStrings = selectedCasesId] - The id of test cases for source [selectedCasesId]{@link SideeX#file.testCase.selectedCasesId}
+                 * @param {string} [dstSuiteIdString = selectedSuiteId] - The id of destination test suite to paste [selectedSuiteId]{@link SideeX#file.testCase.selectedSuiteId}
+                 */
                 cut: function (srcCaseIdTexts = self.root.fileController.getSelectedCases()[0],
                     dstSuiteIdText = self.root.fileController.getSelectedSuites()[0]) {
                     if (self.root.fileController.isSuiteExist(dstSuiteIdText)) {
@@ -177,6 +497,20 @@ export class SideeX {
                         throw new Error(`Suite "${dstSuiteIdText}" not found.`);
                     }
                 },
+                /**
+                 * @memberof SideeX#file.testCase
+                 * @method remove
+                 * @description Remove the test case 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.testCase.remove("case-0");
+                 * console.log(sideex.file.testCase.getCasesOrder());
+                 * @param {string} caseIdString - The id of test case [caseIdString]{@link SideeX#file.testCase.caseIdString}
+                 */
                 remove: function (caseIdText) {
                     let suiteIdText = self.root.fileController.getTestCase(caseIdText).suiteIdText;
                     let cases = self.root.fileController.testSuite.suites[suiteIdText].cases;
@@ -193,20 +527,128 @@ export class SideeX {
                     }
                     self.root.fileController.setSelectedSuites([suiteIdText]);
                 },
+                /**
+                 * @memberof SideeX#file.testCase
+                 * @method getCasesOrder
+                 * @description Get the test cases' order
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.testCase.add();
+                 * console.log(sideex.file.testCase.getCasesOrder());
+                 * @returns {Array<string>} caseIdStrings - The ids of test cases [caseIdStrings]{@link SideeX#file.testCase.caseIdStrings}
+                 */
                 getCasesOrder: function () {
                     return self.root.fileController.testCase.cases;
                 },
                 // checkCasesLength: function () {
                 //     return self.root.fileController.testCase.count;
                 // },
+                /**
+                 * @memberof SideeX#file.testCase
+                 * @method setSelected
+                 * @description Change selected test cases 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.testCase.setSelected("case-0");
+                 * console.log(sideex.file.testCase.getSelected());
+                 * @param {Array<string>} caseIdStrings - The id of test cases [caseIdStrings]{@link SideeX#file.testCase.caseIdStrings}
+                 */
                 setSelected: function (caseIdTexts) {
                     self.root.fileController.setSelectedCases(caseIdTexts);
                 },
+                /**
+                 * @memberof SideeX#file.testCase
+                 * @method getSelected
+                 * @description Get selected test cases
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.testCase.setSelected("case-0");
+                 * console.log(sideex.file.testCase.getSelected());
+                 * @returns {Array<string>} caseIdStrings - The id of test cases [caseIdStrings]{@link SideeX#file.testCase.caseIdStrings}
+                 */
                 getSelected: function () {
                     return self.root.fileController.getSelectedCases();
                 }
             },
+            /**
+             * @namespace
+             */
             command: {
+                 /**
+                 * commandData
+                 * - The detail of command
+                 * @memberof SideeX#file.command
+                 * @typedef {object} commandData
+                 * @property {string} commandData.id - The id of command
+                 * @property {string} commandData.name - The name of command
+                 * @property {object} commandData.target - The target of command
+                 * @property {number} commandData.target.usedIndex - The index of locator that currently using
+                 * @property {} commandData.target.options - Locators of target
+                 * @property {object} commandData.value - The value of command
+                 * @property {number} commandData.value.usedIndex - The index of locator that currently using
+                 * @property {} commandData.value.options - Locators of vlaue
+                 * @property {string} commandData.screenshot - The screenshot of command
+                 * @property {boolean} commandData.breakpoint - does it have breakpoint in the command
+                 * @property {string} commandData.status - The status of command
+                 */
+
+                /**
+                 * selectedCaseId 
+                 * - The test case id that currently selected
+                 * @memberof SideeX#file.command
+                 * @typedef {string} selectedCaseId
+                 */
+
+                /**
+                 * selectedCommandIndex
+                 * - The command index that currently selected
+                 * @memberof SideeX#file.command
+                 * @typedef {string} selectedCommandIndex
+                 */
+
+                /**
+                 * lastCommandIndex 
+                 * - The last command index in the test case
+                 * @memberof SideeX#file.command
+                 * @typedef {number} lastCommandIndex
+                 */
+
+                /**
+                 * commandIdString
+                 * - The id of a command
+                 * @memberof SideeX#file.command
+                 * @typedef {string} commandIdString
+                 */
+
+                /**
+                 * commandIdStrings
+                 * - The id of commands
+                 * @memberof SideeX#file.command
+                 * @typedef {Array<string>} commandIdStrings
+                 */
+                /**
+                 * @memberof SideeX#file.command
+                 * @method add
+                 * @description Add a new command to a testcase
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * //You need to have a test suite and  a test case to add commands.
+                 * sideex.file.command.add();
+                 * @param {string} [caseIdString = selectedCaseId] - The id of test case to add command [selectedCaseId]{@link SideeX#file.command.selectedCaseId}
+                 * @param {object} [commandData] - The detail of command [commandData]{@link SideeX#file.command.commandData}
+                 */
                 add: function (recordData = {
                     name: "Untitled Record",
                     target: { options: [{ type: "other", value: "" }] },
@@ -218,15 +660,84 @@ export class SideeX {
                     let info = self.root.fileController.addCommand(caseIdText, index, recordData.name, recordData.target, recordData.value);
                     self.root.fileController.setSelectedRecords([`records-${info.index}`]);
                 },
+                /**
+                 * @memberof SideeX#file.command
+                 * @method get
+                 * @description Get the details of the command 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.add();
+                 * console.log(sideex.file.command.get(1,"case-0"));
+                 * @param {string} commandIndex - The index of command [commandIndex]{@link SideeX#file.command.commandIndex}
+                 * @param {string} [caseIdString = selectedCaseId] - The id of test case [selectedCaseId]{@link SideeX#file.command.selectedCaseId}
+                 * @returns {object} commandData - The detail of command [commandData]{@link SideeX#file.command.commandData}
+                 */
                 get: function (recordIndex, caseIdText = self.root.fileController.getSelectedCases()[0]) {
                     return self.root.fileController.getRecord(caseIdText, recordIndex);
                 },
+                /**
+                 * @memberof SideeX#file.command
+                 * @method delete
+                 * @description Delete a command
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.delete(1,"case-0");
+                 * console.log(sideex.file.testCase.getCasesOrder());
+                 * @param {string} commandIndex - The index of command [commandIndex]{@link SideeX#file.command.commandIndex}
+                 * @param {string} [caseIdString = selectedCaseId] - The id of test case [selectedCaseId]{@link SideeX#file.command.selectedCaseId}
+                 */
                 delete: function (recordIndex, caseIdText = self.root.fileController.getSelectedCases()[0]) {
                     self.root.fileController.deleteRecord(caseIdText, recordIndex);
                 },
+                /**
+                 * @memberof SideeX#file.command
+                 * @method deleteAll
+                 * @description Delete all the commands in a testcase 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.deleteAll("case-0");
+                 * console.log(sideex.file.testCase.getCasesOrder());
+                 * @param {string} [caseIdString = selectedCaseId] - The id of test case [selectedCaseId]{@link SideeX#file.command.selectedCaseId}
+                 */
                 deleteAll: function (caseIdText = self.root.fileController.getSelectedCases()[0]) {
                     self.root.fileController.deleteAllRecords(caseIdText);
                 },
+                /**
+                 * @memberof SideeX#file.command
+                 * @method copy
+                 * @description Copy a command
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.copy("case-0", 1, "case-0", 3);
+                 * console.log(sideex.file.testCase.getCasesOrder());
+                 * @param {string} [srcCaseIdString = selectedCaseId] - The id of test case to copy [selectedCaseId]{@link SideeX#file.command.selectedCaseId}
+                 * @param {number} [srcCommandIndex = selectedCommandIndex] - The index of command to copy [selectedCommandIndex]{@link SideeX#file.command.selectedCommandIndex}
+                 * @param {string} [destCaseIdString = selectedCaseId] - The id of test case to paste [selectedCaseId]{@link SideeX#file.command.selectedCaseId}
+                 * @param {number} [destCommandIndex = lastCommandIndex] - The index of command to paste [lastCommandIndex]{@link SideeX#file.command.lastCommandIndex}
+                 */
                 copy: function (srcCaseIdText = self.root.fileController.getSelectedCases()[0],
                     srcRecordIndex = self.root.fileController.getSelectedRecord()[self.root.fileController.getSelectedRecord().length - 1],
                     destCaseIdText = self.root.fileController.getSelectedCases()[0],
@@ -237,6 +748,25 @@ export class SideeX {
                     let record = self.root.fileController.getRecord(srcCaseIdText, srcRecordIndex);
                     self.root.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
                 },
+                /**
+                 * @memberof SideeX#file.command
+                 * @method cut
+                 * @description Cut a command 
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.cut("case-0", 1, "case-0", 2);
+                 * console.log(sideex.file.testCase.getCasesOrder());
+                 * @param {string} [srcCaseIdString = selectedCaseId] - The id of test case to cut [selectedCaseId]{@link SideeX#file.command.selectedCaseId}
+                 * @param {number} [srcCommandIndex = selectedCommandIndex] - The index of command to cut [selectedCommandIndex]{@link SideeX#file.command.selectedCommandIndex}
+                 * @param {string} [destCaseIdString = selectedCaseId] - The id of test case to paste [selectedCaseId]{@link SideeX#file.command.selectedCaseId}
+                 * @param {number} [destCommandIndex = lastCommandIndex] - The index of command to paste [lastCommandIndex]{@link SideeX#file.command.lastCommandIndex}
+                 */
                 cut: function (srcCaseIdText = self.root.fileController.getSelectedCases()[0],
                     srcRecordIndex = self.root.fileController.getSelectedRecord()[self.root.fileController.getSelectedRecord().length - 1],
                     destCaseIdText = self.root.fileController.getSelectedCases()[0],
@@ -252,16 +782,56 @@ export class SideeX {
                     self.root.fileController.addCommand(destCaseIdText, destRecordIndex, record.name, record.target, record.value);
                     self.root.fileController.deleteRecord(srcCaseIdText, srcRecordIndex);
                 },
+                /**
+                 * @memberof SideeX#file.command
+                 * @method setBreakpoint
+                 * @description Set a breakpoint to a command
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testCase.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.setBreakpoint(true, 0, "case-0");
+                 * console.log(sideex.file.command.getBreakpoint(0, "case-0"));
+                 * @param {boolean} bool - Boolean of breakpoint
+                 * @param {string} [caseIdString = selectedCaseId] - The id of test case [selectedCaseId]{@link SideeX#file.command.selectedCaseId}
+                 * @param {number} [commandIndex = selectedCommandIndex] - The index of command [selectedCommandIndex]{@link SideeX#file.command.selectedCommandIndex}
+                 */
                 setBreakpoint: function (bool,
                     recordIndex = self.root.fileController.getSelectedRecord()[self.root.fileController.getSelectedRecord().length - 1],
                     caseIdText = self.root.fileController.getSelectedCases()[0]) {
                     let record = self.root.fileController.getRecord(caseIdText, recordIndex);
                     record.breakpoint = bool;
                 },
+                /**
+                 * @memberof SideeX#file.command
+                 * @method getBreakpoint
+                 * @description Get the breakpoint status of a command
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.setBreakpoint(true, 0, "case-0");
+                 * console.log(sideex.file.command.getBreakpoint(0, "case-0"));
+                 * @param {number} commandIndex - The index of command
+                 * @param {string} [caseIdString = selectedCaseId] - The id of test case [selectedCaseId]{@link SideeX#file.command.selectedCaseId}
+                 * @returns {boolean} commandData.breakpoint - does it have breakpoint in the command [commandData]{@link SideeX#file.command.commandData}
+                 */
                 getBreakpoint: function (recordIndex, caseIdText = self.root.fileController.getSelectedCases()[0]) {
                     let record = self.root.fileController.getRecord(caseIdText, recordIndex);
                     return record.breakpoint;
                 },
+                /**
+                 * @memberof SideeX#file.command
+                 * @method changeUsedIndex
+                 * @description Change the using locator of the target or value
+                 * @param {number} usedIndex - The index of locator that currently using
+                 * @param {"target" | "value"} type -The type to change
+                 * @param {number} [commandIndex = selectedCommandIndex] - The index of command [selectedCommandIndex]{@link SideeX#file.command.selectedCommandIndex}
+                 * @param {string} [caseIdString = selectedCaseId] - The id of test case [selectedCaseId]{@link SideeX#file.command.selectedCaseId}
+                 */
                 changeUsedIndex: function (usedIndex, type,
                     recordIndex = self.root.fileController.getSelectedRecord()[self.root.fileController.getSelectedRecord().length - 1],
                     caseIdText = self.root.fileController.getSelectedCases()[0]) {
@@ -274,11 +844,36 @@ export class SideeX {
                         throw new Error(`"${type}" is invalid type. Only accept "target", "value"`);
                     }
                 },
+                /**
+                 * @memberof SideeX#file.command
+                 * @method clearStatus
+                 * @description claer all commands status in a testcase
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.clearStatus();
+                 * @param {string} [caseIdString = selectedCaseId] - The id of test case [selectedCaseId]{@link SideeX#file.command.selectedCaseId}
+                 */
                 clearStatus: function (caseIdText = self.root.fileController.getSelectedCases()[0]) {
                     let records = self.root.fileController.getRecords(caseIdText);
                     self.root.fileController.clearIncludedRecords(records);
                     self.root.fileController.clearRecordsStatus(["status", "snapshot"], records, true);
                 },
+                /**
+                 * @memberof SideeX#file.command
+                 * @method clearAllStatus
+                 * @description clear all commands status
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.clearAllStatus();
+                 */
                 clearAllStatus: function () {
                     let suiteIdTexts = self.root.fileController.getAllSuiteIdTexts();
                     if (suiteIdTexts.length > 0) {
@@ -292,18 +887,124 @@ export class SideeX {
                         }
                     }
                 },
+                /**
+                 * @memberof SideeX#file.command
+                 * @method setSelected
+                 * @description Set the selected commands
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX(); 
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.setSelected("command-0");
+                 * console.log(sideex.file.command.getSelected());
+                 * @param {Array<string>} commandIdStrings - The id of commands [commandIdStrings]{@link SideeX#file.command.commandIdStrings}
+                 */
                 setSelected: function (recordIdTexts) {
                     self.root.fileController.setSelectedRecords(recordIdTexts);
                 },
+                /**
+                 * @memberof SideeX#file.command
+                 * @method getSelected
+                 * @description Get the selected commands
+                 * @example
+                 * import {SideeX} from "sideex-api"
+                 * var sideex = new SideeX();
+                 * sideex.file.testSuite.add();
+                 * sideex.file.testCase.add();
+                 * sideex.file.command.add();
+                 * sideex.file.command.setSelected("command");
+                 * console.log(sideex.file.command.getSelected());
+                 * @returns {Array<string>} commandIdStrings - The id of commands [commandIdStrings]{@link SideeX#file.command.commandIdStrings}
+                 */
                 getSelected: function () {
                     return self.root.fileController.getSelectedRecords();
                 }
             }
         };
+        /**
+         * @namespace
+         */
         this.variables = {
+            /**
+             * varIdString 
+             * - The id of variable
+             * @memberof SideeX#variables
+             * @typedef {string} varIdString
+             */
+
+             
+            /**
+             * vars
+             * - All of the variables
+             * @memberof SideeX#variables
+             * @typedef {object} vars
+             * @property {object} vars.variableData - Variable's data
+             * @property {index} vars.variableData.index - Variable's index
+             * @property {string} vars.variableData.name - Variable's name
+             * @property {*} vars.variableData.value - Variable's value
+             */
+
+
+            /**
+             * count
+             * - The count of variables
+             * @memberof SideeX#variables
+             * @typedef {number} count
+             */
+
+
+            /**
+             * varNames 
+             * - The name of all variables
+             * @memberof SideeX#variables
+             * @typedef {object} varNames
+             * @property {Array<boolean>} varNames.name - If the name is been created
+             */
+
+
+            /**
+             * startNum
+             * - The next variable's starting number
+             * @memberof SideeX#variables
+             * @typedef {number} startNum
+             */
+
+
+            /**
+             * @memberof SideeX#variables
+             * @method add
+             * @description Add a variable
+             * @param {string} name - The name of variable
+             * @param {*} value - The value of variable
+             * @returns {string} varIdString - The id of variable [varIdString]{@link SideeX#variables.varIdString}
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * console.log(sideex.variables.add("var-0", "hello"));
+             * console.log(sideex.variables.get("vars"));
+             */
             add: (name, value) => {                         // ("var-0", 1)
                 return self.root.variables.addVariable(name, value);
             },
+            /**
+             * @memberof SideeX#variables
+             * @method get
+             * @description Get the details of variables
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.variables.add();
+             * sideex.variables.add();
+             * sideex.variables.add();
+             * console.log(sideex.variables.get("vars"));
+             * console.log(sideex.variables.get("count"));
+             * console.log(sideex.variables.get("startNum"));
+             * console.log(sideex.variables.get("varNames"));
+             * @param {"count" | "startNum" | "varNames" | "vars"} [target = "vars"] - The target to get the result
+             * @returns {number | object} count | vars | varNames | startNum [count]{@link SideeX#variables.count} [vars]{@link SideeX#variables.vars} [varNames]{@link SideeX#variables.varNames} [startNum]{@link SideeX#variables.startNum}
+             */
             get: (target = "vars") => {
                 switch (target) {
                     case "count":
@@ -318,25 +1019,114 @@ export class SideeX {
                         break;
                 }
             },
+            /**
+             * @memberof SideeX#variables
+             * @method delete
+             * @description Delete a variable by id
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.variables.add();
+             * console.log(sideex.variables.get("vars"));
+             * console.log(sideex.variables.delete("var-0"));
+             * console.log(sideex.variables.get("vars"));
+             * @param {string} varIdString - The id of variable [varIdString]{@link SideeX#variables.varIdString}
+             * @returns {string} varIdString - The id of variable [varIdString]{@link SideeX#variables.varIdString}
+             */
             delete: (varIdText) => {                        // (["var-0"])
                 self.root.variables.deleteVariable(varIdText);
                 return varIdText;
             },
+            /**
+             * @memberof SideeX#variables
+             * @method clearAll
+             * @description Delete all variables
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.variables.add();
+             * sideex.variables.add();
+             * sideex.variables.add();
+             * console.log(sideex.variables.get("vars"));
+             * sideex.variables.clearAll();
+             * console.log(sideex.variables.get("vars"));
+             */
             clearAll: () => {
                 self.root.variables.clearVariables();
             },
+            /**
+             * @memberof SideeX#variables
+             * @method changeName
+             * @description Change the name of a variable 
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.variables.add("var-0", "hello");
+             * console.log(sideex.variables.changeName("var-0", "var-1"));
+             * console.log(sideex.variables.get("vars"));
+             * @param {string} varIdString -The id of variable [varIdString]{@link SideeX#variables.varIdString}
+             * @param {string} name - The new name of variable
+             * @returns {object} {varIdString, name} [varIdString]{@link SideeX#variables.varIdString}
+             */
             changeName: (varIdText, name) => {
                 if (varIdText)
                     self.root.variables.updateVarName(varIdText, name);
                 return { varIdText, name };
             },
+            /**
+             * @memberof SideeX#variables
+             * @method changeValue
+             * @description Change the value of a variable 
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.variables.add("var-0", "hello");
+             * console.log(sideex.variables.changeValue("var-0", "hi"));
+             * console.log(sideex.variables.get("vars"));
+             * @param {string} varIdString - The id of variable [varIdString]{@link SideeX#variables.varIdString}
+             * @param {string} value - The new value of variable
+             * @returns {object} {varIdString, value} [varIdString]{@link SideeX#variables.varIdString}
+             */
             changeValue: (varIdText, value) => {
                 if (varIdText)
                     self.root.variables.updateVarValue(varIdText, value);
                 return { varIdText, value };
             }
         };
+        /**
+         * @namespace
+         */
         this.log = {
+            /**
+            * logs 
+            * - All Logs
+            * @memberof SideeX#log
+            * @typedef {object} logs
+            * @property {string} logs.type - Log's type
+            * @property {string} logs.message - Log's message
+            */
+            /**
+             * logTypeMap 
+             * - Log of XXX type
+             * @memberof SideeX#log
+             * @typedef {Array<string>} logTypeMap
+             * @property {Array} logTypeMap.debug - Debug type
+             * @property {Array} logTypeMap.info - Info type
+             * @property {Array} logTypeMap.error - Error type
+             * @property {Array} logTypeMap.warn - Warning type
+             */
+            /**
+             * @memberof SideeX#log
+             * @method get
+             * @description Get logs
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * console.log(sideex.log.get("logs"));
+             * console.log(sideex.log.get("typeMap"));
+             * @param {"logs" | "typeMap"} target - Two kind of logs to get, "logs":logs,"typeMap":logTypeMap
+             * @returns {object} logs | logTypeMap [logs]{@link SideeX#log.logs} [logTypeMap]{@link SideeX#log.logTypeMap}
+             */
             get: (target) => {
                 switch (target) {
                     case "logs":
@@ -347,13 +1137,43 @@ export class SideeX {
                         break;
                 }
             },
+            /**
+             * @memberof SideeX#log
+             * @method clear
+             * @description Delete all logs
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * console.log(sideex.log.clear());
+             * @returns {object} logs [logs]{@link SideeX#log.logs}
+             */
             clear: () => {
                 self.root.fileController.clearLog();
                 self.root.log.clearLog();
                 return self.root.log.logs;
             }
         };
+        /**
+         * @namespace
+         */
         this.recorder = {
+            /**
+             * selectedCaseId 
+             * - The test case id that currently selected
+             * @memberof SideeX#recorder
+             * @typedef {string} selectedCaseId
+             */
+            /**
+             * @memberof SideeX#recorder
+             * @method start
+             * @description Start recording a test case
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.recorder.start();
+             * sideex.recorder.stop();
+             * @param {string} [caseIdString = selectedCaseId] - The id of the test case [selectedCaseId]{@link SideeX#recorder.selectedCaseId}
+             */
             start: (caseIdText = self.root.fileController.getSelectedCases()[0]) => {
                 if (caseIdText === undefined) {
                     self.root.recorder.prepareRecord();
@@ -372,12 +1192,43 @@ export class SideeX {
                 }
 
             },
+            /**
+             * @memberof SideeX#recorder
+             * @method stop
+             * @description Stop recording
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.recorder.start();
+             * sideex.recorder.stop();
+             */
             stop: () => {
                 self.root.recorder.detach();
                 self.root.recorder.isRecord = false;
             }
         };
+        /**
+         * @namespace
+         */
         this.setting = {
+            /**
+             * speed 
+             * - The play speed (1 ~ 5)
+             * @memberof SideeX#setting
+             * @typedef {number} speed
+             */
+            /**
+             * @memberof SideeX#setting
+             * @method setSpeed
+             * @description Set the play speed (1 ~ 5)
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.setting.setSpeed(3);
+             * console.log(sideex.setting.getSpeed());
+             * @param {number} value - The setting value(1 ~ 5)
+             * @returns {number} value - The setting value(1 ~ 5)
+             */
             setSpeed: (value) => {
                 if (value < 0 || value > 5) {
                     return this.root.log.pushLog('error', 'speed should be set from range 1 to 5');
@@ -386,12 +1237,66 @@ export class SideeX {
                     return value;
                 }
             },
+            /**
+             * @memberof SideeX#setting
+             * @method getSpeed
+             * @description Get the playing speed
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.setting.setSpeed(3);
+             * console.log(sideex.setting.getSpeed());
+             * @returns {number} speed - The play speed (1 ~ 5) [speed]{@link SideeX#setting.speed}
+             */
             getSpeed: () => {
                 let speed = 5 - (self.root.setting.params.delay / 500);
                 return speed;
             }
         };
+        /**
+         * @namespace
+         */
         this.playback = {
+            /**
+             * selectedCaseId 
+             * - The test case id that currently selected
+             * @memberof SideeX#playback
+             * @typedef {string} selectedCaseId
+             */
+            /**
+             * selectedSuiteId 
+             * - The test suite id that currently selected
+             * @memberof SideeX#playback
+             * @typedef {string} selectedSuiteId
+             */
+            /**
+             * The function of your own command - declare by yourself
+             * @memberof SideeX#playback
+             * @typedef {Function} commandFunction
+             * @param {string} target - The command's target
+             * @param {string} value - The command's value
+             */
+            commandFunction(target, value){
+                
+            },
+
+             /**
+             * @memberof SideeX#playback
+             * @method start
+             * @description Start playing 
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * //you should have some test cases or commands first.
+             * //choose a mode to do playback.
+             * sideex.playback.start("all");//play all test suites.
+             * sideex.playback.start("suite");//play the test suite you selected.
+             * sideex.playback.start("case");//play the test case you selected.
+             * sideex.playback.stop();
+             * @param {"all" | "suite" | "case"} [mode = "all"] - The mode to play -- (mode == "all"): Play all the test suites, (mode == "suite"): Play the test suite you selected, (mode == "case"): Play the test case you selected, 
+             * @param {string} [idString = selectedCaseId | selectedSuiteId] - (mode == "all"): test case's id, (mode == "suite"): test suite's id (mode == "case"): test case's id [selectedSuiteId]{@link SideeX#playback.selectedSuiteId} [selectedCaseId]{@link SideeX#playback.selectedCaseId}
+             * @param {number} [speed] - The play speed (1 ~ 5)
+             */
             start: (mode = "all", idText = undefined, speed = 5) => {
                 self.setting.setSpeed(speed);
 
@@ -441,20 +1346,81 @@ export class SideeX {
 
 
             },
+            /**
+             * @memberof SideeX#playback
+             * @method stop
+             * @description Stop playing
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.playback.start();
+             * sideex.playback.stop();
+             */
             stop: () => {
                 self.root.playback.stop();
                 self.root.playback.isPlay = false;
             },
+            /**
+             * @memberof SideeX#playback
+             * @method pause
+             * @description Pause playing
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.playback.start();
+             * sideex.playback.pause();
+             * sideex.playback.resume();
+             */
             pause: () => {
                 self.root.playback.pause();
                 self.root.playback.isPlay = false;
                 self.root.playback.isPause = true;
             },
+            /**
+             * @memberof SideeX#playback
+             * @method resume
+             * @description Resume playing
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.playback.start();
+             * sideex.playback.pause();
+             * sideex.playback.resume();
+             */
             resume: () => {
                 self.root.playback.resume();
                 self.root.playback.isPlay = true;
                 self.root.playback.isPause = false;
             },
+            /**
+             * @memberof SideeX#playback
+             * @method addCustomCommand
+             * @description The function of your own command - declare by yourself
+             * @example
+             * import {SideeX} from "sideex-api"
+             * var sideex = new SideeX();
+             * sideex.recorder.start();//start recording
+             * 
+             * //Record a command
+             * //For example: click at anywhere on the window,
+             * //then you get a ClickAt command  
+             * 
+             * sideex.recorder.stop();//stop recording
+             * console.log(sideex.file.command.get(0));//get the first recorded command
+             * let command = sideex.file.command.get(0);
+             * command.name = "myAction";//rename the command name to "myAction"
+             * console.log(sideex.file.command.get(0));//see the change of the command name
+             * //add a user-defined function for executing "myAction"
+             * sideex.playback.addCustomCommand("myAction", true, (target, value) => {
+             *      console.log(target, value);
+             *      //define the action here
+             *      }
+             * );
+             * sideex.playback.start();//replay the modified recorded commands
+             * @param {string} target - The command's target
+             * @param {string} value - The command's value
+             * @param {Function} commandFunction - The function that tells command what to do [commandFunction]{@link SideeX#playback.commandFunction}
+             */
             addCustomCommand: (cmdName, verifyLocator = true, commandFunction) => {
                 let isDoSnapshot = true;
                 let type = {record: "mouse", playback: "content"};
@@ -479,13 +1445,26 @@ export class SideeX {
                 self.root.playback.sideex.addCommand(cmdName, commandFunction);
 
             },
-
+            /**
+             * @memberof SideeX#playback
+             * @method findElement
+             * @description Find an element by a supported locator
+             * @param {string} locator - The locator of element
+             * @returns {Element} Element object
+             */
             findElement: (locator) => {
                 // console.log(locator)
                 // console.log(self.root.playback.sideex.browserBot.findElement(locator));
                 return (self.root.playback.sideex.browserBot.findElement(locator));
             },
-
+            /**
+             * @memberof SideeX#playback
+             * @method getClientXY
+             * @description Find the element location 
+             * @param {Element} element - Element object
+             * @param {string} coordString - coordString
+             * @returns {Array<number>} element's X, Y
+             */
             getClientXY: (element, coordString) => {
                 // console.log(element);
                 // console.log(coordString);
