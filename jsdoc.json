@@ -1,6 +1,6 @@
 {
     "source": {
-        "include": ["src"],
+        "include": ["./src/sideex-api/index.js"],
         "includePattern": ".js$",
         "excludePattern": "{node_modules/|docs}"
     },
@@ -20,7 +20,6 @@
     "opts": {
         "recurse": true,
         "destination": "./docs/",
-        "readme": "./readme.md",
         "template": "./custom-template",
         "tutorials": "./tutorials"
     }
