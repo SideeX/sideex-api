@@ -1297,9 +1297,10 @@ export class SideeX {
              * @param {string} [idString = selectedCaseId | selectedSuiteId] - (mode == "all"): test case's id, (mode == "suite"): test suite's id, (mode == "case"): test case's id. [selectedSuiteId]{@link SideeX#playback.selectedSuiteId} [selectedCaseId]{@link SideeX#playback.selectedCaseId}
              * @param {number} [speed] - The playback speed (1 ~ 5)
              */
-            start: (mode = "all", idText = undefined, speed = 5) => {
-                self.setting.setSpeed(speed);
-
+            start: (mode = "all", idText = undefined, speed) => {
+                if(speed){
+                   self.setting.setSpeed(speed); 
+                }
                 self.root.recorder.isRecord = false;
                 self.root.playback.isPlay = true;
                 self.root.recorder.detach();
