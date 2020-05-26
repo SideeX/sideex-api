@@ -173,7 +173,7 @@
 
 
 <div class="description usertext">
-    <p>The function of your own command - declare by yourself</p>
+    <p>Adds a customed command declared by users.</p>
 </div>
 
 
@@ -186,7 +186,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.recorder.start();//start recording//Record a command//For example: click at anywhere on the window,//then you get a ClickAt command  sideex.recorder.stop();//stop recordingconsole.log(sideex.file.command.get(0));//get the first recorded commandlet command = sideex.file.command.get(0);command.name = "myAction";//rename the command name to "myAction"console.log(sideex.file.command.get(0));//see the change of the command name//add a user-defined function for executing "myAction"sideex.playback.addCustomCommand("myAction", true, (target, value) => {     console.log(target, value);     //define the action here     });sideex.playback.start();//replay the modified recorded commands</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.recorder.start();//start recording//Record a command//For example: click at anywhere on the window,//then you get a ClickAt command sideex.recorder.stop();//stop recordingconsole.log(sideex.file.command.get(0));//get the first recorded commandlet command = sideex.file.command.get(0);command.name = "myAction";//rename the command name to "myAction"console.log(sideex.file.command.get(0));//see the change of the command name//add a user-defined function for executing "myAction"sideex.playback.addCustomCommand("myAction", true, (target, value) => {     console.log(target, value);     //define the action here     });sideex.playback.start();//replay the modified recorded commands</code></pre>
 
 
 
@@ -278,7 +278,7 @@
 
             
 
-            <td class="description last"><p>The function that tells command what to do <a href="SideeX_playback.html#.commandFunction"><code>commandFunction</code></a></p></td>
+            <td class="description last"><p>The function that tells command what to do. <a href="SideeX_playback.html#.commandFunction"><code>commandFunction</code></a></p></td>
         </tr>
 
     
@@ -355,7 +355,7 @@
 
 
 <div class="description usertext">
-    <p>Find an element by a supported locator</p>
+    <p>Finds an element by a supported locator.</p>
 </div>
 
 
@@ -409,7 +409,7 @@
 
             
 
-            <td class="description last"><p>The locator of element</p></td>
+            <td class="description last"><p>Locator of the element</p></td>
         </tr>
 
     
@@ -508,7 +508,7 @@
 
 
 <div class="description usertext">
-    <p>Find the element location</p>
+    <p>Gets the element location.</p>
 </div>
 
 
@@ -585,7 +585,7 @@
 
             
 
-            <td class="description last"><p>coordString</p></td>
+            <td class="description last"><p>CoordString</p></td>
         </tr>
 
     
@@ -611,7 +611,7 @@
 
         
 <div class="param-desc">
-    <p>element's X, Y</p>
+    <p>Element's X, Y</p>
 </div>
 
 
@@ -684,7 +684,7 @@
 
 
 <div class="description usertext">
-    <p>Pause playing</p>
+    <p>Pauses playback.</p>
 </div>
 
 
@@ -771,7 +771,7 @@
 
 
 <div class="description usertext">
-    <p>Resume playing</p>
+    <p>Resumes playback.</p>
 </div>
 
 
@@ -858,7 +858,7 @@
 
 
 <div class="description usertext">
-    <p>Start playing</p>
+    <p>Starts playback.</p>
 </div>
 
 
@@ -943,7 +943,7 @@
                 </td>
             
 
-            <td class="description last"><p>The mode to play -- (mode == &quot;all&quot;): Play all the test suites, (mode == &quot;suite&quot;): Play the test suite you selected, (mode == &quot;case&quot;): Play the test case you selected,</p></td>
+            <td class="description last"><p>The mode to play -- (mode == &quot;all&quot;): Play all the test suites, (mode == &quot;suite&quot;): Play the selected test suite, (mode == &quot;case&quot;): Play the selected test case.</p></td>
         </tr>
 
     
@@ -982,7 +982,7 @@
                 </td>
             
 
-            <td class="description last"><p>(mode == &quot;all&quot;): test case's id, (mode == &quot;suite&quot;): test suite's id (mode == &quot;case&quot;): test case's id <a href="SideeX_playback.html#.selectedSuiteId"><code>selectedSuiteId</code></a> <a href="SideeX_playback.html#.selectedCaseId"><code>selectedCaseId</code></a></p></td>
+            <td class="description last"><p>(mode == &quot;all&quot;): test case's id, (mode == &quot;suite&quot;): test suite's id, (mode == &quot;case&quot;): test case's id. <a href="SideeX_playback.html#.selectedSuiteId"><code>selectedSuiteId</code></a> <a href="SideeX_playback.html#.selectedCaseId"><code>selectedCaseId</code></a></p></td>
         </tr>
 
     
@@ -1019,7 +1019,7 @@
                 </td>
             
 
-            <td class="description last"><p>The play speed (1 ~ 5)</p></td>
+            <td class="description last"><p>The playback speed (1 ~ 5)</p></td>
         </tr>
 
     
@@ -1096,7 +1096,7 @@
 
 
 <div class="description usertext">
-    <p>Stop playing</p>
+    <p>Stops playback.</p>
 </div>
 
 
@@ -1189,7 +1189,7 @@
 
 
 <div class="description usertext">
-    <p>The function of your own command - declare by yourself</p>
+    <p>The function of your own command - declare by yourself.</p>
 </div>
 
 
@@ -1341,7 +1341,7 @@
 <div class="description usertext">
     <p>selectedCaseId</p>
 <ul>
-<li>The test case id that currently selected</li>
+<li>The test case id that is currently selected.</li>
 </ul>
 </div>
 
@@ -1412,7 +1412,7 @@
 <div class="description usertext">
     <p>selectedSuiteId</p>
 <ul>
-<li>The test suite id that currently selected</li>
+<li>The test suite id that is currently selected.</li>
 </ul>
 </div>
 
@@ -1451,7 +1451,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Thu May 21 2020 11:22:00 GMT+0800 (GMT+08:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Mon May 25 2020 06:52:46 GMT+0800 (GMT+08:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

@@ -5,7 +5,7 @@
 </style> -->
 #  <span class="First">SideeX-API</span>
 
-This is SideeX JavaScript API for recording and playing web browsing behavior. The API can be embeded in a webpage without installing a browser web extension.
+SideeX JavaScript API is a JS library running on a webpage for recording and playing web browsing behavior. As opposed to acting as a browser web extension, the API can be directly embedded and used within a webpage via JavaScript.
 
 #    Installation
 ```javascript
