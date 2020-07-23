@@ -186,7 +186,10 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testCase.add();</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testCase.add();</code></pre>
 
 
 
@@ -357,7 +360,12 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testCase.add();sideex.file.testCase.copy("case-0", "suite-0");console.log(sideex.file.testCase.getCasesOrder());</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testCase.add();
+sideex.file.testCase.copy("case-0", "suite-0");
+console.log(sideex.file.testCase.getCasesOrder());</code></pre>
 
 
 
@@ -553,7 +561,12 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testCase.add();sideex.file.testCase.cut("case-0", "suite-0");console.log(sideex.file.testCase.getCasesOrder());</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testCase.add();
+sideex.file.testCase.cut("case-0", "suite-0");
+console.log(sideex.file.testCase.getCasesOrder());</code></pre>
 
 
 
@@ -749,7 +762,11 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testCase.add();console.log(sideex.file.testCase.get("case-0"));</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testCase.add();
+console.log(sideex.file.testCase.get("case-0"));</code></pre>
 
 
 
@@ -1117,7 +1134,12 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testCase.add();sideex.file.testCase.add();console.log(sideex.file.testCase.getCasesOrder());</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testCase.add();
+sideex.file.testCase.add();
+console.log(sideex.file.testCase.getCasesOrder());</code></pre>
 
 
 
@@ -1226,7 +1248,12 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testCase.add();sideex.file.testCase.setSelected("case-0");console.log(sideex.file.testCase.getSelected());</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testCase.add();
+sideex.file.testCase.setSelected("case-0");
+console.log(sideex.file.testCase.getSelected());</code></pre>
 
 
 
@@ -1335,7 +1362,13 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testCase.add();sideex.file.testCase.add();sideex.file.testCase.remove("case-0");console.log(sideex.file.testCase.getCasesOrder());</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testCase.add();
+sideex.file.testCase.add();
+sideex.file.testCase.remove("case-0");
+console.log(sideex.file.testCase.getCasesOrder());</code></pre>
 
 
 
@@ -1472,7 +1505,12 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testCase.add();console.log(sideex.file.testCase.rename("case-0", "sideex"));console.log(sideex.file.testCase.get("case-0"));</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testCase.add();
+console.log(sideex.file.testCase.rename("case-0", "sideex"));
+console.log(sideex.file.testCase.get("case-0"));</code></pre>
 
 
 
@@ -1654,7 +1692,12 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testCase.add();sideex.file.testCase.setSelected("case-0");console.log(sideex.file.testCase.getSelected());</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testCase.add();
+sideex.file.testCase.setSelected("case-0");
+console.log(sideex.file.testCase.getSelected());</code></pre>
 
 
 

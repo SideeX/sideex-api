@@ -8,14 +8,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@github.com/SideeX/sideex.git"
+        "url": "git@github.com:SideeX/sideex-api.git"
     },
     "license": "Apache-2.0",
     "private": true,
     "bugs": {
-        "url": "https://github.com/SideeX/sideex/issues"
+        "url": "https://github.com/SideeX/sideex-api/issues"
     },
-    "homepage": "https://github.com/SideeX/sideex#readme",
+    "homepage": "https://github.com/SideeX/sideex-api",
     "devDependencies": {
         "@babel/cli": "^7.8.4",
         "@babel/core": "^7.9.0",

@@ -186,7 +186,10 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();console.log(sideex.variables.add("var-0", "hello"));console.log(sideex.variables.get("vars"));</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+console.log(sideex.variables.add("var-0", "hello"));
+console.log(sideex.variables.get("vars"));</code></pre>
 
 
 
@@ -368,7 +371,11 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.variables.add("var-0", "hello");console.log(sideex.variables.changeName("var-0", "var-1"));console.log(sideex.variables.get("vars"));</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.variables.add("var-0", "hello");
+console.log(sideex.variables.changeName("var-0", "var-1"));
+console.log(sideex.variables.get("vars"));</code></pre>
 
 
 
@@ -550,7 +557,11 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.variables.add("var-0", "hello");console.log(sideex.variables.changeValue("var-0", "hi"));console.log(sideex.variables.get("vars"));</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.variables.add("var-0", "hello");
+console.log(sideex.variables.changeValue("var-0", "hi"));
+console.log(sideex.variables.get("vars"));</code></pre>
 
 
 
@@ -732,7 +743,14 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.variables.add();sideex.variables.add();sideex.variables.add();console.log(sideex.variables.get("vars"));sideex.variables.clearAll();console.log(sideex.variables.get("vars"));</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.variables.add();
+sideex.variables.add();
+sideex.variables.add();
+console.log(sideex.variables.get("vars"));
+sideex.variables.clearAll();
+console.log(sideex.variables.get("vars"));</code></pre>
 
 
 
@@ -819,7 +837,12 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.variables.add();console.log(sideex.variables.get("vars"));console.log(sideex.variables.delete("var-0"));console.log(sideex.variables.get("vars"));</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.variables.add();
+console.log(sideex.variables.get("vars"));
+console.log(sideex.variables.delete("var-0"));
+console.log(sideex.variables.get("vars"));</code></pre>
 
 
 
@@ -978,7 +1001,15 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.variables.add();sideex.variables.add();sideex.variables.add();console.log(sideex.variables.get("vars"));console.log(sideex.variables.get("count"));console.log(sideex.variables.get("startNum"));console.log(sideex.variables.get("varNames"));</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.variables.add();
+sideex.variables.add();
+sideex.variables.add();
+console.log(sideex.variables.get("vars"));
+console.log(sideex.variables.get("count"));
+console.log(sideex.variables.get("startNum"));
+console.log(sideex.variables.get("varNames"));</code></pre>
 
 
 
