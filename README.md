@@ -4,7 +4,7 @@
 }
 </style> -->
 #  <span class="First">SideeX JavaScript API</span>
-[![npm-version](https://img.shields.io/npm/v/sideex-api)](https://www.npmjs.com/package/sideex-api) [![npm-download](https://img.shields.io/npm/dw/sideex-api)](https://www.npmjs.com/package/sideex-api) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-red)](https://github.com/SideeX/sideex-api)
+[![npm-version](https://img.shields.io/npm/v/@sideex/api)](https://www.npmjs.com/package/@sideex/api) [![npm-download](https://img.shields.io/npm/dw/@sideex/api)](https://www.npmjs.com/package/@sideex/api) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-red)](https://github.com/SideeX/sideex-api)
 
 SideeX JavaScript API is a JS library running on a webpage for recording and playing web browsing behavior. As opposed to acting as a browser web extension ([SideeX 2](https://github.com/SideeX/sideex)), the API can be directly embedded and used within a webpage via JavaScript.
 
