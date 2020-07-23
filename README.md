@@ -9,21 +9,39 @@
 SideeX JavaScript API is a JS library running on a webpage for recording and playing web browsing behavior. As opposed to acting as a browser web extension ([SideeX 2](https://github.com/SideeX/sideex)), the API can be directly embedded and used within a webpage via JavaScript.
 
 #    Installation
+
+
+##    Download By NPM
 ```javascript
-npm i sideex-api
+npm i @sideex/api
 ```
 
-
-
-
+## Import From [Unpkg](https://unpkg.com/)
+Just write a html file and embed inside it.
+### Example
+In your HTML file:
+```htmlembedded
+<script src="https://unpkg.com/@sideex/api/index.bundle.mjs"></script>
+<script src="test.js"></script>
+```
+In your Javascript file(test.js):
+```javascript
+var sideex = new SideeX.SideeX();
+/*
+Then, you can start to use the sideex api
+sideex.recorder
+sideex.playback
+...
+*/
+```
 
 
 #    Example
 ####  Record and playback
 ```javascript
-import {SideeX} from "sideex-api" 
+import {SideeX} from "@sideex/api" 
 /* or
-var {SideeX} = require('sideex-api') 
+var {SideeX} = require('@sideex/api') 
 */
 var sideex = new SideeX();
 
@@ -41,7 +59,7 @@ sideex.playback.start();//replay the recorded commands
 
 ####  Save and load the recorded commands
 ```javascript
-import {SideeX} from "sideex-api"
+import {SideeX} from "@sideex/api"
 var sideex = new SideeX();
 
 sideex.recorder.start();//start recording
@@ -63,7 +81,7 @@ sideex.playback.start();//replay the recorded commands
 
 ####  Change a recorded command to a user-defined action
 ```javascript
-import {SideeX} from "sideex-api"
+import {SideeX} from "@sideex/api"
 var sideex = new SideeX();
 
 sideex.recorder.start();//start recording
