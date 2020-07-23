@@ -186,7 +186,9 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();console.log(sideex.file.testSuite.add());</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+console.log(sideex.file.testSuite.add());</code></pre>
 
 
 
@@ -357,7 +359,12 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();console.log(sideex.file.testSuite.getSuitesOrder());sideex.file.testSuite.close("suite-0");console.log(sideex.file.testSuite.getSuitesOrder());</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+console.log(sideex.file.testSuite.getSuitesOrder());
+sideex.file.testSuite.close("suite-0");
+console.log(sideex.file.testSuite.getSuitesOrder());</code></pre>
 
 
 
@@ -494,7 +501,13 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testSuite.add();console.log(sideex.file.testSuite.getSuitesOrder());sideex.file.testSuite.closeAll();console.log(sideex.file.testSuite.getSuitesOrder());</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testSuite.add();
+console.log(sideex.file.testSuite.getSuitesOrder());
+sideex.file.testSuite.closeAll();
+console.log(sideex.file.testSuite.getSuitesOrder());</code></pre>
 
 
 
@@ -581,7 +594,11 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testSuite.copy("suite-0");console.log(sideex.file.testSuite.getSuitesOrder());</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testSuite.copy("suite-0");
+console.log(sideex.file.testSuite.getSuitesOrder());</code></pre>
 
 
 
@@ -738,7 +755,10 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testSuite.get("suite-0");</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testSuite.get("suite-0");</code></pre>
 
 
 
@@ -897,7 +917,11 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testSuite.setSelected("suite-0");console.log(sideex.file.testSuite.getSelected());</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testSuite.setSelected("suite-0");
+console.log(sideex.file.testSuite.getSelected());</code></pre>
 
 
 
@@ -1160,7 +1184,11 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testSuite.add();console.log(sideex.file.testSuite.getSuitesOrder());</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testSuite.add();
+console.log(sideex.file.testSuite.getSuitesOrder());</code></pre>
 
 
 
@@ -1269,7 +1297,15 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.recorder.start();//record commands.sideex.recorder.stop();//you have to have a test suite first, or just record one.let jsonString = sideex.file.testSuite.save();sideex.file.testSuite.load(jsonString);sideex.playback.start();</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.recorder.start();
+//record commands.
+sideex.recorder.stop();
+//you have to have a test suite first, or just record one.
+let jsonString = sideex.file.testSuite.save();
+sideex.file.testSuite.load(jsonString);
+sideex.playback.start();</code></pre>
 
 
 
@@ -1583,7 +1619,12 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();//you have to have a test suite first, or just record one.let jsonString = sideex.file.testSuite.save();sideex.file.testSuite.load(jsonString);sideex.playback.start();</code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+//you have to have a test suite first, or just record one.
+let jsonString = sideex.file.testSuite.save();
+sideex.file.testSuite.load(jsonString);
+sideex.playback.start();</code></pre>
 
 
 
@@ -1694,7 +1735,11 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>import {SideeX} from "sideex-api"var sideex = new SideeX();sideex.file.testSuite.add();sideex.file.testSuite.setSelected("suite-0");console.log(sideex.file.testSuite.getSelected()); </code></pre>
+    <pre class="prettyprint"><code>import {SideeX} from "@sideex/api"
+var sideex = new SideeX();
+sideex.file.testSuite.add();
+sideex.file.testSuite.setSelected("suite-0");
+console.log(sideex.file.testSuite.getSelected()); </code></pre>
 
 
 
