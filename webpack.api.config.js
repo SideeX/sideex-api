@@ -1,46 +1,10 @@
-var path = require('path');
 var merge = require('webpack-merge');
-const webpack = require('webpack');
-var common = require('./webpack.common.js');
 var nodeExternals = require('webpack-node-externals');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
+var browserConfig = require('./webpack.browser.config');
 
-module.exports = merge(common, {
-    //externals: [nodeExternals()],
-    entry: {
-        index: ['./src/sideex-api/index.js'],
-        test: ['./src/sideex-api/test.js']
-    },
+module.exports = merge(browserConfig, {
+    externals: [nodeExternals()],
     output: {
-        path: path.resolve(__dirname, 'dist/api'),
-        library: 'SideeX',
-        libraryTarget: 'umd',
         filename: '[name].bundle.js'
-    },
-    devServer: {
-        host: 'localhost',
-        port: 8080,
-        contentBase: path.join(__dirname, 'dist/api'),
-        hot: true,
-        open: true,
-        openPage: 'index.html'
-    },
-    module: {
-        rules: [
-            {
-                test: /\.[jt]sx?$/,
-                exclude: /node_modules/,
-                use: [
-                    {
-                        loader: "webpack-preprocessor-loader",
-                        options: {
-                            params: {
-                                isExt: false
-                            }
-                        }
-                    }
-                ]
-            }
-        ]
     }
 });

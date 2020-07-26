@@ -1,7 +1,0 @@
-/src/common
-**/*min.js
-/src/panel/js/lib
-/src/webdriver/lib/capabilities.js
-/src/webdriver/lib/api.js
-src/content/sizzle.js
-src/panel/js/background/jszip.js

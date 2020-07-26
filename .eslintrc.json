@@ -1,10 +1,10 @@
-module.exports = {
+{
     "plugins": [
-        "promise",
+        "promise"
     ],
     "extends": [
         "eslint:recommended",
-        "plugin:promise/recommended",
+        "plugin:promise/recommended"
     ],
     "parserOptions": {
         "ecmaVersion": 2018,
@@ -76,6 +76,6 @@ module.exports = {
         // Below overwrite "plugin:promise/recommended".
         "promise/avoid-new": [
             "off"
-        ],
+        ]
     }
 }

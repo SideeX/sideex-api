@@ -10,23 +10,23 @@ SideeX JavaScript API is a JS library running on a webpage for recording and pla
 
 # Two Ways to Use SideeX API
 
-## Via <script/> tag
-```htmlembedded
-<script src="https://unpkg.com/@sideex/api/index.bundle.mjs"></script>
+## Via \<script \/\> tag
+```html
+<script src="https://unpkg.com/@sideex/api/dist/index.bundle.mjs"></script>
 <script>
-var sideex = new SideeX.SideeX();
+var sideex = new SideeX();
 //Then refer to the following code sample 1, 2, or 3 for using SideeX API
 </script>
 ```
 
 ## Via npm
 At first, download the SideeX API library via npm:
-```javascript
+```
 npm i @sideex/api
 ```
 Then, import and use the SideeX API as follows:
 ```javascript
-import {SideeX} from "@sideex/api" 
+import { SideeX } from "@sideex/api" 
 var sideex = new SideeX();
 //Then refer to the following code sample 1, 2, or 3 for using SideeX API
 ```
