@@ -1,6 +1,6 @@
 {
     "name": "@sideex/api",
-    "version": "0.9.2",
+    "version": "0.9.3",
     "author": "SideeX Team <feedback@sideex.io>",
     "description": "This is SideeX JavaScript API for recording and playing web browsing behavior. The API can be embeded in a webpage without installing a browser web extension.",
     "scripts": {
@@ -8,8 +8,8 @@
         "build-browser": "webpack --mode=production --config webpack.browser.config.js",
         "doc": "jsdoc -c jsdoc.json"
     },
-    "main": "index.bundle.js",
-    "module": "index.bundle.mjs",
+    "main": "dist/index.bundle.js",
+    "module": "dist/index.bundle.mjs",
     "keywords": [
         "SideeX",
         "web testing",
