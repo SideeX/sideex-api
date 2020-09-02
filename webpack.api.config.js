@@ -5,6 +5,7 @@ var browserConfig = require('./webpack.browser.config');
 module.exports = merge(browserConfig, {
     externals: [nodeExternals()],
     output: {
+        libraryTarget: 'commonjs',
         filename: '[name].bundle.js'
     }
 });
